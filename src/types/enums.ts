@@ -1,0 +1,10 @@
+export enum STATION_STATE {
+    ENABLED,
+    DISABLED,
+    IN_APPROVAL
+}
+
+export enum PROTOCOLO_CONEXION {
+    LORAWAN = "LORAWAN - JSON CIFRADO",
+    NATIVE_WIFI
+}
