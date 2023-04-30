@@ -1,5 +1,23 @@
-# INSTALLATION
+# INSTALLATION AND RUNNING
 
+## TWO MAIN METHODS
+
+
+
+### Automatic and Recommended (Using Docker Compose)
+
+(Note: you need Docker Compose and/or Docker Desktop installed in your machine)
+
+1) Step on your local folder where the docker-compose.yml file is and run:
+
+```sudo docker-compose up```
+
+2) Check that everything works by running this command on your terminal:
+```curl localhost:1026/version```
+
+
+### Manually Installing and running images
+***
 1) Install Docker Desktop
 2) Run the following commands to download the required docker images:
 ```
