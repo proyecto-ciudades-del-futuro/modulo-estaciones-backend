@@ -40,3 +40,10 @@ docker run -d --name fiware-orion -h orion --network=fiware_default \
 ```
 
 Now you will have both the Orion Context Broker and the MongoDB ready to start with locally
+
+
+
+@@ Important guidelines to interact with ORION CONTEXT BROKER API:
+
+https://fiware-orion.readthedocs.io/en/2.4.0/user/walkthrough_apiv2/index.html
+
