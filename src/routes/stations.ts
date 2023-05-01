@@ -1,15 +1,13 @@
-import express, {Router, Request, Response} from 'express';
-import {INTERNAL_500} from "../globals/errorMessages";
+import express from 'express';
+import {StationController} from '../controllers/station/StationController';
 
-const router: Router = express.Router();
+const stationRouter = express.Router();
+const stationController = new StationController();
 
-router.get('/stations/', async (req: Request, res: Response) => {
-    try {
-        console.log("tomá las estaciones")
-    } catch (error) {
-        res.status(500).send(INTERNAL_500);
-    }
-})
+// Define routes for CRUD operations
+stationRouter.post('/', stationController.create);
+stationRouter.get('/:id', stationController.read);
+stationRouter.patch('/:id', stationController.update);
+stationRouter.delete('/:id', stationController.delete);
 
-
-
+export default stationRouter;
