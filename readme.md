@@ -74,7 +74,7 @@ https://fiware-orion.readthedocs.io/en/2.4.0/user/walkthrough_apiv2/index.html
 ### Stations / Estaciones
 
 ##### Creating a Station Entity: POST Request
-To create a Station entity, send a POST request to the designated API endpoint you should comply with the following data structure of the payload
+To create a Station entity, send a POST request to the designated API endpoint you should comply with the following data structure of the payload since the server will interact with ORION interface.
 
 
 ### Request Body
