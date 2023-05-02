@@ -1,10 +1,27 @@
-# INSTALLATION AND RUNNING
-
-## TWO MAIN METHODS
 
 
+# Módulo Estaciones \[ORT N2 - BELGRANO - Brusca, Landa, Sirito, Rodriguez, Rilla]
 
-### Automatic and Recommended (Using Docker Compose)
+- [Introduction](#introduction)
+- [Installation](#installation)
+- [Usage](#usage)
+- [API Documentation](#api-documentation)
+- [Contributing](#contributing)
+- [License](#license)
+- [New Section](#new-section)
+
+## Introduction
+
+Modulo Estaciones will integrate with the Ciudades del Futuro project to set up an IoT network of air-quality stations across Argentina's territory.
+
+## Installation
+
+### INSTALLATION AND RUNNING
+ TWO MAIN METHODS
+
+
+
+##### A) Automatic and Recommended (Using Docker Compose)
 
 (Note: you need Docker Compose and/or Docker Desktop installed in your machine)
 
@@ -13,10 +30,10 @@
 ```sudo docker-compose up```
 
 2) Check that everything works by running this command on your terminal:
-```curl localhost:1026/version```
+   ```curl localhost:1026/version```
 
 
-### Manually Installing and running images
+##### B) Manually Installing and running images
 ***
 1) Install Docker Desktop
 2) Run the following commands to download the required docker images:
@@ -46,4 +63,89 @@ Now you will have both the Orion Context Broker and the MongoDB ready to start w
 @@ Important guidelines to interact with ORION CONTEXT BROKER API:
 
 https://fiware-orion.readthedocs.io/en/2.4.0/user/walkthrough_apiv2/index.html
+
+
+## Usage
+
+
+## API Documentation
+
+
+### Stations / Estaciones
+
+##### Creating a Station Entity: POST Request
+To create a Station entity, send a POST request to the designated API endpoint you should comply with the following data structure of the payload since the server will interact with ORION interface.
+
+
+### Request Body
+
+The request body is a JSON object with the following attributes:
+
+- `id` (string): a unique identifier for the Station entity
+- `type` (string): the type of entity, which should be "Station"
+- `description` (object): a description of the station, with the following attributes:
+    - `type` (string): the data type of the description, which should be "String"
+    - `metadata` (object): any additional metadata associated with the description (optional)
+    - `value` (string): the description text
+- `location` (object): the geographic location of the station, with the following attributes:
+    - `type` (string): the data type of the location, which should be "geo:json"
+    - `value` (object): a GeoJSON object representing the location
+    - `metadata` (object): any additional metadata associated with the location (optional)
+- `user` (object): the user associated with the station, with the following attributes:
+    - `type` (string): the data type of the user, which should be "Integer"
+    - `value` (integer): the user identifier
+    - `metadata` (object): any additional metadata associated with the user (optional)
+- `stationState` (object): the state of the station, with the following attributes:
+    - `type` (string): the data type of the state, which should be "String"
+    - `metadata` (object): any additional metadata associated with the state (optional)
+    - `value` (string): the state of the station, which should be one of "ENABLED", "DISABLED", or "INACTIVE"
+
+### Example Request:
+
+```
+POST /api/v1/stations HTTP/1.1
+Host: example.com
+Content-Type: application/json
+
+{
+    "id": "station3",
+    "type": "Station",
+    "description": {
+        "type": "String",
+        "metadata": {},
+        "value": "This is a test station"
+    },
+    "location": {
+        "type": "geo:json",
+        "value": {
+            "type": "Point",
+            "coordinates": [
+                51.5074,
+                -0.1278
+            ]
+        },
+        "metadata": {}
+    },
+    "user": {
+        "type": "Integer",
+        "value": 1,
+        "metadata": {}
+    },
+    "stationState": {
+        "type": "String",
+        "metadata": {},
+        "value": "ENABLED"
+    }
+}
+```
+
+<!-- ## Contributing -->
+
+
+<!-- ## License -->
+
+
+<!-- ## New Section -->
+
+
 

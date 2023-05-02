@@ -1,29 +1,26 @@
 import {Request, Response} from 'express';
-import axios from 'axios';
+import axios, {AxiosError} from 'axios';
 import {NewStation, Station} from '../../types/Station';
+import {ENTITIES_ORION_API_URL} from "../../globals/constants";
 
 export class StationController {
     async create(req: Request, res: Response): Promise<void> {
-
-        const {description, state, locationId, userId} = req.body;
+        const {id, type, description, stationState, location, user} = req.body;
         // Build payload for POST request to Orion Context Broker API
         const stationPayload: Station = {
-            id: 'station-1',
-            type: 'station',
-            description: { description: description},
-            location: {locationId: locationId},
-            userId: {userId: userId},
-            lastUpdate: { lastUpdate: Date.now().toString()}
+            id,
+            type,
+            description,
+            location,
+            user,
+            stationState,
         };
 
-
+        const stationPayloadJSON = JSON.stringify(stationPayload);
         try {
             // Send POST request to Orion Context Broker API to create new entity
-            const stationPayloadJSON = JSON.stringify(stationPayload);
-            console.log("interacting with context broker")
-            console.log(stationPayloadJSON)
             const response = await axios.post(
-                'http://localhost:1026/v2/entities',
+                ENTITIES_ORION_API_URL,
                 stationPayloadJSON,
                 {
                     headers: {
@@ -31,14 +28,10 @@ export class StationController {
                     },
                 }
             );
-
-
-
-            // Send response with entity ID
             res.status(201).json({id: response.data.id});
+
         } catch (error: any) {
-            // Handle errors
-            res.status(500).json({error: error.message});
+            res.status(error.response.status).json({error: `${error.code} | ${error.response.data.description}`});
         }
     }
 

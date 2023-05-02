@@ -1,5 +1,5 @@
 import express from 'express';
-import stationRouter from "./routes/stations";
+import stationRouter from "./routes/stationsRoute";
 import bodyParser from "body-parser";
 
 const app = express();
