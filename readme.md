@@ -12,7 +12,7 @@
 
 ## Introduction
 
-Modulo Estaciones will integrate with the Ciudades del Futuro project to set up an IoT network of air-quality stations across Argentina's territory.
+Modulo Estaciones will integrate with the Ciudades del Futuro project to set up an IoT network of air quality monitoring stations across Argentina's territory.
 
 ## Installation
 
