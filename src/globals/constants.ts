@@ -1,0 +1,1 @@
+export const ENTITIES_ORION_API_URL = 'http://localhost:1026/v2/entities';
