@@ -79,7 +79,7 @@ export class StationController {
             );
             // Send response with success status
             res.status(204).send();
-        } catch (error:any) {
+        } catch (error: any) {
             // Handle errors
             if (error.response && error.response.status === 404) {
                 res.status(404).json({error: 'Entity not found'});
@@ -93,12 +93,11 @@ export class StationController {
         const stationId = req.params.id;
         try {
             // Send DELETE request to Orion Context Broker API to delete entity by ID
-            await axios.delete(`http://
-  localhost:1026/v2/entities/${stationId}`);
-
+            await axios.delete(`${
+                ENTITIES_ORION_API_URL}/${stationId}`);
             // Send response with success status
             res.status(204).send();
-        } catch (error) {
+        } catch (error: any) {
             // Handle errors
             if (error.response && error.response.status === 404) {
                 res.status(404).json({error: 'Entity not found'});
