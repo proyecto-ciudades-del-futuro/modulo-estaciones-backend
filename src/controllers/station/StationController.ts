@@ -1,6 +1,6 @@
 import {Request, Response} from 'express';
-import axios, {AxiosError} from 'axios';
-import {NewStation, Station} from '../../types/Station';
+import axios from 'axios';
+import { Station} from '../../types/Station';
 import {ENTITIES_ORION_API_URL} from "../../globals/constants";
 
 export class StationController {
@@ -36,16 +36,23 @@ export class StationController {
     }
 
     async read(req: Request, res: Response): Promise<void> {
-        const stationId = req.params.id;
-
         try {
-            // Send GET request to Orion Context Broker API to retrieve entity by ID
-            const response = await axios.get(
-                `http://localhost:1026/v2/entities/${stationId}`
-            );
-
-            // Send response with entity data
-            res.json(response.data);
+            if (req.params.id) {
+                // Send GET request to Orion Context Broker API to retrieve entity by ID
+                const stationId = req.params.id;
+                const response = await axios.get(
+                    `${ENTITIES_ORION_API_URL}/${stationId}`
+                );
+                // Send response with entity data
+                res.json(response.data);
+            } else {
+                // Send GET request to Orion Context Broker API to retrieve all entities of type "Station"
+                const response = await axios.get(
+                    `${ENTITIES_ORION_API_URL}?type=Station`
+                );
+                // Send response with list of entities
+                res.json(response.data);
+            }
         } catch (error: any) {
             // Handle errors
             if (error.response && error.response.status === 404) {
@@ -56,41 +63,23 @@ export class StationController {
         }
     }
 
+
     async update(req: Request, res: Response): Promise<void> {
         const stationId = req.params.id;
-        const {description, state, locationId, userId} = req.body;
-
-        // Build payload for PATCH request to Orion Context Broker API
-        /*
-        const payload = {};
-        if (payloaddescription) {
-            payload.description = {value: description};
-        }
-        if (state) {
-            payload.state = {value: state};
-        }
-        if (locationId) {
-            payload.locationId = {value: locationId};
-        }
-        if (userId) {
-            payload.userId = {value: userId};
-        }
-
         try {
             // Send PATCH request to Orion Context Broker API to update entity by ID
-            await axios.patch(
+            let response = await axios.patch(
                 `http://localhost:1026/v2/entities/${stationId}/attrs`,
-                payload,
+                req.body,
                 {
                     headers: {
                         'Content-Type': 'application/json',
                     },
                 }
             );
-
             // Send response with success status
             res.status(204).send();
-        } catch (error) {
+        } catch (error: any) {
             // Handle errors
             if (error.response && error.response.status === 404) {
                 res.status(404).json({error: 'Entity not found'});
@@ -98,21 +87,17 @@ export class StationController {
                 res.status(500).json({error: error.message});
             }
         }
-
-         */
     }
 
     async delete(req: Request, res: Response): Promise<void> {
         const stationId = req.params.id;
-        /*
         try {
             // Send DELETE request to Orion Context Broker API to delete entity by ID
-            await axios.delete(`http://
-  localhost:1026/v2/entities/${stationId}`);
-
+            await axios.delete(`${
+                ENTITIES_ORION_API_URL}/${stationId}`);
             // Send response with success status
             res.status(204).send();
-        } catch (error) {
+        } catch (error: any) {
             // Handle errors
             if (error.response && error.response.status === 404) {
                 res.status(404).json({error: 'Entity not found'});
@@ -120,7 +105,6 @@ export class StationController {
                 res.status(500).json({error: error.message});
             }
         }
-         */
 
     }
 
