@@ -1,6 +1,6 @@
 import {Request, Response} from 'express';
-import axios, {AxiosError} from 'axios';
-import {NewStation, Station} from '../../types/Station';
+import axios from 'axios';
+import { Station} from '../../types/Station';
 import {ENTITIES_ORION_API_URL} from "../../globals/constants";
 
 export class StationController {
