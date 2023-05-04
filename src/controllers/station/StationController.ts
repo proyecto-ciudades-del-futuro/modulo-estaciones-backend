@@ -71,7 +71,7 @@ export class StationController {
         // Build payload for PATCH request to Orion Context Broker API
         /*
         const payload = {};
-        if (payloaddescription) {
+        if (payload.description) {
             payload.description = {value: description};
         }
         if (state) {
@@ -83,22 +83,23 @@ export class StationController {
         if (userId) {
             payload.userId = {value: userId};
         }
-
+            */
         try {
             // Send PATCH request to Orion Context Broker API to update entity by ID
-            await axios.patch(
+            let response = await axios.patch(
                 `http://localhost:1026/v2/entities/${stationId}/attrs`,
-                payload,
+                req.body,
                 {
                     headers: {
                         'Content-Type': 'application/json',
                     },
                 }
             );
+            console.log(response)
 
             // Send response with success status
             res.status(204).send();
-        } catch (error) {
+        } catch (error:any) {
             // Handle errors
             if (error.response && error.response.status === 404) {
                 res.status(404).json({error: 'Entity not found'});
@@ -106,9 +107,9 @@ export class StationController {
                 res.status(500).json({error: error.message});
             }
         }
-
-         */
     }
+
+
 
     async delete(req: Request, res: Response): Promise<void> {
         const stationId = req.params.id;
