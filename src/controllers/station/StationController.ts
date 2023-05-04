@@ -36,16 +36,23 @@ export class StationController {
     }
 
     async read(req: Request, res: Response): Promise<void> {
-        const stationId = req.params.id;
-
         try {
-            // Send GET request to Orion Context Broker API to retrieve entity by ID
-            const response = await axios.get(
-                `http://localhost:1026/v2/entities/${stationId}`
-            );
-
-            // Send response with entity data
-            res.json(response.data);
+            if (req.params.id) {
+                // Send GET request to Orion Context Broker API to retrieve entity by ID
+                const stationId = req.params.id;
+                const response = await axios.get(
+                    `${ENTITIES_ORION_API_URL}/${stationId}`
+                );
+                // Send response with entity data
+                res.json(response.data);
+            } else {
+                // Send GET request to Orion Context Broker API to retrieve all entities of type "Station"
+                const response = await axios.get(
+                    `${ENTITIES_ORION_API_URL}?type=Station`
+                );
+                // Send response with list of entities
+                res.json(response.data);
+            }
         } catch (error: any) {
             // Handle errors
             if (error.response && error.response.status === 404) {
@@ -55,6 +62,7 @@ export class StationController {
             }
         }
     }
+
 
     async update(req: Request, res: Response): Promise<void> {
         const stationId = req.params.id;
