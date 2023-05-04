@@ -1,15 +1,19 @@
 import {Request, Response} from 'express';
 import axios from 'axios';
-import { Station} from '../../types/Station';
+import {Station} from '../../types/Station';
 import {ENTITIES_ORION_API_URL} from "../../globals/constants";
+import {generateNewId} from "../../services/stationService";
 
 export class StationController {
     async create(req: Request, res: Response): Promise<void> {
-        const {id, type, description, stationState, location, user} = req.body;
+        const {description, stationState, location, user} = req.body;
         // Build payload for POST request to Orion Context Broker API
+
+        const newId = await generateNewId();
+
         const stationPayload: Station = {
-            id,
-            type,
+            id: newId,
+            type: 'Station',
             description,
             location,
             user,

@@ -2,8 +2,6 @@ import Joi from 'joi';
 import express from "express";
 
 const stationCreateSchema = Joi.object({
-    id: Joi.string().pattern(/^station_(\d{1,6})$/).required(),
-    type: Joi.string().valid("Station").required(),
     location: Joi.object({
         type: Joi.string().valid('geo:json').required(),
         value: Joi.object({

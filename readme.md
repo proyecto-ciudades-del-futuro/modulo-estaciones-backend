@@ -68,10 +68,34 @@ https://fiware-orion.readthedocs.io/en/2.4.0/user/walkthrough_apiv2/index.html
 ## Usage
 
 
-## API Documentation
+API Documentation
+===========
+***
 
+Stations / Estaciones
+---
+BUILD THE REQUEST
+***
+To build a request to the Stations endpoint, you will need to include the following information:
 
-### Stations / Estaciones
+Query Every Station
+- HTTP Method: GET
+- Endpoint URL: http://your_server_localhost_url/stations/
+- Headers: [Insert any required headers and their values]
+- Query Parameters: [Insert any required query parameters and their values]
+- Request Body: [Insert any required request body]
+
+Query Station by Id
+- HTTP Method: GET
+- Endpoint URL: http://your_server_localhost_url/stations/:id
+
+Create Station
+- HTTP Method: POST
+- Endpoint URL: http://your_server_localhost_url/stations/
+- Headers: Content-Type: application/json
+- Request Body: 
+
+ 
 
 ##### Creating a Station Entity: POST Request
 To create a Station entity, send a POST request to the designated API endpoint you should comply with the following data structure of the payload since the server will interact with ORION interface.

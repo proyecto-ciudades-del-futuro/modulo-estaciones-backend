@@ -3,13 +3,8 @@ import {STATION_STATE} from "./enums";
 export type ValidStringTypes = 'Text' | 'Number' | 'Integer' | 'Boolean' | 'Date' | 'URL' | 'GeoJSON' | 'StructuredValue';
 
 
-export interface NewStation {
-    location: { locationId: string };
-    userId: { userId: string }
-    stationState?: { stationState: string };
-    description: { description: string };
-    type: string
-}
+export type NewStation = Omit<Station, 'id' | 'type'>;
+
 
 export interface Station {
     id: string;
