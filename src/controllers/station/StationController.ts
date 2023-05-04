@@ -66,24 +66,6 @@ export class StationController {
 
     async update(req: Request, res: Response): Promise<void> {
         const stationId = req.params.id;
-        const {description, state, locationId, userId} = req.body;
-
-        // Build payload for PATCH request to Orion Context Broker API
-        /*
-        const payload = {};
-        if (payload.description) {
-            payload.description = {value: description};
-        }
-        if (state) {
-            payload.state = {value: state};
-        }
-        if (locationId) {
-            payload.locationId = {value: locationId};
-        }
-        if (userId) {
-            payload.userId = {value: userId};
-        }
-            */
         try {
             // Send PATCH request to Orion Context Broker API to update entity by ID
             let response = await axios.patch(
@@ -95,8 +77,6 @@ export class StationController {
                     },
                 }
             );
-            console.log(response)
-
             // Send response with success status
             res.status(204).send();
         } catch (error:any) {
@@ -109,11 +89,8 @@ export class StationController {
         }
     }
 
-
-
     async delete(req: Request, res: Response): Promise<void> {
         const stationId = req.params.id;
-        /*
         try {
             // Send DELETE request to Orion Context Broker API to delete entity by ID
             await axios.delete(`http://
@@ -129,7 +106,6 @@ export class StationController {
                 res.status(500).json({error: error.message});
             }
         }
-         */
 
     }
 

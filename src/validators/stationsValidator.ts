@@ -61,7 +61,7 @@ const stationUpdateSchema = Joi.object({
 })
 
 export function validateCreateStation(req: express.Request, res: express.Response, next: express.NextFunction) {
-    const {error, value} = stationCreateSchema.validate(req.body);
+    const {error} = stationCreateSchema.validate(req.body);
     if (error) {
         console.log(error)
         res.status(400).json({error: error.details[0].message});
@@ -71,9 +71,7 @@ export function validateCreateStation(req: express.Request, res: express.Respons
 }
 
 export function validateUpdateStation(req: express.Request, res: express.Response, next: express.NextFunction) {
-    console.log("validating schema");
-    const {error, value} = stationUpdateSchema.validate(req.body);
-    console.log(value);
+    const {error} = stationUpdateSchema.validate(req.body);
     if (error) {
         res.status(400).json({error: error.details[0].message});
     } else {
