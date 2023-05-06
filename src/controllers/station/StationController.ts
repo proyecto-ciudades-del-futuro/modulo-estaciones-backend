@@ -6,38 +6,42 @@ import {generateNewId} from "../../services/stationService";
 
 export class StationController {
     async create(req: Request, res: Response): Promise<void> {
-        const {description, stationState, location, user} = req.body;
+        const {id, description, stationState, location, user} = req.body;
         // Build payload for POST request to Orion Context Broker API
 
-        const newId = await generateNewId();
-
-        const stationPayload: Station = {
-            id: newId,
-            type: 'Station',
-            description,
-            location,
-            user,
-            stationState,
-        };
-
-        const stationPayloadJSON = JSON.stringify(stationPayload);
         try {
-            // Send POST request to Orion Context Broker API to create new entity
-            const response = await axios.post(
-                ENTITIES_ORION_API_URL,
-                stationPayloadJSON,
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                }
-            );
-            res.status(201).json({id: response.data.id});
+            const newId = await generateNewId(id);
 
+            const stationPayload: Station = {
+                id: newId,
+                type: 'Station',
+                description,
+                location,
+                user,
+                stationState,
+            };
+            const stationPayloadJSON = JSON.stringify(stationPayload);
+            // Send POST request to Orion Context Broker API to create new entity
+            const response = await axios.post(ENTITIES_ORION_API_URL, stationPayloadJSON, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            res.status(201).json({id: response.data.id});
         } catch (error: any) {
-            res.status(error.response.status).json({error: `${error.code} | ${error.response.data.description}`});
+            if (error === 'id already exists') {
+                res.status(409).json({error});
+            } else if (error === 'An unexpected error occurred') {
+                // Handle the unexpected error as needed, e.g., log the error and return a custom status and message
+                console.error('Unexpected error:', error);
+                res.status(500).json({error: 'Internal server error'});
+            } else {
+                // Handle other Axios errors
+                res.status(error.response.status).json({error: `${error.code} | ${error.response.data.description}`});
+            }
         }
     }
+
 
     async read(req: Request, res: Response): Promise<void> {
         try {
