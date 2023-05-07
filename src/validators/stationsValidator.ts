@@ -65,6 +65,7 @@ export function validateCreateStation(req: express.Request, res: express.Respons
         console.log(error)
         res.status(400).json({error: error.details[0].message});
     } else {
+        console.log("VALIDATION PASSED")
         next();
     }
 }

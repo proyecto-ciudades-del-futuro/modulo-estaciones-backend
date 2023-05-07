@@ -1,5 +1,5 @@
 import {ENTITIES_ORION_API_URL} from "../globals/constants";
-import axios,  {AxiosError} from "axios";
+import axios,  {AxiosError}from "axios";
 
 
 /*

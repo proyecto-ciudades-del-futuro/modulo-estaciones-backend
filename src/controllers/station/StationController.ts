@@ -36,6 +36,7 @@ export class StationController {
                 console.error('Unexpected error:', error);
                 res.status(500).json({error: 'Internal server error'});
             } else {
+                console.log("Handling other axios errors");
                 // Handle other Axios errors
                 res.status(error.response.status).json({error: `${error.code} | ${error.response.data.description}`});
             }
