@@ -88,7 +88,7 @@ To build a request to the Stations endpoint, you will need to include the follow
 
 ## Query used Station ids service
 - <u>HTTP Method</u>: `GET`
-- <u>Endpoint URL</u>: /stations/?fields=`id`
+- <u>Endpoint URL</u>: `/stations/?fields=id`
 
 ## Create Station
 - <u>HTTP Method</u>: `POST`
