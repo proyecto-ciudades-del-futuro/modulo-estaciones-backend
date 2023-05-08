@@ -72,33 +72,28 @@ API Documentation
 ===========
 ***
 
-Stations / Estaciones
----
+# Stations / Estaciones
+
 BUILD THE REQUEST
 ***
 To build a request to the Stations endpoint, you will need to include the following information:
 
 ## Query Every Station
-- <u>HTTP Method:</u> GET
-- <u>Endpoint URL:</u> /stations/
-- <u>Headers:</u> [Insert any required headers and their values]
-- <u>Query Parameters:</u> [Insert any required query parameters and their values]
-- <u>Request Body:</u> [Insert any required request body]
+- <u>HTTP Method:</u> `GET`
+- <u>Endpoint URL:</u> `/stations/`
 
 ## Query Station by Id
-- <u>HTTP Method</u>: GET
-- <u>Endpoint URL</u>: /stations/:id
+- <u>HTTP Method</u>: `GET`
+- <u>Endpoint URL</u>: `/stations/:id`
 
 ## Query used Station ids service
-- <u>HTTP Method</u>: GET
-- <u>Endpoint URL</u>: /stations/?fields=id
+- <u>HTTP Method</u>: `GET`
+- <u>Endpoint URL</u>: /stations/?fields=`id`
 
 ## Create Station
-- <u>HTTP Method</u>: POST
-- <u>Endpoint URL</u>: /stations/
-- <u>Headers</u>: Content-Type</u>: application/json
-- <u>Request Body</u>: 
-
+- <u>HTTP Method</u>: `POST`
+- <u>Endpoint URL</u>: `/stations/`
+- <u>Headers</u>: Content-Type</u>: `application/json`
  
 
 ##### Creating a Station Entity: POST Request
