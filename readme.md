@@ -80,18 +80,22 @@ To build a request to the Stations endpoint, you will need to include the follow
 
 Query Every Station
 - HTTP Method: GET
-- Endpoint URL: http://your_server_localhost_url/stations/
+- Endpoint URL: /stations/
 - Headers: [Insert any required headers and their values]
 - Query Parameters: [Insert any required query parameters and their values]
 - Request Body: [Insert any required request body]
 
 Query Station by Id
 - HTTP Method: GET
-- Endpoint URL: http://your_server_localhost_url/stations/:id
+- Endpoint URL: /stations/:id
+
+Query used Station ids service
+- HTTP Method: GET
+- Endpoint URL: /stations/?fields=id
 
 Create Station
 - HTTP Method: POST
-- Endpoint URL: http://your_server_localhost_url/stations/
+- Endpoint URL: /stations/
 - Headers: Content-Type: application/json
 - Request Body: 
 
@@ -105,8 +109,7 @@ To create a Station entity, send a POST request to the designated API endpoint y
 
 The request body is a JSON object with the following attributes:
 
-- `id` (string): a unique identifier for the Station entity
-- `type` (string): the type of entity, which should be "Station"
+- `id` (string): a unique identifier for the Station entity. The format of the id should be "station_xx" (xx being a number from 1, no leading zero's are allowed)
 - `description` (object): a description of the station, with the following attributes:
     - `type` (string): the data type of the description, which should be "String"
     - `metadata` (object): any additional metadata associated with the description (optional)
@@ -132,8 +135,7 @@ Host: example.com
 Content-Type: application/json
 
 {
-    "id": "station3",
-    "type": "Station",
+    "id": "station_3",
     "description": {
         "type": "String",
         "metadata": {},

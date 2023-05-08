@@ -2,7 +2,9 @@ import Joi from 'joi';
 import express from "express";
 
 const stationCreateSchema = Joi.object({
-    id: Joi.string().pattern(/^station_\d+$/).required(),
+    id: Joi.string()
+        .pattern(/^station_([1-9]\d*)$/, 'no-leading-zero policy. Stations should not be like this: station_01 instead, station_1 is the correct')
+        .required(),
     location: Joi.object({
         type: Joi.string().valid('geo:json').required(),
         value: Joi.object({

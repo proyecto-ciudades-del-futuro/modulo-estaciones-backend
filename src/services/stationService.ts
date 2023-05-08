@@ -1,24 +1,5 @@
 import {ENTITIES_ORION_API_URL} from "../globals/constants";
-import axios,  {AxiosError}from "axios";
-
-
-/*
-export const generateNewId = async (stationId: string): Promise<string> => {
-    console.log("try 2")
-    try {
-        const response = await axios.get(`${ENTITIES_ORION_API_URL}/${stationId}`);
-        return stationId ===  response.data.error ? stationId : 'id already exists' ;
-    } catch (e: any) {
-           return stationId;
-    } finally {
-        return stationId;
-    }
-// Generate the ID for the next entity
-    //const nextIdSuffix: any = parseInt(latestEntityId.split('_').pop()) + 10;
-    //return `station_${nextIdSuffix.toString()}`;
-}
-
-*/
+import axios, {AxiosError} from "axios";
 
 
 export const generateNewId = async (stationId: string): Promise<string> => {
@@ -45,3 +26,16 @@ export const generateNewId = async (stationId: string): Promise<string> => {
         return Promise.reject('An unexpected error occurred');
     }
 };
+
+export const getEveryStationById = async (): Promise<any> => {
+    try {
+        const entityType = 'Station';
+        const attribute = 'id';
+        const response = await axios.get(`${ENTITIES_ORION_API_URL}/?type=${entityType}&attrs=${attribute}`);
+        return response.data.map((item: { id: string, type: string})=> {
+            return item.id
+        });
+    } catch (error) {
+        return Promise.reject('An unexpected error occurred');
+    }
+}
