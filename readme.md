@@ -78,26 +78,26 @@ BUILD THE REQUEST
 ***
 To build a request to the Stations endpoint, you will need to include the following information:
 
-Query Every Station
-- HTTP Method: GET
-- Endpoint URL: /stations/
-- Headers: [Insert any required headers and their values]
-- Query Parameters: [Insert any required query parameters and their values]
-- Request Body: [Insert any required request body]
+## Query Every Station
+- <u>HTTP Method:</u> GET
+- <u>Endpoint URL:</u> /stations/
+- <u>Headers:</u> [Insert any required headers and their values]
+- <u>Query Parameters:</u> [Insert any required query parameters and their values]
+- <u>Request Body:</u> [Insert any required request body]
 
-Query Station by Id
-- HTTP Method: GET
-- Endpoint URL: /stations/:id
+## Query Station by Id
+- <u>HTTP Method</u>: GET
+- <u>Endpoint URL</u>: /stations/:id
 
-Query used Station ids service
-- HTTP Method: GET
-- Endpoint URL: /stations/?fields=id
+## Query used Station ids service
+- <u>HTTP Method</u>: GET
+- <u>Endpoint URL</u>: /stations/?fields=id
 
-Create Station
-- HTTP Method: POST
-- Endpoint URL: /stations/
-- Headers: Content-Type: application/json
-- Request Body: 
+## Create Station
+- <u>HTTP Method</u>: POST
+- <u>Endpoint URL</u>: /stations/
+- <u>Headers</u>: Content-Type</u>: application/json
+- <u>Request Body</u>: 
 
  
 
