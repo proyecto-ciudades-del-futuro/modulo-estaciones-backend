@@ -74,10 +74,6 @@ API Documentation
 
 # Stations / Estaciones
 
-BUILD THE REQUEST
-***
-To build a request to the Stations endpoint, you will need to include the following information:
-
 ## Query Every Station
 - <u>HTTP Method:</u> `GET`
 - <u>Endpoint URL:</u> `/stations/`
