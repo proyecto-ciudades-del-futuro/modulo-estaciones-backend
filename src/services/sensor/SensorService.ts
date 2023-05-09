@@ -6,11 +6,11 @@ export class SensorService {
     async createSensor(sensor: Sensor): Promise<Sensor> {
         // Create the sensor entity in Orion Context Broker
         // You may need to adjust this request based on your specific sensor data structure
-        const sensorResponse = await axios.post(`${ENTITIES_ORION_API_URL}/v2/entities`, sensor.id);
+        const sensorResponse = await axios.post(`${ENTITIES_ORION_API_URL}/sensors`, sensor);
 
         // Add the newly created sensor to the station's sensor list
         const updatedStation = await axios.patch(
-            `${ENTITIES_ORION_API_URL}/v2/entities/${stationId}/attrs`,
+            `${ENTITIES_ORION_API_URL}/v2/entities/${sensor.station_id}/attrs`,
             {sensors: {value: [...station.sensors.value, sensorResponse.data.id]}}
         );
 

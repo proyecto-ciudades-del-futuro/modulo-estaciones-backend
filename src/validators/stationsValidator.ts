@@ -19,11 +19,6 @@ const stationCreateSchema = Joi.object({
         value: Joi.number().required(),
         metadata: Joi.object()
     }).required(),
-    stationState: Joi.object({
-        type: Joi.string().required(),
-        metadata: Joi.object().default({}).required(),
-        value: Joi.string().valid('ENABLED', 'DISABLED', 'IN APPROVAL').required()
-    }).required(),
     description: Joi.object({
         type: Joi.string().required(),
         metadata: Joi.object().default({}).required(),
@@ -59,7 +54,12 @@ const stationUpdateSchema = Joi.object({
         value: Joi.string().required().messages({
             'any.required': `if you want to update {{#label}} is missing, the 'value' property is required`
         })
-    }).optional()
+    }).optional(),
+    sensors: Joi.object({
+        type: Joi.string().valid("Array").optional(),
+        value: Joi.array().items(SensorSchema).required(),
+        metadata: Joi.object().default({}).optional()
+   }).optional()
 });
 
 export function validateCreateStation(req: express.Request, res: express.Response, next: express.NextFunction) {

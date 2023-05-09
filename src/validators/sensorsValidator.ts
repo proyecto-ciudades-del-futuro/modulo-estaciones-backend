@@ -8,7 +8,7 @@ export const SensorSchema = Joi.object({
     station_id: Joi.string()
         .pattern(/^station_([1-9]\d*)$/, 'no-leading-zero policy. Sensors should not be like this: station_01 instead, station_1 is the correct')
         .required(),
-    type: Joi.string().valid('Array').required(),
+    type: Joi.string().required(),
     description: Joi.object({
         type: Joi.string().valid('String').required(),
         value: Joi.string().required(),

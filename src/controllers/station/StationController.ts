@@ -3,10 +3,11 @@ import axios from 'axios';
 import {Station} from '../../types/Station';
 import {ENTITIES_ORION_API_URL} from "../../globals/constants";
 import {generateNewId, getEveryStationById} from "../../services/station/stationService";
+import {STATION_STATE} from "../../types/enums";
 
 export class StationController {
     async create(req: Request, res: Response): Promise<void> {
-        const {id, description, stationState, location, user} = req.body;
+        const {id, description, location, user} = req.body;
         // Build payload for POST request to Orion Context Broker API
 
         try {
@@ -18,7 +19,17 @@ export class StationController {
                 description,
                 location,
                 user,
-                stationState,
+                stationState: {
+                    type: "String",
+                    metadata: {},
+                    value: STATION_STATE.IN_APPROVAL
+                },
+                sensors: {
+                    type: "Array",
+                    value: [],
+                    metadata: {}
+
+                }
             };
             const stationPayloadJSON = JSON.stringify(stationPayload);
             // Send POST request to Orion Context Broker API to create new entity
