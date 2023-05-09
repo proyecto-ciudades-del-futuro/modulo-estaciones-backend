@@ -1,7 +1,7 @@
 import axios from 'axios';
 import MockAdapter from "axios-mock-adapter";
 import { generateNewId} from "./stationService";
-import {ENTITIES_ORION_API_URL} from "../globals/constants";
+import {ENTITIES_ORION_API_URL} from "../../globals/constants";
 
 const mock = new MockAdapter(axios);
 

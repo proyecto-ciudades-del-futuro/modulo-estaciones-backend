@@ -1,5 +1,6 @@
 import Joi from 'joi';
 import express from "express";
+import {SensorSchema} from "./sensorsValidator";
 
 const stationCreateSchema = Joi.object({
     id: Joi.string()
@@ -27,8 +28,8 @@ const stationCreateSchema = Joi.object({
         type: Joi.string().required(),
         metadata: Joi.object().default({}).required(),
         value: Joi.string().required()
-    }).required()
-});
+    }).required(),
+})
 
 
 const stationUpdateSchema = Joi.object({
@@ -59,7 +60,7 @@ const stationUpdateSchema = Joi.object({
             'any.required': `if you want to update {{#label}} is missing, the 'value' property is required`
         })
     }).optional()
-})
+});
 
 export function validateCreateStation(req: express.Request, res: express.Response, next: express.NextFunction) {
     const {error} = stationCreateSchema.validate(req.body);

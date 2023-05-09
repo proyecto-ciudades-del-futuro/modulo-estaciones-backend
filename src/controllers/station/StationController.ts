@@ -2,7 +2,7 @@ import {Request, Response} from 'express';
 import axios from 'axios';
 import {Station} from '../../types/Station';
 import {ENTITIES_ORION_API_URL} from "../../globals/constants";
-import {generateNewId, getEveryStationById} from "../../services/stationService";
+import {generateNewId, getEveryStationById} from "../../services/station/stationService";
 
 export class StationController {
     async create(req: Request, res: Response): Promise<void> {

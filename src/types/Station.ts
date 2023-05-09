@@ -1,9 +1,9 @@
 import {STATION_STATE} from "./enums";
+import {Sensor} from "./Sensor";
 
 export type ValidStringTypes = 'Text' | 'Number' | 'Integer' | 'Boolean' | 'Date' | 'URL' | 'GeoJSON' | 'StructuredValue';
 
 
-export type NewStation = Omit<Station, 'id' | 'type'>;
 
 
 export interface Station {
@@ -32,6 +32,11 @@ export interface Station {
         metadata: object;
         value: string;
     };
+    sensors?: {
+        value: Sensor[],
+        metadata: object,
+        type: "Array"
+    }
 }
 
 export interface StationUpdate {
@@ -58,4 +63,9 @@ export interface StationUpdate {
         metadata?: object;
         value: string;
     };
+    sensors?: {
+        type: "Array",
+        value: Sensor[]
+        metadata?: object;
+    }
 }

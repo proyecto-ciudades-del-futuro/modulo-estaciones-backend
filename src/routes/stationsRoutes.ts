@@ -1,7 +1,7 @@
 import express from 'express';
 import {StationController} from '../controllers/station/StationController';
 import {validateCreateStation, validateUpdateStation} from "../validators/stationsValidator";
-import {getEveryStationById} from "../services/stationService";
+import {getEveryStationById} from "../services/station/stationService";
 
 const stationRouter = express.Router();
 const stationController = new StationController();
