@@ -90,7 +90,7 @@ API Documentation
 - <u>HTTP Method</u>: `POST`
 - <u>Endpoint URL</u>: `/stations/`
 - <u>Headers</u>: Content-Type</u>: `application/json`
- 
+
 
 ##### Creating a Station Entity: POST Request
 To create a Station entity, send a POST request to the designated API endpoint you should comply with the following data structure of the payload since the server will interact with ORION interface.
@@ -113,15 +113,13 @@ The request body is a JSON object with the following attributes:
     - `type` (string): the data type of the user, which should be "Integer"
     - `value` (integer): the user identifier
     - `metadata` (object): any additional metadata associated with the user (optional)
-- `stationState` (object): the state of the station, with the following attributes:
-    - `type` (string): the data type of the state, which should be "String"
-    - `metadata` (object): any additional metadata associated with the state (optional)
-    - `value` (string): the state of the station, which should be one of "ENABLED", "DISABLED", or "INACTIVE"
+
+By default, a new station will be created with the STATION_STATE attribute set as "ENABLED" and an empty Array of sensors.
 
 ### Example Request:
 
 ```
-POST /api/v1/stations HTTP/1.1
+POST /stations HTTP/1.1
 Host: example.com
 Content-Type: application/json
 
@@ -147,11 +145,33 @@ Content-Type: application/json
         "type": "Integer",
         "value": 1,
         "metadata": {}
-    },
-    "stationState": {
-        "type": "String",
-        "metadata": {},
-        "value": "ENABLED"
+    }
+}
+```
+
+## Update Station
+
+- <u>HTTP Method</u>: `PATCH`
+- <u>Endpoint URL</u>: `/stations/:id`
+- <u>Headers</u>: Content-Type</u>: `application/json`
+
+To update a Station entity, the verb to be used is `PATCH`, any attributes excepting the station_id and STATION_STATE can be modified
+
+### EXAMPLE REQUEST:
+
+
+```
+PATCH /stations/station_20 HTTP/1.1
+Host: example.com
+Content-Type: application/json
+
+{
+    "sensors": {
+      "value": [{
+          "station_id": "station_1",
+          "id": "sensor_1",
+          "type": "Temperature"
+      }]
     }
 }
 ```
