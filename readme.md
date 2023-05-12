@@ -64,6 +64,16 @@ Now you will have both the Orion Context Broker and the MongoDB ready to start w
 
 https://fiware-orion.readthedocs.io/en/2.4.0/user/walkthrough_apiv2/index.html
 
+### TROUBLESHOOTING
+If you have issues with your docker instances, try to reinitilize them via the following commands:
+
+1. List the running containers running 
+`docker ps` in the terminal. That command will list every running container along with their container IDs and other details
+2. Copy the container IDs of the Orion/MongoDB instances and run this command `docker stop <container_id>`
+3. Verify that the containers have stopped with `docker ps`
+4. Now remove the stopped containers with `docker rm <container_id>`
+5. Verify that the containers have been removed with: `docker ps -a`
+6. Run again your docker instances
 
 ## Usage
 
