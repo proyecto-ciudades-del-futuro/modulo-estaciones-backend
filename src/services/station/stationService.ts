@@ -1,6 +1,8 @@
 import {ENTITIES_ORION_API_URL} from "../../globals/constants";
 import axios, {AxiosError} from "axios";
-
+import {interpret} from 'xstate';
+import {STATION_STATE} from "../../types/enums";
+import {stationStateMachine} from "../../utils/stationStateMachine";
 
 export const generateNewId = async (stationId: string): Promise<string> => {
     try {
@@ -38,4 +40,24 @@ export const getEveryStationById = async (): Promise<any> => {
     } catch (error) {
         return Promise.reject('An unexpected error occurred');
     }
+}
+
+
+export const updateStationState = async (stationId: string, stationState: {
+    type?: string, value?: STATION_STATE, metadata: object,
+}): Promise<boolean> => {
+    const result = await getCurrentStationData(stationId);
+
+    const stateMachine = interpret(stationStateMachine)
+
+    return true;
+
+}
+
+export const getCurrentStationData = async (stationId: string): Promise<string> =>{
+
+    const currentState = await axios.get(`${ENTITIES_ORION_API_URL}/${stationId}`);
+    console.log(currentState);
+    return '';
+
 }

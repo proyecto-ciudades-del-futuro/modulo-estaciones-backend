@@ -24,6 +24,7 @@
   "dependencies": {
     "axios": "^1.4.0",
     "body-parser": "^1.20.2",
-    "joi": "^17.9.2"
+    "joi": "^17.9.2",
+    "xstate": "^4.37.2"
   }
 }

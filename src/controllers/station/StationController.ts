@@ -9,7 +9,6 @@ export class StationController {
     async create(req: Request, res: Response): Promise<void> {
         const {id, description, location, user} = req.body;
         // Build payload for POST request to Orion Context Broker API
-
         try {
             const newId = await generateNewId(id);
 
@@ -28,7 +27,6 @@ export class StationController {
                     type: "Array",
                     value: [],
                     metadata: {}
-
                 }
             };
             const stationPayloadJSON = JSON.stringify(stationPayload);
@@ -90,6 +88,7 @@ export class StationController {
     async update(req: Request, res: Response): Promise<void> {
         const stationId = req.params.id;
         try {
+            console.log(req.body)
             // Send PATCH request to Orion Context Broker API to update entity by ID
             let response = await axios.patch(
                 `http://localhost:1026/v2/entities/${stationId}/attrs`,

@@ -2,6 +2,7 @@ import Joi from 'joi';
 import express from "express";
 import {SensorSchema} from "./sensorsValidator";
 
+
 const stationCreateSchema = Joi.object({
     id: Joi.string()
         .pattern(/^station_([1-9]\d*)$/, 'no-leading-zero policy. Stations should not be like this: station_01 instead, station_1 is the correct')
@@ -25,6 +26,7 @@ const stationCreateSchema = Joi.object({
         value: Joi.string().required()
     }).required(),
 })
+
 
 
 const stationUpdateSchema = Joi.object({
@@ -68,7 +70,6 @@ export function validateCreateStation(req: express.Request, res: express.Respons
         console.log(error)
         res.status(400).json({error: error.details[0].message});
     } else {
-        console.log("VALIDATION PASSED")
         next();
     }
 }
