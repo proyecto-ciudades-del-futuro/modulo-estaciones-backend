@@ -59,7 +59,6 @@ export const getAvailableStates = async (stationId: string): Promise<object> => 
     const currentStationState = await getCurrentStationData(stationId);
     const interpreter = createStationStateMachineInterpreter(currentStationState.value)
     const nextPossibleEvents = interpreter.state.nextEvents;
-    console.log(nextPossibleEvents)
     return nextPossibleEvents;
 }
 
@@ -67,23 +66,14 @@ export const tryTransition = async (
     stationId: string,
     intendedState: 'ENABLED' | 'IN_APPROVAL' | 'DISABLED'
 ): Promise<boolean> => {
-    console.log("Trying transition")
-    console.log("******")
     const currentStationState = await getCurrentStationData(stationId);
-    console.log("currentStationState")
-    console.log(currentStationState.value)
-    console.log("transition actions -->")
-    console.log(transitionActions[intendedState])
     const interpreter = createStationStateMachineInterpreter(currentStationState.value);
     const action = transitionActions[intendedState];
-    console.log("ACTION")
-    console.log(action)
     return interpreter.initialState.can(action);
 };
 
 
 export const getCurrentStationData = async (stationId: string): Promise<{ type: string; value: InitialStates; metadata: object }> => {
     const currentState = await axios.get(`${ENTITIES_ORION_API_URL}/${stationId}`);
-    console.log(currentState.data.stationState);
     return currentState.data.stationState;
 }
