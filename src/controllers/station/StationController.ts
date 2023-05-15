@@ -2,7 +2,11 @@ import {Request, Response} from 'express';
 import axios from 'axios';
 import {Station} from '../../types/Station';
 import {ENTITIES_ORION_API_URL} from "../../globals/constants";
-import {generateNewId, getEveryStationById} from "../../services/station/stationService";
+import {
+    generateNewId,
+    getAvailableStates,
+    getEveryStationById,
+} from "../../services/station/stationService";
 import {STATION_STATE} from "../../types/enums";
 
 export class StationController {
@@ -88,7 +92,6 @@ export class StationController {
     async update(req: Request, res: Response): Promise<void> {
         const stationId = req.params.id;
         try {
-            console.log(req.body)
             // Send PATCH request to Orion Context Broker API to update entity by ID
             let response = await axios.patch(
                 `http://localhost:1026/v2/entities/${stationId}/attrs`,
@@ -128,6 +131,15 @@ export class StationController {
             }
         }
 
+    }
+
+    async handleStateTransition(req: Request, res: Response): Promise<void>{
+        const stationId = req.params.id;
+        try {
+            getAvailableStates(stationId)
+        } catch(e) {
+            console.log(e)
+        }
     }
 
 }

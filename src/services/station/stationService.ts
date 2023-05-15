@@ -2,12 +2,11 @@ import {ENTITIES_ORION_API_URL} from "../../globals/constants";
 import axios, {AxiosError} from "axios";
 import {interpret} from 'xstate';
 import {STATION_STATE} from "../../types/enums";
-import {stationStateMachine} from "../../utils/stationStateMachine";
+import {createStationStateMachine} from "../../utils/stationStateMachine";
 
 export const generateNewId = async (stationId: string): Promise<string> => {
     try {
         const response = await axios.get(`${ENTITIES_ORION_API_URL}/${stationId}`);
-
         // b) If the axios.get() returns an object, it means that the entity with the newId exists.
         // Reject the creation to the user.
         return Promise.reject('id already exists');
@@ -43,21 +42,47 @@ export const getEveryStationById = async (): Promise<any> => {
 }
 
 
-export const updateStationState = async (stationId: string, stationState: {
-    type?: string, value?: STATION_STATE, metadata: object,
-}): Promise<boolean> => {
-    const result = await getCurrentStationData(stationId);
-
-    const stateMachine = interpret(stationStateMachine)
-
-    return true;
-
+export const getAvailableStates = async (stationId: string): Promise<object> => {
+    const currentStationState = await getCurrentStationData(stationId);
+    const interpreter = createStationStateMachineInterpreter(currentStationState.value)
+    const nextPossibleEvents = interpreter.state.nextEvents;
+    console.log(" NEXT POSSIBLE EVENTS")
+    console.log(nextPossibleEvents)
+    console.log("EVERY EVENT")
+    console.log(interpreter.state.events)
+    console.log(interpreter.machine.events)
+    console.log("CAN ANSWER")
+    console.log(interpreter.initialState.can({type: 'enable'}))
+    return {};
 }
 
-export const getCurrentStationData = async (stationId: string): Promise<string> =>{
+export const tryTransition = async (stationId: string, intendedState: 'ENABLE' | 'IN_APPROVAL' | 'DISABLE'): Promise<boolean> => {
+    const currentStationState = await getCurrentStationData(stationId);
+    const interpreter = createStationStateMachineInterpreter(currentStationState.value)
+    let answer: boolean;
+    switch (intendedState){
+        case 'IN_APPROVAL':
+            answer = interpreter.initialState.can({type: 're-enable'});
+            break;
+        case 'ENABLE':
+            answer = interpreter.initialState.can({type: 'enable'});
+            break;
+        case 'DISABLE':
+            answer = interpreter.initialState.can({type: 'disable'})
+    }
+    return answer;
+}
 
+const createStationStateMachineInterpreter = (
+    initialState: 'IN_APPROVAL' | 'ENABLED' | 'DISABLED'
+) => {
+    const stationStateMachine = createStationStateMachine(initialState);
+    return interpret(stationStateMachine).start();
+};
+
+
+export const getCurrentStationData = async (stationId: string): Promise<{ type: string; value: 'IN_APPROVAL' | 'ENABLED' | 'DISABLED'; metadata: object }> =>{
     const currentState = await axios.get(`${ENTITIES_ORION_API_URL}/${stationId}`);
-    console.log(currentState);
-    return '';
-
+    console.log(currentState.data.stationState);
+    return currentState.data.stationState;
 }

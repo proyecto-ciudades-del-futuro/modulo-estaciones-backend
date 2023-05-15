@@ -25,7 +25,7 @@ export interface Station {
     stationState: {
         type: string;
         metadata: object;
-        value: 'ENABLED' | 'DISABLED' | 'IN APPROVAL';
+        value: 'ENABLED' | 'DISABLED' | 'IN_APPROVAL';
     };
     description: {
         type: string;
@@ -56,7 +56,7 @@ export interface StationUpdate {
     stationState?: {
         type: string;
         metadata?: object;
-        value: 'ENABLED' | 'DISABLED' | 'IN APPROVAL';
+        value: 'ENABLED' | 'DISABLED' | 'IN_APPROVAL';
     };
     description?: {
         type: string;

@@ -1,7 +1,7 @@
 export enum STATION_STATE {
     ENABLED = "ENABLED" ,
     DISABLED = "DISABLED",
-    IN_APPROVAL = "IN APPROVAL"
+    IN_APPROVAL = "IN_APPROVAL"
 }
 
 
