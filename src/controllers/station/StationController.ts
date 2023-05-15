@@ -5,9 +5,10 @@ import {ENTITIES_ORION_API_URL} from "../../globals/constants";
 import {
     generateNewId,
     getAvailableStates,
-    getEveryStationById,
+    getEveryStationById, tryTransition,
 } from "../../services/station/stationService";
 import {STATION_STATE} from "../../types/enums";
+import {handleHttpStationErrors} from "../../utils/errorHandling";
 
 export class StationController {
     async create(req: Request, res: Response): Promise<void> {
@@ -79,19 +80,22 @@ export class StationController {
                 res.json(response.data);
             }
         } catch (error: any) {
-            // Handle errors
-            if (error.response && error.response.status === 404) {
-                res.status(404).json({error: 'Entity not found'});
-            } else {
-                res.status(500).json({error: error.message});
-            }
+            handleHttpStationErrors(res, error);
         }
     }
 
 
     async update(req: Request, res: Response): Promise<void> {
         const stationId = req.params.id;
+        const {stationState} = req.body;
+
         try {
+            if (stationState) {
+                if (!await tryTransition(stationId, stationState.value)) {
+                    res.status(400).json({error: 'State transition not allowed'})
+                    return;
+                }
+            }
             // Send PATCH request to Orion Context Broker API to update entity by ID
             let response = await axios.patch(
                 `http://localhost:1026/v2/entities/${stationId}/attrs`,
@@ -105,12 +109,7 @@ export class StationController {
             // Send response with success status
             res.status(204).send();
         } catch (error: any) {
-            // Handle errors
-            if (error.response && error.response.status === 404) {
-                res.status(404).json({error: 'Entity not found'});
-            } else {
-                res.status(500).json({error: error.message});
-            }
+            handleHttpStationErrors(res, error);
         }
     }
 
@@ -124,21 +123,19 @@ export class StationController {
             res.status(204).send();
         } catch (error: any) {
             // Handle errors
-            if (error.response && error.response.status === 404) {
-                res.status(404).json({error: 'Entity not found'});
-            } else {
-                res.status(500).json({error: error.message});
-            }
+            handleHttpStationErrors(res, error);
         }
 
     }
 
-    async handleStateTransition(req: Request, res: Response): Promise<void>{
+    async handleStateTransition(req: Request, res: Response): Promise<void> {
         const stationId = req.params.id;
         try {
-            getAvailableStates(stationId)
-        } catch(e) {
-            console.log(e)
+            const availableStates = await getAvailableStates(stationId)
+            res.status(200).json(availableStates)
+        } catch (error) {
+            console.log(error)
+            handleHttpStationErrors(res, error);
         }
     }
 

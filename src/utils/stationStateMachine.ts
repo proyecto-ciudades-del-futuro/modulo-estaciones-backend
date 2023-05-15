@@ -1,50 +1,5 @@
-import { createMachine, MachineConfig, EventObject } from 'xstate';
+import {createMachine, MachineConfig, EventObject, interpret} from 'xstate';
 import {STATION_STATE} from "../types/enums";
-
-/*
-export const stationStateMachine = createMachine({
-    id: "stations_state_machine",
-    initial: "IN_APPROVAL",
-    states: {
-       "IN_APPROVAL" : {
-            on: {
-                "enable": {
-                    target: "ENABLED",
-                },
-                adminOverride: {
-                    target: ["IN_APPROVAL", "ENABLED", "DISABLED"]
-                },
-            },
-        },
-        "ENABLED": {
-            on: {
-                "disable": {
-                    target: "DISABLED",
-                },
-                adminOverride: {
-                    target: ["IN_APPROVAL", "ENABLED", "DISABLED"], // allow to go to any state
-                },
-            },
-        },
-        "DISABLED": {
-            on: {
-                "re-enable": {
-                    target: "IN_APPROVAL",
-                },
-                adminOverride: {
-                    target: ["IN_APPROVAL", "ENABLED", "DISABLED"], // allow to go to any state
-                },
-            },
-        },
-    },
-    schema: {events: {} as { type: "enable" } | { type: "disable" } | { type: "re-enable" } | { type: "adminOverride", target: "IN_APPROVAL" | "ENABLED" | "DISABLED" }},
-    predictableActionArguments: true,
-});
-
-
-
- */
-
 
 
 type StationContext = {
@@ -65,7 +20,7 @@ type StationEvent =
     | { type: 're-enable' }
     | { type: 'adminOverride'; target: 'IN_APPROVAL' | 'ENABLED' | 'DISABLED' };
 
-export const createStationStateMachine = (
+export const createStationStateMachineInterpreter = (
     initialState: 'IN_APPROVAL' | 'ENABLED' | 'DISABLED'
 ) => {
     const machineConfig: MachineConfig<
@@ -115,12 +70,16 @@ export const createStationStateMachine = (
         predictableActionArguments: true,
     };
 
-    return createMachine(machineConfig);
+    const machine = createMachine(machineConfig);
+    return interpret(machine).start();
 };
+
+
+
 /*
 // Usage
 const initialState = 'ENABLED'; // Example initial state
-const stationStateMachine = createStationStateMachine(initialState);
+const stationStateMachine = createStationStateMachineInterpreter(initialState);
 
 
  */
