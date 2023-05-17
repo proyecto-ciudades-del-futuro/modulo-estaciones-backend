@@ -1,16 +1,15 @@
 import {ENTITIES_ORION_API_URL} from "../../globals/constants";
 import axios, {AxiosError} from "axios";
-import {interpret} from 'xstate';
-import {STATION_STATE} from "../../types/enums";
 import {createStationStateMachineInterpreter} from "../../utils/stationStateMachine";
+import {Station} from "../../types/Station";
 
 
 export type InitialStates = 'IN_APPROVAL' | 'ENABLED' | 'DISABLED';
 
 
-type TransitionAction = { type: 'enable' } | { type: 'disable' } | { type: 're-enable' };
+export type TransitionAction = { type: 'enable' } | { type: 'disable' } | { type: 're-enable' };
 
-const transitionActions: { [key in 'ENABLED' | 'IN_APPROVAL' | 'DISABLED']: TransitionAction } = {
+export const transitionActions: { [key in 'ENABLED' | 'IN_APPROVAL' | 'DISABLED']: TransitionAction } = {
     ENABLED: { type: 'enable' },
     IN_APPROVAL: { type: 're-enable' },
     DISABLED: { type: 'disable' },
@@ -56,7 +55,7 @@ export const getEveryStationById = async (): Promise<any> => {
 
 
 export const getAvailableStates = async (stationId: string): Promise<object> => {
-    const currentStationState = await getCurrentStationData(stationId);
+    const currentStationState = await getCurrentStationStateData(stationId);
     const interpreter = createStationStateMachineInterpreter(currentStationState.value)
     const nextPossibleEvents = interpreter.state.nextEvents;
     return nextPossibleEvents;
@@ -66,14 +65,30 @@ export const tryTransition = async (
     stationId: string,
     intendedState: 'ENABLED' | 'IN_APPROVAL' | 'DISABLED'
 ): Promise<boolean> => {
-    const currentStationState = await getCurrentStationData(stationId);
+    const currentStationState = await getCurrentStationStateData(stationId);
     const interpreter = createStationStateMachineInterpreter(currentStationState.value);
     const action = transitionActions[intendedState];
     return interpreter.initialState.can(action);
 };
 
 
-export const getCurrentStationData = async (stationId: string): Promise<{ type: string; value: InitialStates; metadata: object }> => {
+export const getCurrentStationStateData = async (stationId: string): Promise<{ type: string; value: InitialStates; metadata: object }> => {
     const currentState = await axios.get(`${ENTITIES_ORION_API_URL}/${stationId}`);
     return currentState.data.stationState;
+}
+
+export const getStationDataById = async (stationId: string): Promise<Station | string> => {
+    try {
+        const response = await axios.get(`${ENTITIES_ORION_API_URL}/${stationId}`);
+        return response.data;  // return station data
+    } catch (error: any) {
+        if (axios.isAxiosError(error)) {
+            const axiosError: AxiosError = error;
+            if (axiosError.response && axiosError.response.status === 404) {
+                return 'No station found with the provided id';  // return message if station isn't found
+            }
+        }
+        // return error if something unknown happens
+        return Promise.reject('An unexpected error occurred while fetching station data');
+    }
 }

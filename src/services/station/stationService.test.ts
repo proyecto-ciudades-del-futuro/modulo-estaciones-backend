@@ -1,12 +1,13 @@
 import axios from 'axios';
 import MockAdapter from "axios-mock-adapter";
-import { generateNewId} from "./stationService";
+import {generateNewId, getAvailableStates, getCurrentStationStateData} from "./stationService";
 import {ENTITIES_ORION_API_URL} from "../../globals/constants";
+import {createStationStateMachineInterpreter} from "../../utils/stationStateMachine";
 
 const mock = new MockAdapter(axios);
 
-describe('generateNewId test', ()=> {
-    beforeEach(()=> {
+describe('generateNewId test', () => {
+    beforeEach(() => {
         mock.reset();
     })
 
@@ -45,3 +46,26 @@ describe('generateNewId test', ()=> {
     });
 
 })
+/*
+const mockcreateStationStateMachineInterpreter = jest.fn();
+const mockGetAvailableStates = jest.fn();
+
+jest.mock('../../utils/stationStateMachine', ()=> ({
+    createStationStateMachineInterpreter: mockcreateStationStateMachineInterpreter
+}));
+
+jest.mock('./stationService', () => ({
+    getAvailableStates: mockGetAvailableStates,
+    getCurrentStationStateData: jest.fn()
+}));
+
+
+describe('State transitions tests', () => {
+    it('checking set up', ()=> {
+
+        expect(createStationStateMachineInterpreter).toHaveBeenCalled()
+    })
+
+})
+
+ */

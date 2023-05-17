@@ -16,7 +16,8 @@ export class StationController {
         // Build payload for POST request to Orion Context Broker API
         try {
             const newId = await generateNewId(id);
-
+            console.log("newId")
+            console.log(newId)
             const stationPayload: Station = {
                 id: newId,
                 type: 'Station',
@@ -35,6 +36,7 @@ export class StationController {
                 }
             };
             const stationPayloadJSON = JSON.stringify(stationPayload);
+            console.log(stationPayloadJSON)
             // Send POST request to Orion Context Broker API to create new entity
             const response = await axios.post(ENTITIES_ORION_API_URL, stationPayloadJSON, {
                 headers: {
@@ -128,7 +130,7 @@ export class StationController {
 
     }
 
-    async handleStateTransition(req: Request, res: Response): Promise<void> {
+    async readAvailableStates(req: Request, res: Response): Promise<void> {
         const stationId = req.params.id;
         try {
             const availableStates = await getAvailableStates(stationId)

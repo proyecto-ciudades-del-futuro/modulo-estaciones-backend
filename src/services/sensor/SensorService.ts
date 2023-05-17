@@ -1,32 +1,70 @@
-import axios from "axios";
+import axios, {AxiosError} from "axios";
 import {Sensor} from "../../types/Sensor";
 import {ENTITIES_ORION_API_URL} from '../../globals/constants';
+import {getStationDataById} from "../station/stationService";
 
-export class SensorService {
-    async createSensor(sensor: Sensor): Promise<Sensor> {
-        // Create the sensor entity in Orion Context Broker
-        // You may need to adjust this request based on your specific sensor data structure
-        const sensorResponse = await axios.post(`${ENTITIES_ORION_API_URL}/sensors`, sensor);
 
-        // Add the newly created sensor to the station's sensor list
-        const updatedStation = await axios.patch(
-            `${ENTITIES_ORION_API_URL}/v2/entities/${sensor.station_id}/attrs`,
-            {sensors: {value: [...station.sensors.value, sensorResponse.data.id]}}
-        );
+export const createSensor = async (sensor: Sensor): Promise<Sensor> => {
+    try {
+        if (!(await sensorExists(sensor.id))) {
+            const sensorPayloadJSON = JSON.stringify(sensor);
+            const sensorResponse = await axios.post(`${ENTITIES_ORION_API_URL}`, sensorPayloadJSON, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
 
-        return sensorResponse.data;
+            const stationData = await getStationDataById(sensor.station_id.value);
+            console.log(stationData)
+            await axios.patch(
+                `${ENTITIES_ORION_API_URL}/${sensor.station_id.value}/attrs`,
+                {sensors: {value: [sensor, sensorResponse.data.id]}}
+            );
+
+            return sensorResponse.data;
+        } else {
+            return Promise.reject({code: 409, message:`Sensor with id ${sensor.id} already exists` })
+        }
+
+    } catch (e: any) {
+        console.log("catch block")
+        if(e.response && e.response.status === 404){
+            return Promise.reject({code: 404, message: e.response.data})
+        }
+        if (e.response && e.response.status === 400) {
+            return Promise.reject('Invalid sensor data');
+        }
+        // Add more conditions to handle different types of error
+
+        // If the error does not match any conditions, reject with the original error
+        return Promise.reject(e);
     }
-
-    async getSensor(sensorId: string): Promise<Sensor> {
-        // Retrieve the sensor entity from Orion Context Broker
-        const response = await axios.get(`${ENTITIES_ORION_API_URL}/v2/entities/${sensorId}`);
-        return response.data;
-    }
-
-    async updateSensor(sensorId: string, updatedSensor: Sensor): Promise<void> {
-        // Update the sensor entity in Orion Context Broker
-        await axios.patch(`${ENTITIES_ORION_API_URL}/v2/entities/${sensorId}`, updatedSensor);
-    }
-
 }
 
+
+
+
+export const getSensor = async (sensorId: string): Promise<Sensor> => {
+    // Retrieve the sensor entity from Orion Context Broker
+    const response = await axios.get(`${ENTITIES_ORION_API_URL}/${sensorId}`);
+    return response.data;
+}
+
+export const updateSensor = async (sensorId: string, updatedSensor: Sensor): Promise<void> => {
+    // Update the sensor entity in Orion Context Broker
+    await axios.patch(`${ENTITIES_ORION_API_URL}/${sensorId}`, updatedSensor);
+}
+
+
+export const sensorExists = async (sensorId: string): Promise<boolean> => {
+    try {
+        await axios.get(`${ENTITIES_ORION_API_URL}/${sensorId}`)
+        return true;
+    } catch(e: any){
+        if (e.response && e.response.status === 404) {
+            return false;
+        }
+        // Return a rejected Promise with the error so that it can be caught and handled appropriately.
+        return Promise.reject(e);
+    }
+}

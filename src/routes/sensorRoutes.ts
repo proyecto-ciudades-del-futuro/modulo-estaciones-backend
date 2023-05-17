@@ -1,16 +1,16 @@
 import express from 'express';
-import {StationController} from '../controllers/station/StationController';
 
 import {validateCreateSensor, validateUpdateStation} from "../validators/sensorsValidator";
+import {SensorController} from "../controllers/sensor/SensorController";
 
 const sensorsRouter = express.Router();
-const stationController = new StationController();
+const sensorController = new SensorController();
 
 // Define routes for CRUD operations
-sensorsRouter.post('/', validateCreateSensor ,stationController.create);
-sensorsRouter.get('/:id', stationController.read);
-sensorsRouter.get('/', stationController.read);
-sensorsRouter.patch('/:id', validateUpdateStation, stationController.update);
-sensorsRouter.delete('/:id', stationController.delete);
+sensorsRouter.post('/', validateCreateSensor ,sensorController.create);
+sensorsRouter.get('/:id', sensorController.read);
+sensorsRouter.get('/', sensorController.read);
+sensorsRouter.patch('/:id', validateUpdateStation, sensorController.update);
+//sensorsRouter.delete('/:id', sensorController.delete);
 
 export default sensorsRouter;

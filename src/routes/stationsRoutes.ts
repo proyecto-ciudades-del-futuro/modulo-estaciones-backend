@@ -8,7 +8,7 @@ const stationController = new StationController();
 // Define routes for CRUD operations
 
 stationRouter.post('/', validateCreateStation , stationController.create);
-stationRouter.get('/states/:id', stationController.handleStateTransition)
+stationRouter.get('/states/:id', stationController.readAvailableStates)
 stationRouter.get('/:id', stationController.read);
 stationRouter.get('/', stationController.read);
 stationRouter.patch('/:id', validateUpdateStation, stationController.update);

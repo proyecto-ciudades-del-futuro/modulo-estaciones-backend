@@ -7,7 +7,7 @@ import {StationController} from "./StationController";
 
 const mock = new MockAdapter(axios);
 
-jest.mock('../../services/stationService', () => ({
+jest.mock('../../services/station/stationService', () => ({
     generateNewId: jest.fn(),
 }));
 
