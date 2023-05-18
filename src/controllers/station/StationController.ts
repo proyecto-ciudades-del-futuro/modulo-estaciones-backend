@@ -4,7 +4,7 @@ import {Station} from '../../types/Station';
 import {ENTITIES_ORION_API_URL} from "../../globals/constants";
 import {
     generateNewId,
-    getAvailableStates,
+    getAvailableStates, getSensorsByStation,
     getStationsIdsList, tryTransition,
 } from "../../services/station/stationService";
 import {STATION_STATE} from "../../types/enums";
@@ -118,11 +118,18 @@ export class StationController {
     async delete(req: Request, res: Response): Promise<void> {
         const stationId = req.params.id;
         try {
+            const hasSensors = await getSensorsByStation(req.params.id)
+
             // Send DELETE request to Orion Context Broker API to delete entity by ID
-            await axios.delete(`${
-                ENTITIES_ORION_API_URL}/${stationId}`);
-            // Send response with success status
-            res.status(204).send();
+            if (hasSensors.length > 0) {
+                res.status(400).json({error: 'Station has sensors, first remove or unbound sensors that depend on this station'})
+            } else {
+                await axios.delete(`${
+                    ENTITIES_ORION_API_URL}/${stationId}`);
+                // Send response with success status
+                res.status(204).send();
+            }
+
         } catch (error: any) {
             // Handle errors
             handleHttpStationErrors(res, error);

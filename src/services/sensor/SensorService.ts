@@ -2,15 +2,15 @@ import axios, {AxiosError} from "axios";
 import {Sensor} from "../../types/Sensor";
 import {ENTITIES_ORION_API_URL} from '../../globals/constants';
 import {getStationDataById} from "../station/stationService";
+import {Station, StationState} from "../../types/Station";
 
 
 export const createSensor = async (sensor: Sensor): Promise<string> => {
     try {
         const sensorExistsResult = await sensorExists(sensor.id);
         if (!sensorExistsResult) {
-            const stationData = await getStationDataById(sensor.station_id.value);
-            console.log("Station Data:  ", stationData)
-            if (stationData === "No station found with the provided id") {
+            const stationData: Station | string = await getStationDataById(sensor.station_id.value);
+            if (typeof stationData === "string") {
                 return Promise.reject({code: 404, message: `Station with id ${sensor.station_id.value} not found`});
             }
 
@@ -21,10 +21,15 @@ export const createSensor = async (sensor: Sensor): Promise<string> => {
                 }
             });
 
+            // Retrieve existing sensors
+            const existingSensors = stationData.sensors?.value ?? [];
+
+            // Add new sensor to the list of existing sensors using spread operator
+            const updatedSensors = [...existingSensors, sensor];
 
             await axios.patch(
                 `${ENTITIES_ORION_API_URL}/${sensor.station_id.value}/attrs`,
-                {sensors: {value: [sensor, sensorResponse.data.id]}}
+                { sensors: {value: updatedSensors}}
             );
             return sensorResponse.statusText
         } else {

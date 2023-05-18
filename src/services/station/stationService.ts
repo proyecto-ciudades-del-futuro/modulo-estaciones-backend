@@ -2,6 +2,7 @@ import {ENTITIES_ORION_API_URL} from "../../globals/constants";
 import axios, {AxiosError, AxiosResponse} from "axios";
 import {createStationStateMachineInterpreter} from "../../utils/stationStateMachine";
 import {Station} from "../../types/Station";
+import {Sensor} from "../../types/Sensor";
 
 
 export type InitialStates = 'IN_APPROVAL' | 'ENABLED' | 'DISABLED';
@@ -10,9 +11,9 @@ export type InitialStates = 'IN_APPROVAL' | 'ENABLED' | 'DISABLED';
 export type TransitionAction = { type: 'enable' } | { type: 'disable' } | { type: 're-enable' };
 
 export const transitionActions: { [key in 'ENABLED' | 'IN_APPROVAL' | 'DISABLED']: TransitionAction } = {
-    ENABLED: { type: 'enable' },
-    IN_APPROVAL: { type: 're-enable' },
-    DISABLED: { type: 'disable' },
+    ENABLED: {type: 'enable'},
+    IN_APPROVAL: {type: 're-enable'},
+    DISABLED: {type: 'disable'},
 };
 
 
@@ -104,4 +105,16 @@ export async function updateStationById(stationId: string, data: any): Promise<A
     });
 
     return response;
+}
+
+
+export async function getSensorsByStation(stationId: string): Promise<Sensor[] | []> {
+    try {
+        const url = `${ENTITIES_ORION_API_URL}/${stationId}/attrs/sensors/value`;
+        const response = await axios.get(url);
+        console.log(response)
+        return response.data;
+    } catch (error: any) {
+        return []
+    }
 }
