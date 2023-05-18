@@ -5,7 +5,7 @@ import {ENTITIES_ORION_API_URL} from "../../globals/constants";
 import {
     generateNewId,
     getAvailableStates,
-    getEveryStationById, tryTransition,
+    getStationsIdsList, tryTransition,
 } from "../../services/station/stationService";
 import {STATION_STATE} from "../../types/enums";
 import {handleHttpStationErrors} from "../../utils/errorHandling";
@@ -71,7 +71,7 @@ export class StationController {
                 // Send response with entity data
                 res.json(response.data);
             } else if (req.query.fields === 'id') {
-                const response = await getEveryStationById();
+                const response = await getStationsIdsList();
                 res.json(response);
             } else {
                 // Send GET request to Orion Context Broker API to retrieve all entities of type "Station"

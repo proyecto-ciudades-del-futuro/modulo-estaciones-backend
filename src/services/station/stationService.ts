@@ -40,7 +40,7 @@ export const generateNewId = async (stationId: string): Promise<string> => {
     }
 };
 
-export const getEveryStationById = async (): Promise<any> => {
+export const getStationsIdsList = async (): Promise<any> => {
     try {
         const entityType = 'Station';
         const attribute = 'id';
@@ -88,6 +88,7 @@ export const getStationDataById = async (stationId: string): Promise<Station | s
                 return 'No station found with the provided id';  // return message if station isn't found
             }
         }
+        console.log("getStationDataById error log", error);
         // return error if something unknown happens
         return Promise.reject('An unexpected error occurred while fetching station data');
     }

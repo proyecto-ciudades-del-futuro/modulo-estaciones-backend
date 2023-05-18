@@ -1,5 +1,5 @@
 import {Request, Response} from "express";
-import {createSensor, getSensor, updateSensor} from '../../services/sensor/SensorService'
+import {createSensor, getEverySensor, getSensor, updateSensor} from '../../services/sensor/SensorService'
 
 export class SensorController {
 
@@ -10,7 +10,7 @@ export class SensorController {
         } catch (error: any) {
             if (error?.code === 409) {
                 res.status(409).json({error: error.message});
-            } else if(error?.code === 404){
+            } else if (error?.code === 404) {
                 res.status(404).json({error: error.message});
             } else {
                 // Handle errors accordingly
@@ -20,11 +20,15 @@ export class SensorController {
     }
 
     async read(req: Request, res: Response): Promise<void> {
-        const sensorId = req.params.id;
-
         try {
-            const sensor = await getSensor(sensorId);
-            res.status(200).json(sensor);
+            if (req.params.id) {
+                const sensor = await getSensor(req.params.id);
+                res.status(200).json(sensor);
+
+            } else {
+                const sensors = await getEverySensor();
+                res.status(200).json(sensors);
+            }
         } catch (error: any) {
             // Handle errors accordingly
             res.status(500).json({error: "Internal server error"});
