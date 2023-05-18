@@ -1,71 +1,37 @@
 import {STATION_STATE} from "./enums";
-import {Sensor} from "./Sensor";
+import {GeoJson, SensorArray, Description} from "./globals";
 
 export type ValidStringTypes = 'Text' | 'Number' | 'Integer' | 'Boolean' | 'Date' | 'URL' | 'GeoJSON' | 'StructuredValue';
 
-
-
+export type StationState = {
+    type: string;
+    metadata?: object;
+    value: 'ENABLED' | 'DISABLED' | 'IN_APPROVAL';
+};
 
 export interface Station {
     id: string;
     type: string;
-    location: {
-        type: 'geo:json';
-        value: {
-            type: 'Point';
-            coordinates: [number, number];
-        };
-        metadata: object;
-    };
+    location: GeoJson;
     user: {
         type: 'Integer';
         value: number;
         metadata: object;
     };
-    stationState: {
-        type: string;
-        metadata: object;
-        value: 'ENABLED' | 'DISABLED' | 'IN_APPROVAL';
-    };
-    description: {
-        type: string;
-        metadata: object;
-        value: string;
-    };
-    sensors?: {
-        value: Sensor[],
-        metadata: object,
-        type: "Array"
-    }
+    stationState: StationState;
+    description: Description;
+    sensors?: SensorArray
 }
 
 export interface StationUpdate {
-    location?: {
-        type: 'geo:json';
-        value: {
-            type: 'Point';
-            coordinates: [number, number];
-        };
-        metadata?: object;
-    };
+    location?: GeoJson;
     user?: {
         type: 'Integer';
         value: number;
         metadata?: object;
     };
-    stationState?: {
-        type: string;
-        metadata?: object;
-        value: 'ENABLED' | 'DISABLED' | 'IN_APPROVAL';
-    };
-    description?: {
-        type: string;
-        metadata?: object;
-        value: string;
-    };
-    sensors?: {
-        type: "Array",
-        value: Sensor[]
-        metadata?: object;
-    }
+    stationState?: StationState;
+    description?: Description;
+    sensors?: SensorArray
 }
+

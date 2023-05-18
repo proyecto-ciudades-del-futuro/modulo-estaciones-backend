@@ -31,6 +31,9 @@ export class SensorController {
             }
         } catch (error: any) {
             // Handle errors accordingly
+            if (error?.response?.status === 404) {
+                res.status(404).json({error: "Sensor Not found"});
+            }
             res.status(500).json({error: "Internal server error"});
         }
     }

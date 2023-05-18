@@ -8,6 +8,12 @@ export const createSensor = async (sensor: Sensor): Promise<string> => {
     try {
         const sensorExistsResult = await sensorExists(sensor.id);
         if (!sensorExistsResult) {
+            const stationData = await getStationDataById(sensor.station_id.value);
+            console.log("Station Data:  ", stationData)
+            if (stationData === "No station found with the provided id") {
+                return Promise.reject({code: 404, message: `Station with id ${sensor.station_id.value} not found`});
+            }
+
             const sensorPayloadJSON = JSON.stringify(sensor);
             const sensorResponse = await axios.post(`${ENTITIES_ORION_API_URL}`, sensorPayloadJSON, {
                 headers: {
@@ -15,11 +21,7 @@ export const createSensor = async (sensor: Sensor): Promise<string> => {
                 }
             });
 
-            const stationData = await getStationDataById(sensor.station_id.value);
 
-            if (stationData === "No station found with the provided id") {
-                return Promise.reject({code: 404, message: `Station with id ${sensor.station_id.value} not found`});
-            }
             await axios.patch(
                 `${ENTITIES_ORION_API_URL}/${sensor.station_id.value}/attrs`,
                 {sensors: {value: [sensor, sensorResponse.data.id]}}
@@ -29,6 +31,7 @@ export const createSensor = async (sensor: Sensor): Promise<string> => {
             return Promise.reject({code: 409, message: `Sensor with id ${sensor.id} already exists`})
         }
     } catch (e: any) {
+        console.log(e)
         if (e.response && e.response.status === 404) {
             return Promise.reject({code: 404, message: e.response.data})
         }

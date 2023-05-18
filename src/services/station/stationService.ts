@@ -1,5 +1,5 @@
 import {ENTITIES_ORION_API_URL} from "../../globals/constants";
-import axios, {AxiosError} from "axios";
+import axios, {AxiosError, AxiosResponse} from "axios";
 import {createStationStateMachineInterpreter} from "../../utils/stationStateMachine";
 import {Station} from "../../types/Station";
 
@@ -92,4 +92,16 @@ export const getStationDataById = async (stationId: string): Promise<Station | s
         // return error if something unknown happens
         return Promise.reject('An unexpected error occurred while fetching station data');
     }
+}
+
+export async function updateStationById(stationId: string, data: any): Promise<AxiosResponse> {
+    const url = `${ENTITIES_ORION_API_URL}${stationId}/attrs`;
+
+    const response = await axios.patch(url, data, {
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+
+    return response;
 }
