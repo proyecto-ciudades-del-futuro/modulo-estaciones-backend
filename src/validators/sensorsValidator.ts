@@ -1,5 +1,6 @@
 import Joi from 'joi';
 import express from "express";
+import {metadataPattern} from "./globalVariables";
 
 export const SensorSchema = Joi.object({
     id: Joi.string()
@@ -14,7 +15,7 @@ export const SensorSchema = Joi.object({
     description: Joi.object({
         type: Joi.string().valid('String').required(),
         value: Joi.string().required(),
-        metadata: Joi.object().unknown().required()
+        metadata: metadataPattern
     })
 })
 
@@ -27,7 +28,7 @@ const SensorUpdateSchema = Joi.object({
     description: Joi.object({
         type: Joi.string().valid('String').required(),
         value: Joi.string().required(),
-        metadata: Joi.object().unknown().required()
+        metadata: metadataPattern
     }).optional()
 });
 
@@ -37,7 +38,6 @@ export function validateCreateSensor(req: express.Request, res: express.Response
         console.log(error)
         res.status(400).json({error: error.details[0].message});
     } else {
-        console.log("VALIDATION PASSED")
         next();
     }
 }

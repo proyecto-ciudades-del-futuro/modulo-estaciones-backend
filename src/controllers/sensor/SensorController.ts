@@ -1,5 +1,6 @@
 import {Request, Response} from "express";
 import {createSensor, getEverySensor, getSensor, updateSensor} from '../../services/sensor/SensorService'
+import {handleHttpErrors} from "../../utils/errorHandling";
 
 export class SensorController {
 
@@ -24,7 +25,6 @@ export class SensorController {
             if (req.params.id) {
                 const sensor = await getSensor(req.params.id);
                 res.status(200).json(sensor);
-
             } else {
                 const sensors = await getEverySensor();
                 res.status(200).json(sensors);
@@ -33,6 +33,7 @@ export class SensorController {
             // Handle errors accordingly
             if (error?.response?.status === 404) {
                 res.status(404).json({error: "Sensor Not found"});
+                return;
             }
             res.status(500).json({error: "Internal server error"});
         }
@@ -47,7 +48,7 @@ export class SensorController {
             res.status(200).json({message: "Sensor updated successfully"});
         } catch (error) {
             // Handle errors accordingly
-            res.status(500).json({error: "Internal server error"});
+           handleHttpErrors(res, error)
         }
     }
 

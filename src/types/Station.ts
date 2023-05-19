@@ -20,7 +20,7 @@ export interface Station {
     };
     stationState: StationState;
     description: Description;
-    sensors?: SensorArray
+    sensors: SensorArray
 }
 
 export interface StationUpdate {

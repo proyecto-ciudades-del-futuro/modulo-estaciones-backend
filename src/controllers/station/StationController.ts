@@ -8,7 +8,7 @@ import {
     getStationsIdsList, tryTransition,
 } from "../../services/station/stationService";
 import {STATION_STATE} from "../../types/enums";
-import {handleHttpStationErrors} from "../../utils/errorHandling";
+import {handleHttpErrors} from "../../utils/errorHandling";
 
 export class StationController {
     async create(req: Request, res: Response): Promise<void> {
@@ -16,8 +16,6 @@ export class StationController {
         // Build payload for POST request to Orion Context Broker API
         try {
             const newId = await generateNewId(id);
-            console.log("newId")
-            console.log(newId)
             const stationPayload: Station = {
                 id: newId,
                 type: 'Station',
@@ -82,7 +80,7 @@ export class StationController {
                 res.json(response.data);
             }
         } catch (error: any) {
-            handleHttpStationErrors(res, error);
+            handleHttpErrors(res, error);
         }
     }
 
@@ -100,7 +98,7 @@ export class StationController {
             }
             // Send PATCH request to Orion Context Broker API to update entity by ID
             let response = await axios.patch(
-                `http://localhost:1026/v2/entities/${stationId}/attrs`,
+                `${ENTITIES_ORION_API_URL}/${stationId}/attrs`,
                 req.body,
                 {
                     headers: {
@@ -111,7 +109,7 @@ export class StationController {
             // Send response with success status
             res.status(204).send();
         } catch (error: any) {
-            handleHttpStationErrors(res, error);
+            handleHttpErrors(res, error);
         }
     }
 
@@ -132,7 +130,7 @@ export class StationController {
 
         } catch (error: any) {
             // Handle errors
-            handleHttpStationErrors(res, error);
+            handleHttpErrors(res, error);
         }
 
     }
@@ -144,7 +142,7 @@ export class StationController {
             res.status(200).json(availableStates)
         } catch (error) {
             console.log(error)
-            handleHttpStationErrors(res, error);
+            handleHttpErrors(res, error);
         }
     }
 

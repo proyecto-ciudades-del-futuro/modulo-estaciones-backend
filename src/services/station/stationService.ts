@@ -1,8 +1,9 @@
 import {ENTITIES_ORION_API_URL} from "../../globals/constants";
 import axios, {AxiosError, AxiosResponse} from "axios";
 import {createStationStateMachineInterpreter} from "../../utils/stationStateMachine";
-import {Station} from "../../types/Station";
+import {Station, StationUpdate} from "../../types/Station";
 import {Sensor} from "../../types/Sensor";
+import {InternalError, NotFoundError} from "../../types/errors";
 
 
 export type InitialStates = 'IN_APPROVAL' | 'ENABLED' | 'DISABLED';
@@ -78,7 +79,7 @@ export const getCurrentStationStateData = async (stationId: string): Promise<{ t
     return currentState.data.stationState;
 }
 
-export const getStationDataById = async (stationId: string): Promise<Station | string> => {
+export const getStationDataById = async (stationId: string): Promise<Station> => {
     try {
         const response = await axios.get(`${ENTITIES_ORION_API_URL}/${stationId}`);
         return response.data;  // return station data
@@ -86,25 +87,22 @@ export const getStationDataById = async (stationId: string): Promise<Station | s
         if (axios.isAxiosError(error)) {
             const axiosError: AxiosError = error;
             if (axiosError.response && axiosError.response.status === 404) {
-                return 'No station found with the provided id';  // return message if station isn't found
+                return Promise.reject( new NotFoundError(`Station with id ${stationId} not found`));
             }
         }
-        console.log("getStationDataById error log", error);
         // return error if something unknown happens
-        return Promise.reject('An unexpected error occurred while fetching station data');
+        return Promise.reject(new InternalError('Unknown error occurred'));
     }
 }
 
-export async function updateStationById(stationId: string, data: any): Promise<AxiosResponse> {
-    const url = `${ENTITIES_ORION_API_URL}${stationId}/attrs`;
+export async function updateStationById(stationId: string, data: StationUpdate): Promise<AxiosResponse> {
+    const url = `${ENTITIES_ORION_API_URL}/${stationId}/attrs`;
 
-    const response = await axios.patch(url, data, {
+    return await axios.patch(url, data, {
         headers: {
             'Content-Type': 'application/json',
         },
     });
-
-    return response;
 }
 
 
