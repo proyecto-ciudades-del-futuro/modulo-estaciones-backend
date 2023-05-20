@@ -87,7 +87,7 @@ export const getStationDataById = async (stationId: string): Promise<Station> =>
         if (axios.isAxiosError(error)) {
             const axiosError: AxiosError = error;
             if (axiosError.response && axiosError.response.status === 404) {
-                return Promise.reject( new NotFoundError(`Station with id ${stationId} not found`));
+                return Promise.reject(new NotFoundError(`Station with id ${stationId} not found`));
             }
         }
         // return error if something unknown happens
@@ -114,5 +114,20 @@ export async function getSensorsByStation(stationId: string): Promise<Sensor[] |
         return response.data;
     } catch (error: any) {
         return []
+    }
+}
+
+
+export const stationExists = async (stationId: string): Promise<boolean> => {
+    try {
+        await axios.get(`${ENTITIES_ORION_API_URL}/${stationId}`)
+        return true;
+    } catch (e: any) {
+        if (e.response && e.response.status === 404) {
+            return false;
+        }
+        // Return a rejected Promise with the error so that it can be caught and handled appropriately.
+        return Promise.reject(new InternalError('Unknown error occurred'));
+
     }
 }

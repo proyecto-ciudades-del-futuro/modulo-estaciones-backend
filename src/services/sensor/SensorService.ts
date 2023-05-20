@@ -1,7 +1,7 @@
 import axios, {AxiosError} from "axios";
 import {Sensor} from "../../types/Sensor";
 import {ENTITIES_ORION_API_URL} from '../../globals/constants';
-import {getStationDataById, updateStationById} from "../station/stationService";
+import {getStationDataById, stationExists, updateStationById} from "../station/stationService";
 import {Station, StationState} from "../../types/Station";
 import {InternalError, NotFoundError} from "../../types/errors";
 
@@ -77,17 +77,13 @@ export const updateSensor = async (sensorId: string, sensorUpdatePayload: Sensor
             const sensor = await getSensor(sensorId);
 
             if (sensor.station_id.value !== sensorUpdatePayload.station_id.value) {
-                console.log("getting station data by id")
-                const station = await getStationDataById(sensorUpdatePayload.station_id.value);
-                console.log(station)
-
-                let replacedStation = replaceSensor(station, sensorId, sensorUpdatePayload); // assuming replaceSensor function is updated.
-                // You should probably save this updated station back to your data source here.
-                console.log("replacedStation sensors", replacedStation.sensors.value);
-                const stationSensorsPayload = { sensors: {value: replacedStation.sensors.value}};
-                updateStationById(replacedStation.id, stationSensorsPayload ) // call the function that updates the station in the database
+                const doesStationExists: boolean = await stationExists(sensorUpdatePayload.station_id.value);
+                if(doesStationExists){
+                    await deleteSensorFromStation(sensor.station_id.value, sensorId);
+                    await addSensorToStation(sensorUpdatePayload.station_id.value, sensor);
+                }
             }
-            const updatedSensor = await axios.patch(`${ENTITIES_ORION_API_URL}/${sensorId}/attrs`, sensorUpdatePayload);
+            await axios.patch(`${ENTITIES_ORION_API_URL}/${sensorId}/attrs`, sensorUpdatePayload);
         }
     } catch (e: any) {
         if (e instanceof NotFoundError) {
@@ -97,7 +93,6 @@ export const updateSensor = async (sensorId: string, sensorUpdatePayload: Sensor
         }
     }
 }
-
 
 
 export const sensorExists = async (sensorId: string): Promise<boolean> => {
@@ -123,4 +118,41 @@ function replaceSensor(station: Station, oldSensorId: string, newSensor: Sensor)
         console.log(`Sensor with id ${oldSensorId} not found.`);
     }
     return station;
+}
+
+
+export const deleteSensorFromStation = async (stationId: string, sensorId: string): Promise<void> => {
+    try {
+        const station = await getStationDataById(stationId);
+        const sensorIndex = station.sensors.value.findIndex((sensor) => sensor.id === sensorId);
+        if (sensorIndex > -1) {
+            station.sensors.value.splice(sensorIndex, 1);
+            await updateStationById(stationId, {sensors: {value: station.sensors.value}});
+        }
+    } catch (e: any) {
+        if (e.code === 404) {
+            throw new NotFoundError(e.message)
+        } else {
+            throw new InternalError(e.message)
+        }
+    }
+}
+
+export const addSensorToStation = async (stationId: string, sensor: Sensor): Promise<void> => {
+    try {
+        const station = await getStationDataById(stationId);
+        const stationSensors = getSensorsArrayFromStation(station)
+        stationSensors.push(sensor)
+        await updateStationById(stationId, {sensors: {value: stationSensors}})
+    } catch(e: any){
+        if(e.code === 404){
+            throw new NotFoundError(e.message)
+        } else {
+            throw new InternalError(e.message)
+        }
+    }
+}
+
+export const getSensorsArrayFromStation = (station: Station): Sensor[] => {
+    return station.sensors.value;
 }
