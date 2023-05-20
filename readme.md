@@ -177,30 +177,30 @@ As you see, in the previous example, the id and type keys can have a direct valu
 
 ```
 ### Station entity Fields
-- id (String): The unique identifier of the station must follow this pattern > a string that begins with 'station_' followed by a sequence of numbers. The first digit must not be a 0. example: station_1
-- type (String): This is always "Station" for stations. (handled by the server)
-- description (Object): 
-  - type: "String"
-  - value: (String, the description you want to add for that particular station)
-  - metadata: (Object)
-- location (Object):
-  - type "geo:json"
-  - value (Object)
-    - type (Point)
-    - coordinates (Array<number[2]>)
-    - metadata (Object)
-- sensors : (Object)
-  - type: "StructuredValue",
-  - value: (Array<Station>)
-  - metadata: (Object)
-- stationState: (Object)
-    - type: "String"
-    - value: enum <<STATION_STATE>>
-    - metadata: (Object)
-- user: (Object)
-  - type: "Integer",
-  - value: (Integer)
-  - metadata: (Object)
+- **id** (String): The unique identifier of the station must follow this pattern > a string that begins with 'station_' followed by a sequence of numbers. The first digit must not be a 0. example: station_1
+- **type** (String): This is always "Station" for stations. (handled by the server)
+- **description** (Object): 
+  - **type**: "String"
+  - **value**: (String, the description you want to add for that particular station)
+  - **metadata**: (Object)
+- **location** (Object):
+  - **type** "geo:json" (added by the server)
+  - **value** (Object) (added by the server)
+    - **type** (Point) (added by the server)
+    - **coordinates** (Array<number[2]>)
+    - **metadata** (Object) 
+- **sensors** : (Object)
+  - **type**: "StructuredValue",
+  - **value**: (Array<Station>)
+  - **metadata**: (Object)
+- **stationState**: (Object)
+    - **type**: "String"
+    - **value**: enum <<STATION_STATE>>
+    - **metadata**: (Object)
+- **user**: (Object)
+  - **type**: "Integer",
+  - **value**: (Integer)
+  - **metadata**: (Object)
 ***
 
 ## Sensor Entity structure
@@ -228,16 +228,16 @@ As you see, in the previous example, the id and type keys can have a direct valu
 ```
 
 ### Sensor entity Fields
-- id (String): The unique identifier of the sensor must follow this pattern > a string that begins with 'sensor_' followed by a sequence of numbers. The first digit must not be a 0. example: sensor_1
-- type (String): This is always "Sensor" for stations. (handled by the server)
-- description (Object):
-    - type: "String"
-    - value: (String, the description you want to add for that particular sensor, for example "Temperature")
-    - metadata: (Object)
-- station_id: (Object)
-  - type: (String)
-  - value: (station id) there is a bidirectional association between Station and Sensor
-  - metadata: (Object)
+- **id** (String): The unique identifier of the sensor must follow this pattern > a string that begins with 'sensor_' followed by a sequence of numbers. The first digit must not be a 0. example: sensor_1
+- **type** (String): This is always "Sensor" for stations. (handled by the server)
+- **description** (Object):
+    - **type**: "String"
+    - **value**: (String, the description you want to add for that particular sensor, for example "Temperature")
+    - **metadata**: (Object)
+- **station_id**: (Object)
+  - **type**: (String)
+  - **value**: (station id) there is a bidirectional association between Station and Sensor
+  - **metadata**: (Object)
 ***
 
 # Stations / Estaciones
@@ -279,8 +279,8 @@ The request body is a JSON object with the following attributes:
     - `metadata` (object): any additional metadata associated with the description (optional)
     - `value` (string): the description text
 - `location` (object): the geographic location of the station, with the following attributes:
-    - `type` (string): the data type of the location, which should be "geo:json"
-    - `value` (object): a GeoJSON object representing the location
+    - `coordinates` (Array<number[2]):  `[51.5074,
+      -0.1278]`
     - `metadata` (object): any additional metadata associated with the location (optional)
 - `user` (object): the user associated with the station, with the following attributes:
     - `type` (string): the data type of the user, which should be "Integer"
@@ -305,14 +305,7 @@ Content-Type: application/json
         "value": "This is a test station"
     },
     "location": {
-        "type": "geo:json",
-        "value": {
-            "type": "Point",
-            "coordinates": [
-                51.5074,
-                -0.1278
-            ]
-        },
+        "coordinates": [51.5074,-0.1278],
         "metadata": {}
     },
     "user": {

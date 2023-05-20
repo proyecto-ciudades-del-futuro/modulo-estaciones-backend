@@ -8,12 +8,8 @@ const stationCreateSchema = Joi.object({
         .pattern(/^station_([1-9]\d*)$/, 'no-leading-zero policy. Stations should not be like this: station_01 instead, station_1 is the correct')
         .required(),
     location: Joi.object({
-        type: Joi.string().valid('geo:json').required(),
-        value: Joi.object({
-            type: Joi.string().valid('Point').required(),
-            coordinates: Joi.array().items(Joi.number()).length(2).required(),
-        }),
-        metadata: Joi.object().default({}).required(),
+        coordinates: Joi.array().items(Joi.number()).length(2).required(),
+        metadata: Joi.object().default({}).required().optional(),
     }).required(),
     user: Joi.object({
         type: Joi.string().valid('Integer').required(),
@@ -31,14 +27,10 @@ const stationCreateSchema = Joi.object({
 
 const stationUpdateSchema = Joi.object({
     location: Joi.object({
-        type: Joi.string().valid('geo:json'),
-        value: Joi.object({
-            type: Joi.string().valid('Point'),
-            coordinates: Joi.array().items(Joi.number()).length(2).required().messages({
+        coordinates: Joi.array().items(Joi.number()).length(2).required().messages({
                 'any.required': `Coordinates should be provided as an array`
-            }),
-        }).required(),
-        metadata: Joi.object().default({}),
+            }).optional(),
+        metadata: Joi.object().default({}).optional(),
     }).optional(),
     user: Joi.object({
         type: Joi.string().valid('Integer'),

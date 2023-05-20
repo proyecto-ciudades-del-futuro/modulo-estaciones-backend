@@ -20,7 +20,14 @@ export class StationController {
                 id: newId,
                 type: 'Station',
                 description,
-                location,
+                location: {
+                    type: "geo:json",
+                    value: {
+                        type: "Point",
+                        coordinates: location.coordinates
+                    },
+                    metadata: location.metadata ?? {}
+                },
                 user,
                 stationState: {
                     type: "String",
