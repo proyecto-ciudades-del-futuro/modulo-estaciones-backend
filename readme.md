@@ -228,7 +228,7 @@ As you see, in the previous example, the id and type keys can have a direct valu
 ```
 
 ### Sensor entity Fields
-- **id** (String): The unique identifier of the sensor must follow this pattern > a string that begins with 'sensor_' followed by a sequence of numbers. The first digit must not be a 0. example: sensor_1
+- **id** (String): The unique identifier of the sensor follows this pattern > a string that begins with 'sensor_' followed by a sequence of numbers. The first digit must not be a 0. example: sensor_1
 - **type** (String): This is always "Sensor" for stations. (handled by the server) 
 - **description** (Object):
     - **type**: "String" (added by the server)
@@ -272,8 +272,6 @@ structure of the payload since the server will interact with ORION interface.
 
 The request body is a JSON object with the following attributes:
 
-- `id` (string): a unique identifier for the Station entity. The format of the id should be "station_xx" (xx being a
-  number from 1, no leading zero's are allowed)
 - `description` (object): a description of the station, with the following attributes:
     - `metadata` (object): any additional metadata associated with the description (optional)
     - `value` (string): the description text
@@ -296,7 +294,6 @@ Host: example.com
 Content-Type: application/json
 
 {
-    "id": "station_3",
     "description": {
         "metadata": {},
         "value": "This is a test station"
