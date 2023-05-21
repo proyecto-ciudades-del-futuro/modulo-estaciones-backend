@@ -12,10 +12,10 @@ import {handleHttpErrors} from "../../utils/errorHandling";
 
 export class StationController {
     async create(req: Request, res: Response): Promise<void> {
-        const {id, description, location, user} = req.body;
+        const {description, location, user} = req.body;
         // Build payload for POST request to Orion Context Broker API
         try {
-            const newId = await generateNewId(id);
+            const newId = await generateNewId();
             const stationPayload: Station = {
                 id: newId,
                 type: 'Station',
@@ -49,7 +49,7 @@ export class StationController {
                 }
             };
             const stationPayloadJSON = JSON.stringify(stationPayload);
-            console.log(stationPayloadJSON)
+            console.log("STATION CREATED WITH ID -----> " + stationPayload.id)
             // Send POST request to Orion Context Broker API to create new entity
             const response = await axios.post(ENTITIES_ORION_API_URL, stationPayloadJSON, {
                 headers: {

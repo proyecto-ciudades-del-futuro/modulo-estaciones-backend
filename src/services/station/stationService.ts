@@ -4,6 +4,7 @@ import {createStationStateMachineInterpreter} from "../../utils/stationStateMach
 import {Station, StationUpdate} from "../../types/Station";
 import {Sensor} from "../../types/Sensor";
 import {InternalError, NotFoundError} from "../../types/errors";
+import {StationCounter} from "../counters/StationCounter";
 
 
 export type InitialStates = 'IN_APPROVAL' | 'ENABLED' | 'DISABLED';
@@ -18,26 +19,11 @@ export const transitionActions: { [key in 'ENABLED' | 'IN_APPROVAL' | 'DISABLED'
 };
 
 
-export const generateNewId = async (stationId: string): Promise<string> => {
+export const generateNewId = async (): Promise<string> => {
     try {
-        const response = await axios.get(`${ENTITIES_ORION_API_URL}/${stationId}`);
-        // b) If the axios.get() returns an object, it means that the entity with the newId exists.
-        // Reject the creation to the user.
-        return Promise.reject('id already exists');
+        const idcounter = await StationCounter.incrementStationCount();
+        return `station_${idcounter}`;
     } catch (error) {
-        // Check if error is an instance of AxiosError
-        if (axios.isAxiosError(error)) {
-            const axiosError: AxiosError = error;
-
-            // a) If the axios.get() request gets a 404 error, it means the entity doesn't exist.
-            // Return the stationId, because it is valid.
-            if (axiosError.response && axiosError.response.status === 404) {
-                return stationId;
-            }
-        }
-
-        // c) If any other error occurs, catch it and handle it appropriately.
-        // You can throw an error or return an appropriate message.
         return Promise.reject('An unexpected error occurred');
     }
 };

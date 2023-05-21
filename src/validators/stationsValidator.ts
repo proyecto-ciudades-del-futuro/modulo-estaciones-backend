@@ -4,9 +4,6 @@ import {SensorSchema} from "./sensorsValidator";
 
 
 const stationCreateSchema = Joi.object({
-    id: Joi.string()
-        .pattern(/^station_([1-9]\d*)$/, 'no-leading-zero policy. Stations should not be like this: station_01 instead, station_1 is the correct')
-        .required(),
     location: Joi.object({
         coordinates: Joi.array().items(Joi.number()).length(2).required(),
         metadata: Joi.object().default({}).required().optional(),

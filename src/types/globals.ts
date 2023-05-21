@@ -22,4 +22,21 @@ export type SensorArray = {
     metadata?: object;
 };
 
+export type StationCount = {
+    id: "stationCount";
+    type: "Counter";
+    count: {
+        value: number,
+        type: "Integer"
+    }
+}
 
+
+export type SensorCount = {
+    id: "sensorCount";
+    type: "Counter";
+    count: {
+        value: number,
+        type: "Integer"
+    }
+}
