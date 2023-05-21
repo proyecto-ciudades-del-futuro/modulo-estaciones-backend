@@ -12,12 +12,10 @@ const stationCreateSchema = Joi.object({
         metadata: Joi.object().default({}).required().optional(),
     }).required(),
     user: Joi.object({
-        type: Joi.string().valid('Integer').required(),
         value: Joi.number().required(),
         metadata: Joi.object()
     }).required(),
     description: Joi.object({
-        type: Joi.string().required(),
         metadata: Joi.object().default({}).required(),
         value: Joi.string().required()
     }).required(),
@@ -33,24 +31,20 @@ const stationUpdateSchema = Joi.object({
         metadata: Joi.object().default({}).optional(),
     }).optional(),
     user: Joi.object({
-        type: Joi.string().valid('Integer'),
         value: Joi.number().required(),
         metadata: Joi.object()
     }).optional(),
     stationState: Joi.object({
-        type: Joi.string(),
         metadata: Joi.object().default({}),
         value: Joi.string().valid('ENABLED', 'DISABLED', 'IN_APPROVAL').required()
     }).optional(),
     description: Joi.object({
-        type: Joi.string(),
         metadata: Joi.object().default({}),
         value: Joi.string().required().messages({
-            'any.required': `if you want to update {{#label}} is missing, the 'value' property is required`
+            'any.reqired': `if you want to update {{#label}} is missing, the 'value' property is required`
         })
     }).optional(),
     sensors: Joi.object({
-        type: Joi.string().valid("Array").optional(),
         value: Joi.array().items(SensorSchema).required(),
         metadata: Joi.object().default({}).optional()
    }).optional()

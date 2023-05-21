@@ -19,7 +19,11 @@ export class StationController {
             const stationPayload: Station = {
                 id: newId,
                 type: 'Station',
-                description,
+                description: {
+                    type: "String",
+                    value: description.value,
+                    metadata: description.metadata ?? {}
+                },
                 location: {
                     type: "geo:json",
                     value: {
@@ -28,7 +32,11 @@ export class StationController {
                     },
                     metadata: location.metadata ?? {}
                 },
-                user,
+                user: {
+                    type: "Integer",
+                    value: user.value,
+                    metadata: user.metadata ?? {}
+                },
                 stationState: {
                     type: "String",
                     metadata: {},

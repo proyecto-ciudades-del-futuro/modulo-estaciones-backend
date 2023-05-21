@@ -1,21 +1,35 @@
 import axios, {AxiosError} from "axios";
-import {Sensor} from "../../types/Sensor";
+import {NewSensor, Sensor} from "../../types/Sensor";
 import {ENTITIES_ORION_API_URL} from '../../globals/constants';
 import {getStationDataById, stationExists, updateStationById} from "../station/stationService";
 import {Station, StationState} from "../../types/Station";
 import {InternalError, NotFoundError} from "../../types/errors";
 
 
-export const createSensor = async (sensor: Sensor): Promise<string> => {
+export const createSensor = async (sensor: NewSensor): Promise<string> => {
     try {
         const sensorExistsResult = await sensorExists(sensor.id);
         if (!sensorExistsResult) {
-            const stationData: Station | string = await getStationDataById(sensor.station_id.value);
+            const stationData: Station | string = await getStationDataById(sensor.station_id);
             if (typeof stationData === "string") {
-                return Promise.reject({code: 404, message: `Station with id ${sensor.station_id.value} not found`});
+                return Promise.reject({code: 404, message: `Station with id ${sensor.station_id} not found`});
             }
 
-            const sensorPayloadJSON = JSON.stringify(sensor);
+            const sensorPayLoad = {
+                id: sensor.id,
+                station_id : {
+                    type: "String",
+                    value: sensor.station_id
+                },
+                type: "Sensor",
+                description: {
+                    type: "String",
+                    value: sensor.description?.value,
+                    metadata: sensor.description?.metadata ?? {}
+                }
+            }
+
+            const sensorPayloadJSON = JSON.stringify(sensorPayLoad);
             const sensorResponse = await axios.post(`${ENTITIES_ORION_API_URL}`, sensorPayloadJSON, {
                 headers: {
                     'Content-Type': 'application/json'
@@ -29,7 +43,7 @@ export const createSensor = async (sensor: Sensor): Promise<string> => {
             const updatedSensors = [...existingSensors, sensor];
 
             await axios.patch(
-                `${ENTITIES_ORION_API_URL}/${sensor.station_id.value}/attrs`,
+                `${ENTITIES_ORION_API_URL}/${sensor.station_id}/attrs`,
                 {sensors: {value: updatedSensors}}
             );
             return sensorResponse.statusText

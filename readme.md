@@ -180,7 +180,7 @@ As you see, in the previous example, the id and type keys can have a direct valu
 - **id** (String): The unique identifier of the station must follow this pattern > a string that begins with 'station_' followed by a sequence of numbers. The first digit must not be a 0. example: station_1
 - **type** (String): This is always "Station" for stations. (handled by the server)
 - **description** (Object): 
-  - **type**: "String"
+  - **type**: "String" (added by the server)
   - **value**: (String, the description you want to add for that particular station)
   - **metadata**: (Object)
 - **location** (Object):
@@ -190,15 +190,15 @@ As you see, in the previous example, the id and type keys can have a direct valu
     - **coordinates** (Array<number[2]>)
     - **metadata** (Object) 
 - **sensors** : (Object)
-  - **type**: "StructuredValue",
+  - **type**: "StructuredValue" (added by the server)
   - **value**: (Array<Station>)
   - **metadata**: (Object)
 - **stationState**: (Object)
-    - **type**: "String"
+    - **type**: "String" (added by the server)
     - **value**: enum <<STATION_STATE>>
     - **metadata**: (Object)
 - **user**: (Object)
-  - **type**: "Integer",
+  - **type**: "Integer" (added by the server)
   - **value**: (Integer)
   - **metadata**: (Object)
 ***
@@ -229,13 +229,13 @@ As you see, in the previous example, the id and type keys can have a direct valu
 
 ### Sensor entity Fields
 - **id** (String): The unique identifier of the sensor must follow this pattern > a string that begins with 'sensor_' followed by a sequence of numbers. The first digit must not be a 0. example: sensor_1
-- **type** (String): This is always "Sensor" for stations. (handled by the server)
+- **type** (String): This is always "Sensor" for stations. (handled by the server) 
 - **description** (Object):
-    - **type**: "String"
+    - **type**: "String" (added by the server)
     - **value**: (String, the description you want to add for that particular sensor, for example "Temperature")
     - **metadata**: (Object)
 - **station_id**: (Object)
-  - **type**: (String)
+  - **type**: (String) (added by the server)
   - **value**: (station id) there is a bidirectional association between Station and Sensor
   - **metadata**: (Object)
 ***
@@ -275,7 +275,6 @@ The request body is a JSON object with the following attributes:
 - `id` (string): a unique identifier for the Station entity. The format of the id should be "station_xx" (xx being a
   number from 1, no leading zero's are allowed)
 - `description` (object): a description of the station, with the following attributes:
-    - `type` (string): the data type of the description, which should be "String"
     - `metadata` (object): any additional metadata associated with the description (optional)
     - `value` (string): the description text
 - `location` (object): the geographic location of the station, with the following attributes:
@@ -283,7 +282,6 @@ The request body is a JSON object with the following attributes:
       -0.1278]`
     - `metadata` (object): any additional metadata associated with the location (optional)
 - `user` (object): the user associated with the station, with the following attributes:
-    - `type` (string): the data type of the user, which should be "Integer"
     - `value` (integer): the user identifier
     - `metadata` (object): any additional metadata associated with the user (optional)
 
@@ -300,7 +298,6 @@ Content-Type: application/json
 {
     "id": "station_3",
     "description": {
-        "type": "String",
         "metadata": {},
         "value": "This is a test station"
     },
@@ -309,7 +306,6 @@ Content-Type: application/json
         "metadata": {}
     },
     "user": {
-        "type": "Integer",
         "value": 1,
         "metadata": {}
     }
@@ -337,7 +333,6 @@ Content-Type: application/json
       "value": [{
           "station_id": "station_1",
           "id": "sensor_1",
-          "type": "Temperature"
       }]
     }
 }

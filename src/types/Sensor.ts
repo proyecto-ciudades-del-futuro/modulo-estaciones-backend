@@ -1,3 +1,13 @@
+export interface NewSensor {
+    id: string;
+    station_id: string;
+    description: {
+        value: string;
+        metadata: object;
+    }
+}
+
+
 
 export interface Sensor {
     id: string;
