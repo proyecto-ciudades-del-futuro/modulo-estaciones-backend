@@ -303,11 +303,9 @@ Content-Type: application/json
     },
     "location": {
         "coordinates": [51.5074,-0.1278],
-        "metadata": {}
     },
     "user": {
         "value": 1,
-        "metadata": {}
     }
 }
 ```

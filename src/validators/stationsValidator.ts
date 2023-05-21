@@ -16,7 +16,7 @@ const stationCreateSchema = Joi.object({
         metadata: Joi.object()
     }).required(),
     description: Joi.object({
-        metadata: Joi.object().default({}).required(),
+        metadata: Joi.object().default({}),
         value: Joi.string().required()
     }).required(),
 })
