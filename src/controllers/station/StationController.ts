@@ -1,7 +1,7 @@
 import {Request, Response} from 'express';
 import axios from 'axios';
 import {Station} from '../../types/Station';
-import {ENTITIES_ORION_API_URL} from "../../globals/constants";
+import {DATES_OPTIONS_QUERY_PARAMS, ENTITIES_ORION_API_URL} from "../../globals/constants";
 import {
     generateNewId,
     getAvailableStates, getSensorsByStation,
@@ -80,7 +80,7 @@ export class StationController {
                 // Send GET request to Orion Context Broker API to retrieve entity by ID
                 const stationId = req.params.id;
                 const response = await axios.get(
-                    `${ENTITIES_ORION_API_URL}/${stationId}`
+                    `${ENTITIES_ORION_API_URL}/${stationId}/?${DATES_OPTIONS_QUERY_PARAMS}`
                 );
                 // Send response with entity data
                 res.json(response.data);
@@ -90,7 +90,7 @@ export class StationController {
             } else {
                 // Send GET request to Orion Context Broker API to retrieve all entities of type "Station"
                 const response = await axios.get(
-                    `${ENTITIES_ORION_API_URL}?type=Station`
+                    `${ENTITIES_ORION_API_URL}?type=Station&${DATES_OPTIONS_QUERY_PARAMS}`
                 );
                 // Send response with list of entities
                 res.json(response.data);

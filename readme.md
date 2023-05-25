@@ -247,6 +247,61 @@ As you see, in the previous example, the id and type keys can have a direct valu
 - <u>HTTP Method:</u> `GET`
 - <u>Endpoint URL:</u> `/stations/`
 
+### Example Response:
+
+```
+{
+    "id": "station_1",
+    "type": "Station",
+    "description": {
+        "type": "String",
+        "value": "This is a test station",
+        "metadata": {}
+    },
+    "location": {
+        "type": "geo:json",
+        "value": {
+            "type": "Point",
+            "coordinates": [
+                51.5074,
+                -0.1278
+            ]
+        },
+        "metadata": {
+            "instructions": {
+                "type": "String",
+                "value": "behind the local police department"
+            }
+        }
+    },
+    "sensors": {
+        "type": "Array",
+        "value": [],
+        "metadata": {}
+    },
+    "stationState": {
+        "type": "String",
+        "value": "IN_APPROVAL",
+        "metadata": {}
+    },
+    "user": {
+        "type": "Integer",
+        "value": 1,
+        "metadata": {}
+    },
+    "dateCreated": {
+        "type": "DateTime",
+        "value": "2023-05-25T20:33:02.156Z",
+        "metadata": {}
+    },
+    "dateModified": {
+        "type": "DateTime",
+        "value": "2023-05-25T20:33:02.156Z",
+        "metadata": {}
+    }
+}
+```
+
 ## Query Station by Id
 
 - <u>HTTP Method</u>: `GET`

@@ -1,6 +1,6 @@
 import axios, {AxiosError} from "axios";
 import {NewSensor, Sensor} from "../../types/Sensor";
-import {ENTITIES_ORION_API_URL} from '../../globals/constants';
+import {DATES_OPTIONS_QUERY_PARAMS, ENTITIES_ORION_API_URL} from '../../globals/constants';
 import {getStationDataById, stationExists, updateStationById} from "../station/stationService";
 import {Station, StationState} from "../../types/Station";
 import {InternalError, NotFoundError} from "../../types/errors";
@@ -69,7 +69,7 @@ export const createSensor = async (sensor: NewSensor): Promise<string> => {
 export const getSensor = async (sensorId: string): Promise<Sensor> => {
     // Retrieve the sensor entity from Orion Context Broker
     try {
-        const response = await axios.get(`${ENTITIES_ORION_API_URL}/${sensorId}`);
+        const response = await axios.get(`${ENTITIES_ORION_API_URL}/${sensorId}?${DATES_OPTIONS_QUERY_PARAMS}`);
         return response.data;
     } catch (e) {
         if (axios.isAxiosError(e) && e.response && e.response.status === 404) {
@@ -81,7 +81,7 @@ export const getSensor = async (sensorId: string): Promise<Sensor> => {
 }
 
 export const getEverySensor = async (): Promise<Sensor[]> => {
-    const sensors = await axios.get(`${ENTITIES_ORION_API_URL}?type=Sensor`);
+    const sensors = await axios.get(`${ENTITIES_ORION_API_URL}?type=Sensor&${DATES_OPTIONS_QUERY_PARAMS}`);
     return sensors.data;
 }
 

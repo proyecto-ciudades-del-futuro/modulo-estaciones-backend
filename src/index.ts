@@ -3,9 +3,15 @@ import stationRouter from "./routes/stationsRoutes";
 import bodyParser from "body-parser";
 import sensorsRouter from "./routes/sensorRoutes";
 import {StationCounter} from "./services/counters/StationCounter";
+import cors from 'cors';
 
 const app = express();
 const port = process.env.PORT || 3000;
+
+app.use(cors({
+    origin: 'http://localhost:3001'
+}));
+
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));

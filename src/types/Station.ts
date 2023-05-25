@@ -20,7 +20,9 @@ export interface Station {
     };
     stationState: StationState;
     description: Description;
-    sensors: SensorArray
+    sensors: SensorArray;
+    dateCreated?: object
+    dateModified?: object;
 }
 
 export interface StationUpdate {
