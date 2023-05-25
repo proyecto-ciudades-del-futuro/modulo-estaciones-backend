@@ -14,7 +14,7 @@ export interface Station {
     type: string;
     location: GeoJson;
     user: {
-        type: 'Integer';
+        type: 'Relationship';
         value: number;
         metadata: object;
     };
@@ -28,7 +28,7 @@ export interface Station {
 export interface StationUpdate {
     location?: GeoJson;
     user?: {
-        type: 'Integer';
+        type: 'Relationship';
         value: number;
         metadata?: object;
     };

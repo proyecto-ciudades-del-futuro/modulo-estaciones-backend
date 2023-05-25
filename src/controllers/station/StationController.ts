@@ -34,7 +34,7 @@ export class StationController {
                     metadata: location.metadata ?? {}
                 },
                 user: {
-                    type: "Integer",
+                    type: "Relationship",
                     value: user.value,
                     metadata: user.metadata ?? {}
                 },
