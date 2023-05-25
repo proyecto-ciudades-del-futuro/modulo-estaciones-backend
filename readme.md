@@ -228,7 +228,7 @@ As you see, in the previous example, the id and type keys can have a direct valu
 ```
 
 ### Sensor entity Fields
-- **id** (String): The unique identifier of the sensor follows this pattern > a string that begins with 'sensor_' followed by a sequence of numbers. The first digit must not be a 0. example: sensor_1
+- **id** (String): (creation handled by the server) example: sensor_1
 - **type** (String): This is always "Sensor" for stations. (handled by the server) 
 - **description** (Object):
     - **type**: "String" (added by the server)
