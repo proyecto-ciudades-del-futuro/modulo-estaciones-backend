@@ -3,20 +3,20 @@ import axios from 'axios';
 import {Station} from '../../types/Station';
 import {DATES_OPTIONS_QUERY_PARAMS, ENTITIES_ORION_API_URL} from "../../globals/constants";
 import {
-    generateNewId,
     getAvailableStates, getSensorsByStation,
     getStationsIdsList, tryTransition,
 } from "../../services/station/stationService";
 import {STATION_STATE} from "../../types/enums";
 import {handleHttpErrors} from "../../utils/errorHandling";
+import {generateNewId} from "../../services/globalServices";
+import {StationCounterSingleton} from "../../services/counters/Counter";
 
 export class StationController {
     async create(req: Request, res: Response): Promise<void> {
         const {description, location, user} = req.body;
-        console.log(req.body)
         // Build payload for POST request to Orion Context Broker API
         try {
-            const newId = await generateNewId();
+            const newId = await generateNewId(StationCounterSingleton.getInstance(), 'station');
             const stationPayload: Station = {
                 id: newId,
                 type: 'Station',
@@ -50,7 +50,6 @@ export class StationController {
                 }
             };
             const stationPayloadJSON = JSON.stringify(stationPayload);
-            console.log("STATION CREATED WITH ID -----> " + stationPayload.id)
             // Send POST request to Orion Context Broker API to create new entity
             const response = await axios.post(ENTITIES_ORION_API_URL, stationPayloadJSON, {
                 headers: {

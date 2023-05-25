@@ -4,7 +4,6 @@ import {createStationStateMachineInterpreter} from "../../utils/stationStateMach
 import {Station, StationUpdate} from "../../types/Station";
 import {Sensor} from "../../types/Sensor";
 import {InternalError, NotFoundError} from "../../types/errors";
-import {StationCounter} from "../counters/StationCounter";
 
 
 export type InitialStates = 'IN_APPROVAL' | 'ENABLED' | 'DISABLED';
@@ -19,14 +18,6 @@ export const transitionActions: { [key in 'ENABLED' | 'IN_APPROVAL' | 'DISABLED'
 };
 
 
-export const generateNewId = async (): Promise<string> => {
-    try {
-        const idcounter = await StationCounter.incrementStationCount();
-        return `station_${idcounter}`;
-    } catch (error) {
-        return Promise.reject('An unexpected error occurred');
-    }
-};
 
 export const getStationsIdsList = async (): Promise<any> => {
     try {

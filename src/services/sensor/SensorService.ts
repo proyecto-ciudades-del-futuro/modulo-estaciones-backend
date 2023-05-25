@@ -4,52 +4,49 @@ import {DATES_OPTIONS_QUERY_PARAMS, ENTITIES_ORION_API_URL} from '../../globals/
 import {getStationDataById, stationExists, updateStationById} from "../station/stationService";
 import {Station, StationState} from "../../types/Station";
 import {InternalError, NotFoundError} from "../../types/errors";
+import {generateNewId} from "../globalServices";
+import {SensorCounterSingleton} from "../counters/Counter";
 
 
 export const createSensor = async (sensor: NewSensor): Promise<string> => {
     try {
-        const sensorExistsResult = await sensorExists(sensor.id);
-        if (!sensorExistsResult) {
-            const stationData: Station | string = await getStationDataById(sensor.station_id);
-            if (typeof stationData === "string") {
-                return Promise.reject({code: 404, message: `Station with id ${sensor.station_id} not found`});
-            }
-
-            const sensorPayLoad = {
-                id: sensor.id,
-                station_id : {
-                    type: "String",
-                    value: sensor.station_id
-                },
-                type: "Sensor",
-                description: {
-                    type: "String",
-                    value: sensor.description?.value,
-                    metadata: sensor.description?.metadata ?? {}
-                }
-            }
-
-            const sensorPayloadJSON = JSON.stringify(sensorPayLoad);
-            const sensorResponse = await axios.post(`${ENTITIES_ORION_API_URL}`, sensorPayloadJSON, {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-
-            // Retrieve existing sensors
-            const existingSensors = stationData.sensors?.value ?? [];
-
-            // Add new sensor to the list of existing sensors using spread operator
-            const updatedSensors = [...existingSensors, sensor];
-
-            await axios.patch(
-                `${ENTITIES_ORION_API_URL}/${sensor.station_id}/attrs`,
-                {sensors: {value: updatedSensors}}
-            );
-            return sensorResponse.statusText
-        } else {
-            return Promise.reject({code: 409, message: `Sensor with id ${sensor.id} already exists`})
+        const stationData: Station | string = await getStationDataById(sensor.station_id);
+        if (typeof stationData === "string") {
+            return Promise.reject({code: 404, message: `Station with id ${sensor.station_id} not found`});
         }
+        const newId = await generateNewId(SensorCounterSingleton.getInstance(), 'sensor')
+        const sensorPayLoad = {
+            id: newId,
+            station_id: {
+                type: "String",
+                value: sensor.station_id
+            },
+            type: "Sensor",
+            description: {
+                type: "String",
+                value: sensor.description?.value,
+                metadata: sensor.description?.metadata ?? {}
+            }
+        }
+
+        const sensorPayloadJSON = JSON.stringify(sensorPayLoad);
+        const sensorResponse = await axios.post(`${ENTITIES_ORION_API_URL}`, sensorPayloadJSON, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        // Retrieve existing sensors
+        const existingSensors = stationData.sensors?.value ?? [];
+
+        // Add new sensor to the list of existing sensors using spread operator
+        const updatedSensors = [...existingSensors, sensor];
+
+        await axios.patch(
+            `${ENTITIES_ORION_API_URL}/${sensor.station_id}/attrs`,
+            {sensors: {value: updatedSensors}}
+        );
+        return sensorResponse.statusText
     } catch (e: any) {
         console.log(e)
         if (e.response && e.response.status === 404) {
@@ -92,7 +89,7 @@ export const updateSensor = async (sensorId: string, sensorUpdatePayload: Sensor
 
             if (sensor.station_id.value !== sensorUpdatePayload.station_id.value) {
                 const doesStationExists: boolean = await stationExists(sensorUpdatePayload.station_id.value);
-                if(doesStationExists){
+                if (doesStationExists) {
                     await deleteSensorFromStation(sensor.station_id.value, sensorId);
                     await addSensorToStation(sensorUpdatePayload.station_id.value, sensor);
                 }
@@ -158,8 +155,8 @@ export const addSensorToStation = async (stationId: string, sensor: Sensor): Pro
         const stationSensors = getSensorsArrayFromStation(station)
         stationSensors.push(sensor)
         await updateStationById(stationId, {sensors: {value: stationSensors}})
-    } catch(e: any){
-        if(e.code === 404){
+    } catch (e: any) {
+        if (e.code === 404) {
             throw new NotFoundError(e.message)
         } else {
             throw new InternalError(e.message)
@@ -170,3 +167,5 @@ export const addSensorToStation = async (stationId: string, sensor: Sensor): Pro
 export const getSensorsArrayFromStation = (station: Station): Sensor[] => {
     return station.sensors.value;
 }
+
+
