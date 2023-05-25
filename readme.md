@@ -339,7 +339,20 @@ Content-Type: application/json
 <!-- ## License -->
 
 
-<!-- ## New Section -->
+ ## Counter initialization
+
+### Stations Counter
+```
+curl -X POST 'http://localhost:1026/v2/entities' -H 'Content-Type: application/json' -d '{
+  "id": "stationCount",
+  "type": "Counter",
+  "count": {
+    "value": 0,
+    "type": "Integer"
+  }
+}'
+```
+
 
 
 

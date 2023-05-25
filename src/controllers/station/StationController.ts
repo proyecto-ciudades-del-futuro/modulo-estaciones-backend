@@ -13,6 +13,7 @@ import {handleHttpErrors} from "../../utils/errorHandling";
 export class StationController {
     async create(req: Request, res: Response): Promise<void> {
         const {description, location, user} = req.body;
+        console.log(req.body)
         // Build payload for POST request to Orion Context Broker API
         try {
             const newId = await generateNewId();
@@ -56,7 +57,7 @@ export class StationController {
                     'Content-Type': 'application/json',
                 },
             });
-            res.status(201).json({id: response.data.id});
+            res.status(201).json({id: stationPayload.id});
         } catch (error: any) {
             if (error === 'id already exists') {
                 res.status(409).json({error});
