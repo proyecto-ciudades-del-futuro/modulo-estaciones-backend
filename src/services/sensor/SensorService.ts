@@ -48,7 +48,6 @@ export const createSensor = async (sensor: NewSensor): Promise<string> => {
         );
         return sensorResponse.statusText
     } catch (e: any) {
-        console.log(e)
         if (e.response && e.response.status === 404) {
             return Promise.reject({code: 404, message: e.response.data})
         }

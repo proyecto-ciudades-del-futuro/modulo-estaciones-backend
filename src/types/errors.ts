@@ -19,7 +19,17 @@ export class InternalError extends Error {
         super(message); // Pass remaining arguments (including vendor specific ones) to parent constructor
         this.name = "Internal Server Error"; // Custom name
         this.code = 500;
-        Object.setPrototypeOf(this, NotFoundError.prototype);
+        Object.setPrototypeOf(this, InternalError.prototype);
+    }
+}
+
+export class AlreadyExistsError extends Error {
+    code: number;
+    constructor(message: string){
+        super(message);
+        this.name = "Entity Already Exists";
+        this.code = 409;
+        Object.setPrototypeOf(this, AlreadyExistsError.prototype);
     }
 }
 

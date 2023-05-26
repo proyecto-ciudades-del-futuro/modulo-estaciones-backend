@@ -20,7 +20,7 @@ const userCreateSchema = Joi.object({
         metadata: Joi.object().default({}).optional(),
     }).required(),
     email: Joi.object({
-        value: Joi.string().required(),
+        value: Joi.string().email().required(),
         metadata: Joi.object().default({}).optional(),
     }).required(),
 })
@@ -45,7 +45,7 @@ const userUpdateSchema = Joi.object({
         metadata: Joi.object().default({}).optional(),
     }).optional(),
     email: Joi.object({
-        value: Joi.string().required(),
+        value: Joi.string().email().required(),
         metadata: Joi.object().default({}).optional(),
     }).optional(),
 });

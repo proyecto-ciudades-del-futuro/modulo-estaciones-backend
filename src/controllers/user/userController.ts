@@ -1,13 +1,14 @@
 import {Request, Response} from "express";
-import {createSensor, getEverySensor, getSensor, updateSensor} from "../../services/sensor/SensorService";
 import {handleHttpErrors} from "../../utils/errorHandling";
+import {createUser} from "../../services/user/userService";
 
 export class UserController {
 
     async create(req: Request, res: Response): Promise<void> {
         try {
-
-            res.status(201).json(createdSensor);
+            const user = await createUser(req.body);
+            console.log(user);
+            res.status(201).json(user);
         } catch (error: any) {
             if (error?.code === 409) {
                 res.status(409).json({error: error.message});
@@ -19,7 +20,7 @@ export class UserController {
             }
         }
     }
-
+    /*
     async read(req: Request, res: Response): Promise<void> {
         try {
             if (req.params.id) {

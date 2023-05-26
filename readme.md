@@ -2,6 +2,7 @@
 
 - [Introduction](#introduction)
 - [Installation](#installation)
+- [Counters initialization](#counters-initialization)
 - [Usage](#usage)
 - [API Documentation](#api-documentation)
 - [Contributing](#contributing)
@@ -67,6 +68,37 @@ Now you will have both the Orion Context Broker and the MongoDB ready to start w
 @@ Important guidelines to interact with ORION CONTEXT BROKER API:
 
 https://fiware-orion.readthedocs.io/en/2.4.0/user/walkthrough_apiv2/index.html
+
+
+
+## Counters initialization
+
+Due to the abscence of an "order-by" capabilty from Orion Context Broker, the Id's generation is handled via a counter that's initialized for the Station and Sensor entities. To be able to run the server, you have to initialize the Counters, best approach is via a `curl` command like the following:
+
+### Stations Counter
+```
+curl -X POST 'http://localhost:1026/v2/entities' -H 'Content-Type: application/json' -d '{
+  "id": "stationCount",
+  "type": "Counter",
+  "count": {
+    "value": 0,
+    "type": "Integer"
+  }
+}'
+```
+
+### Sensors Counter
+
+```
+curl -X POST 'http://localhost:1026/v2/entities' -H 'Content-Type: application/json' -d '{
+  "id": "sensorCount",
+  "type": "Counter",
+  "count": {
+    "value": 0,
+    "type": "Integer"
+  }
+}'
+```
 
 ### TROUBLESHOOTING
 
@@ -177,7 +209,7 @@ As you see, in the previous example, the id and type keys can have a direct valu
 
 ```
 ### Station entity Fields
-- **id** (String): The unique identifier of the station must follow this pattern > a string that begins with 'station_' followed by a sequence of numbers. The first digit must not be a 0. example: station_1
+- **id** (String): The unique identifier of the station follows this pattern > a string that begins with 'station_' followed by a sequence of numbers. The first digit must not be a 0. example: station_1 (handled by the server)
 - **type** (String): This is always "Station" for stations. (handled by the server)
 - **description** (Object): 
   - **type**: "String" (added by the server)
@@ -394,32 +426,6 @@ Content-Type: application/json
 <!-- ## License -->
 
 
- ## Counter initialization
-
-### Stations Counter
-```
-curl -X POST 'http://localhost:1026/v2/entities' -H 'Content-Type: application/json' -d '{
-  "id": "stationCount",
-  "type": "Counter",
-  "count": {
-    "value": 0,
-    "type": "Integer"
-  }
-}'
-```
-
-### Sensors Counter
-
-```
-curl -X POST 'http://localhost:1026/v2/entities' -H 'Content-Type: application/json' -d '{
-  "id": "sensorCount",
-  "type": "Counter",
-  "count": {
-    "value": 0,
-    "type": "Integer"
-  }
-}'
-```
 
 
 

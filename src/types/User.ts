@@ -16,11 +16,6 @@ export interface User {
         value: string;
         metadata?: object;
     },
-    username: {
-        type: 'Text';
-        value: string;
-        metadata?: object;
-    },
     email: {
         type: 'Text';
         value: string;
