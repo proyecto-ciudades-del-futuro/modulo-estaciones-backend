@@ -430,3 +430,173 @@ Content-Type: application/json
 
 
 
+
+
+
+***
+
+# Sensors / Sensores
+
+## Query Every Sensor
+
+- <u>HTTP Method:</u> `GET`
+- <u>Endpoint URL:</u> `/sensors/`
+
+### Example Response: will return a sensor's collection
+
+```
+[
+    {
+        "id": "sensor_1",
+        "type": "Sensor",
+        "description": {
+            "type": "String",
+            "value": "Temperature",
+            "metadata": {}
+        },
+        "station_id": {
+            "type": "String",
+            "value": "station_1",
+            "metadata": {}
+        },
+        "dateCreated": {
+            "type": "DateTime",
+            "value": "2023-05-25T21:37:17.209Z",
+            "metadata": {}
+        },
+        "dateModified": {
+            "type": "DateTime",
+            "value": "2023-05-25T21:37:17.209Z",
+            "metadata": {}
+        }
+    },
+    {
+        "id": "sensor_2",
+        "type": "Sensor",
+        "description": {
+            "type": "String",
+            "value": "Temperature",
+            "metadata": {}
+        },
+        "station_id": {
+            "type": "String",
+            "value": "station_1",
+            "metadata": {}
+        },
+        "dateCreated": {
+            "type": "DateTime",
+            "value": "2023-05-25T23:11:44.006Z",
+            "metadata": {}
+        },
+        "dateModified": {
+            "type": "DateTime",
+            "value": "2023-05-25T23:11:44.006Z",
+            "metadata": {}
+        }
+    }
+]
+```
+
+## Query Sensor by Id
+
+- <u>HTTP Method</u>: `GET`
+- <u>Endpoint URL</u>: `/sensors/:id`
+### Response: will return a given station object
+
+
+## Create Sensor
+
+- <u>HTTP Method</u>: `POST`
+- <u>Endpoint URL</u>: `/sensors/`
+- <u>Headers</u>: Content-Type</u>: `application/json`
+
+##### Creating a Station Entity: POST Request
+
+To create a Station entity, send a POST request to the designated API endpoint you should comply with the following data
+structure of the payload since the server will interact with ORION interface.
+
+### Request Body
+
+The request body is a JSON object with the following attributes:
+
+- `station_id` (string): a reference to the station that the sensor will be bound to.
+- `description` (object): the geographic location of the station, with the following attributes:
+  - `value` (String):  `example: Temperature Sensor`
+  - `metadata` (object): any additional metadata associated with the sensor (optional) | an object with key/value pairs that contains an object per value. for example: 
+  ```
+   "metadata": {
+            "unit": {
+                "value": "celsius"
+            },
+            "averageTemperature": {
+                "value": 30
+            },
+            "minTemperature": {
+                "value": 15
+            }
+        }
+  ```
+
+
+### Example Request:
+
+```
+POST /sensors HTTP/1.1
+Host: example.com
+Content-Type: application/json
+
+{
+    "station_id": "station_1",
+    "description": {
+        "value": "Temperature sensor",
+        "metadata": {
+            "unit": {
+                "value": "celsius"
+            },
+            "averageTemperature": {
+                "value": 30
+            },
+            "minTemperature": {
+                "value": 15
+            }
+        }
+    }
+}
+```
+
+## Update Station
+
+- <u>HTTP Method</u>: `PATCH`
+- <u>Endpoint URL</u>: `/stations/:id`
+- <u>Headers</u>: Content-Type</u>: `application/json`
+
+To update a Station entity, the verb to be used is `PATCH`, any attributes excepting the station_id and STATION_STATE
+can be modified
+
+### EXAMPLE REQUEST:
+
+```
+PATCH /stations/station_20 HTTP/1.1
+Host: example.com
+Content-Type: application/json
+
+{
+    "sensors": {
+      "value": [{
+          "station_id": "station_1",
+          "id": "sensor_1",
+      }]
+    }
+}
+```
+
+<!-- ## Contributing -->
+
+
+<!-- ## License -->
+
+
+
+
+
+
