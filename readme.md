@@ -567,16 +567,15 @@ Content-Type: application/json
 ## Update Station
 
 - <u>HTTP Method</u>: `PATCH`
-- <u>Endpoint URL</u>: `/stations/:id`
+- <u>Endpoint URL</u>: `/sensor/:id`
 - <u>Headers</u>: Content-Type</u>: `application/json`
 
-To update a Station entity, the verb to be used is `PATCH`, any attributes excepting the station_id and STATION_STATE
-can be modified
+To update a Sensor entity, the verb to be used is `PATCH`, any attributes excepting the sensor_id can be modified
 
 ### EXAMPLE REQUEST:
 
 ```
-PATCH /stations/station_20 HTTP/1.1
+PATCH /sensors/sensor_1 HTTP/1.1
 Host: example.com
 Content-Type: application/json
 

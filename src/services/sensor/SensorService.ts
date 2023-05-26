@@ -81,16 +81,17 @@ export const getEverySensor = async (): Promise<Sensor[]> => {
     return sensors.data;
 }
 
-export const updateSensor = async (sensorId: string, sensorUpdatePayload: Sensor): Promise<void> => {
+export const updateSensor = async (sensorId: string, sensorUpdatePayload: NewSensor): Promise<void> => {
     try {
-        if (!(sensorUpdatePayload?.station_id.value === "undefined")) {
+        console.log(sensorUpdatePayload.station_id)
+        if (!(typeof sensorUpdatePayload?.station_id === "undefined")) {
             const sensor = await getSensor(sensorId);
-
-            if (sensor.station_id.value !== sensorUpdatePayload.station_id.value) {
-                const doesStationExists: boolean = await stationExists(sensorUpdatePayload.station_id.value);
+            console.log(sensor);
+            if (sensor.station_id.value !== sensorUpdatePayload.station_id) {
+                const doesStationExists: boolean = await stationExists(sensorUpdatePayload.station_id);
                 if (doesStationExists) {
                     await deleteSensorFromStation(sensor.station_id.value, sensorId);
-                    await addSensorToStation(sensorUpdatePayload.station_id.value, sensor);
+                    await addSensorToStation(sensorUpdatePayload.station_id, sensor);
                 }
             }
             await axios.patch(`${ENTITIES_ORION_API_URL}/${sensorId}/attrs`, sensorUpdatePayload);
