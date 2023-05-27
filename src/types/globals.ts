@@ -4,7 +4,7 @@ export type GeoJson = {
     type: 'geo:json';
     value: {
         type: 'Point';
-        coordinates: [number, number];
+        coordinates: number[] | string[];
     };
     metadata?: object;
 };

@@ -10,12 +10,15 @@ import {STATION_STATE} from "../../types/enums";
 import {handleHttpErrors} from "../../utils/errorHandling";
 import {generateNewId} from "../../services/globalServices";
 import {StationCounterSingleton} from "../../services/counters/Counter";
+import {parseToIntArray} from "../../utils";
 
 export class StationController {
     async create(req: Request, res: Response): Promise<void> {
         const {description, location, user} = req.body;
         // Build payload for POST request to Orion Context Broker API
         try {
+
+            const coords = parseToIntArray(location.coordinates);
             const newId = await generateNewId(StationCounterSingleton.getInstance(), 'station');
             const stationPayload: Station = {
                 id: newId,
@@ -29,7 +32,7 @@ export class StationController {
                     type: "geo:json",
                     value: {
                         type: "Point",
-                        coordinates: location.coordinates
+                        coordinates: coords,
                     },
                     metadata: location.metadata ?? {}
                 },
@@ -50,6 +53,7 @@ export class StationController {
                 }
             };
             const stationPayloadJSON = JSON.stringify(stationPayload);
+            console.log(stationPayloadJSON)
             // Send POST request to Orion Context Broker API to create new entity
             const response = await axios.post(ENTITIES_ORION_API_URL, stationPayloadJSON, {
                 headers: {

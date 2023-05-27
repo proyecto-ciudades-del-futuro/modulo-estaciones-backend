@@ -232,7 +232,8 @@ As you see, in the previous example, the id and type keys can have a direct valu
   - **type** "geo:json" (added by the server)
   - **value** (Object) (added by the server)
     - **type** (Point) (added by the server)
-    - **coordinates** (Array<number[2]>)
+    - **coordinates** (Array<number[2]>) (The first element is the longitude, which should be a number between -180 and 180.
+      The second element is the latitude, which should be a number between -90 and 90.)
     - **metadata** (Object) 
 - **sensors** : (Object)
   - **type**: "StructuredValue" (added by the server)

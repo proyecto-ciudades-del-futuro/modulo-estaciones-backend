@@ -35,7 +35,7 @@ export const createUser = async (user: NewUser): Promise<string> => {
                     type: 'Text',
                     value: user.email,
                     metadata: {}
-                }
+                },
             };
 
             const userPayloadJSON = JSON.stringify(userPayload);
