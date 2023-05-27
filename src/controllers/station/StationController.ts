@@ -3,6 +3,7 @@ import axios from 'axios';
 import {Station} from '../../types/Station';
 import {DATES_OPTIONS_QUERY_PARAMS, ENTITIES_ORION_API_URL} from "../../globals/constants";
 import {
+    adaptResponseForClient, adaptResponseForClientList,
     getAvailableStates, getSensorsByStation,
     getStationsIdsList, tryTransition,
 } from "../../services/station/stationService";
@@ -17,7 +18,6 @@ export class StationController {
         const {description, location, user} = req.body;
         // Build payload for POST request to Orion Context Broker API
         try {
-
             const coords = parseToIntArray(location.coordinates);
             const newId = await generateNewId(StationCounterSingleton.getInstance(), 'station');
             const stationPayload: Station = {
@@ -53,7 +53,6 @@ export class StationController {
                 }
             };
             const stationPayloadJSON = JSON.stringify(stationPayload);
-            console.log(stationPayloadJSON)
             // Send POST request to Orion Context Broker API to create new entity
             const response = await axios.post(ENTITIES_ORION_API_URL, stationPayloadJSON, {
                 headers: {
@@ -85,7 +84,8 @@ export class StationController {
                     `${ENTITIES_ORION_API_URL}/${stationId}/?${DATES_OPTIONS_QUERY_PARAMS}`
                 );
                 // Send response with entity data
-                res.json(response.data);
+                console.log(response.data);
+                res.json(adaptResponseForClient(response));
             } else if (req.query.fields === 'id') {
                 const response = await getStationsIdsList();
                 res.json(response);
@@ -95,7 +95,7 @@ export class StationController {
                     `${ENTITIES_ORION_API_URL}?type=Station&${DATES_OPTIONS_QUERY_PARAMS}`
                 );
                 // Send response with list of entities
-                res.json(response.data);
+                res.json(adaptResponseForClientList(response));
             }
         } catch (error: any) {
             handleHttpErrors(res, error);

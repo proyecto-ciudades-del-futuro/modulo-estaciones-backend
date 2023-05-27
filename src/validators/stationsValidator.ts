@@ -5,7 +5,10 @@ import {SensorSchema} from "./sensorsValidator";
 
 const stationCreateSchema = Joi.object({
     location: Joi.object({
-        coordinates: Joi.array().items(Joi.string()).length(2).required(),
+        coordinates: Joi.alternatives().try(
+            Joi.array().items(Joi.string()).length(2),
+            Joi.array().items(Joi.number()).length(2)
+        ),
         metadata: Joi.object().default({}).required().optional(),
     }).required(),
     user: Joi.object({
@@ -19,12 +22,12 @@ const stationCreateSchema = Joi.object({
 })
 
 
-
 const stationUpdateSchema = Joi.object({
     location: Joi.object({
-        coordinates: Joi.array().items(Joi.string()).length(2).required().messages({
-                'any.required': `Coordinates should be provided as an array`
-            }).optional(),
+        coordinates: Joi.alternatives().try(
+            Joi.array().items(Joi.string()).length(2),
+            Joi.array().items(Joi.number()).length(2)
+        ).optional(),
         metadata: Joi.object().default({}).optional(),
     }).optional(),
     user: Joi.object({
@@ -44,7 +47,7 @@ const stationUpdateSchema = Joi.object({
     sensors: Joi.object({
         value: Joi.array().items(SensorSchema).required(),
         metadata: Joi.object().default({}).optional()
-   }).optional()
+    }).optional()
 });
 
 export function validateCreateStation(req: express.Request, res: express.Response, next: express.NextFunction) {

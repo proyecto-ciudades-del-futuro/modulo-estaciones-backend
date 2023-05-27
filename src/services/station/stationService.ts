@@ -1,7 +1,7 @@
 import {ENTITIES_ORION_API_URL} from "../../globals/constants";
 import axios, {AxiosError, AxiosResponse} from "axios";
 import {createStationStateMachineInterpreter} from "../../utils/stationStateMachine";
-import {Station, StationUpdate} from "../../types/Station";
+import {Station, StationResponse, StationUpdate} from "../../types/Station";
 import {Sensor} from "../../types/Sensor";
 import {InternalError, NotFoundError} from "../../types/errors";
 
@@ -16,7 +16,6 @@ export const transitionActions: { [key in 'ENABLED' | 'IN_APPROVAL' | 'DISABLED'
     IN_APPROVAL: {type: 're-enable'},
     DISABLED: {type: 'disable'},
 };
-
 
 
 export const getStationsIdsList = async (): Promise<any> => {
@@ -107,4 +106,40 @@ export const stationExists = async (stationId: string): Promise<boolean> => {
         return Promise.reject(new InternalError('Unknown error occurred'));
 
     }
+}
+
+
+export const adaptResponseForClient = (response: AxiosResponse): StationResponse => {
+    return {
+        id: response.data.id,
+        user: response.data.user.value,
+        description: {
+            value: response.data.description.value,
+            metadata:  response.data.description.metadata
+        },
+        location: response.data.location.value.coordinates,
+        sensors: response.data.sensors.value,
+        stationState: response.data.stationState.value,
+        dateCreated: response.data.dateCreated.value,
+        dateModified: response.data.dateModified.value
+    }
+}
+
+export const adaptResponseForClientList = (response: AxiosResponse): StationResponse[] => {
+    return response.data.map((station: Station) => {
+        console.log(station)
+        return {
+            id: station.id,
+            user: station.user.value,
+            description: {
+                value: station.description.value,
+                metadata: station.description.metadata
+            },
+            location: station.location.value.coordinates,
+            sensors: station.sensors.value,
+            stationState: station.stationState.value,
+            dateCreated: station.dateCreated?.value,
+            dateModified: station.dateModified?.value
+        }
+    })
 }

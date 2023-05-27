@@ -21,8 +21,8 @@ export interface Station {
     stationState: StationState;
     description: Description;
     sensors: SensorArray;
-    dateCreated?: object
-    dateModified?: object;
+    dateCreated?: {value: string}
+    dateModified?: { value: string };
 }
 
 export interface StationUpdate {
@@ -37,3 +37,17 @@ export interface StationUpdate {
     sensors?: SensorArray
 }
 
+
+export interface StationResponse {
+    id: string;
+    location: string[2];
+    description: {
+        value: string;
+        metadata: object;
+    }
+    sensors: SensorArray;
+    stationState: string;
+    user: string;
+    dateCreated: string;
+    dateModified: string;
+}
