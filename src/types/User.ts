@@ -1,3 +1,13 @@
+export interface NewUser {
+    name: string;
+    lastName: string;
+    password: string;
+    email: string;
+    metadata?: object;
+}
+
+
+
 export interface User {
     id: string;
     type: 'User';

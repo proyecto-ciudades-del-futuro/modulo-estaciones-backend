@@ -15,7 +15,7 @@ export interface Station {
     location: GeoJson;
     user: {
         type: 'Relationship';
-        value: number;
+        value: string;
         metadata: object;
     };
     stationState: StationState;
@@ -29,7 +29,7 @@ export interface StationUpdate {
     location?: GeoJson;
     user?: {
         type: 'Relationship';
-        value: number;
+        value: string;
         metadata?: object;
     };
     stationState?: StationState;

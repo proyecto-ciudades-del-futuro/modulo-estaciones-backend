@@ -9,7 +9,7 @@ const stationCreateSchema = Joi.object({
         metadata: Joi.object().default({}).required().optional(),
     }).required(),
     user: Joi.object({
-        value: Joi.number().required(),
+        value: Joi.string().required(),
         metadata: Joi.object()
     }).required(),
     description: Joi.object({
@@ -28,7 +28,7 @@ const stationUpdateSchema = Joi.object({
         metadata: Joi.object().default({}).optional(),
     }).optional(),
     user: Joi.object({
-        value: Joi.number().required(),
+        value: Joi.string().required(),
         metadata: Joi.object()
     }).optional(),
     stationState: Joi.object({

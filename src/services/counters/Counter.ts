@@ -64,3 +64,20 @@ export class SensorCounterSingleton extends Counter {
 
 }
 
+
+export class UserCounterSingleton extends Counter {
+    private static instance: UserCounterSingleton;
+
+    private constructor() {
+        super(SENSOR_COUNT_API_URL);
+    }
+
+    public static getInstance(): UserCounterSingleton {
+        if(!UserCounterSingleton.instance){
+            UserCounterSingleton.instance = new UserCounterSingleton();
+        }
+        return UserCounterSingleton.instance;
+    }
+
+}
+

@@ -1,37 +1,40 @@
-import {User} from "../../types/User";
+import {NewUser, User} from "../../types/User";
 import {AlreadyExistsError, InternalError} from "../../types/errors";
 import axios from "axios";
 import {ENTITIES_ORION_API_URL} from "../../globals/constants";
 import bcrypt from 'bcrypt';
+import {UserCounterSingleton} from "../counters/Counter";
+import {generateNewId} from "../globalServices";
 
 
-export const createUser = async (user: User): Promise<string> => {
+export const createUser = async (user: NewUser): Promise<string> => {
     try {
-        const userExists = await doesUserExists(user.email.value);
+        const userExists = await doesUserExists(user.email);
         if (!userExists) {
-            const userPassword = await hashPassword(user.password.value);
+            const userId = await generateNewId(UserCounterSingleton.getInstance(), 'user')
+            const userPassword = await hashPassword(user.password);
             const userPayload: User = {
-                id: user.email.value,
+                id: userId,
                 type: 'User',
                 name: {
                     type: 'Text',
-                    value: user.name.value,
-                    metadata: user.name.metadata ?? {}
+                    value: user.name,
+                    metadata: {}
                 },
                 lastName: {
                     type: 'Text',
-                    value: user.lastName.value,
-                    metadata: user.lastName.metadata ?? {}
+                    value: user.lastName,
+                    metadata: {}
                 },
                 password: {
                     type: 'Text',
                     value: userPassword,
-                    metadata: user.name.metadata ?? {}
+                    metadata: {}
                 },
                 email: {
                     type: 'Text',
-                    value: user.email.value,
-                    metadata: user.email.metadata ?? {}
+                    value: user.email,
+                    metadata: {}
                 }
             };
 
@@ -49,7 +52,7 @@ export const createUser = async (user: User): Promise<string> => {
                 return userPayload.id
             }
         } else {
-            throw new AlreadyExistsError(`${user.email.value} already exists`)
+            throw new AlreadyExistsError(`${user.email} already exists`)
         }
     } catch (e) {
         return Promise.reject(e);

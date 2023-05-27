@@ -100,6 +100,19 @@ curl -X POST 'http://localhost:1026/v2/entities' -H 'Content-Type: application/j
 }'
 ```
 
+### Users Counter
+
+```
+curl -X POST 'http://localhost:1026/v2/entities' -H 'Content-Type: application/json' -d '{
+  "id": "userCount",
+  "type": "Counter",
+  "count": {
+    "value": 0,
+    "type": "Integer"
+  }
+}'
+```
+
 ### TROUBLESHOOTING
 
 If you have issues with your docker instances, try to reinitilize them via the following commands:
@@ -201,8 +214,8 @@ As you see, in the previous example, the id and type keys can have a direct valu
         "metadata": {}
     },
     "user": {
-        "type": "Integer",
-        "value": 1,
+        "type": "Relationship",
+        "value": "station_1",
         "metadata": {}
     }
 }
@@ -230,8 +243,8 @@ As you see, in the previous example, the id and type keys can have a direct valu
     - **value**: enum <<STATION_STATE>>
     - **metadata**: (Object)
 - **user**: (Object)
-  - **type**: "Integer" (added by the server)
-  - **value**: (Integer)
+  - **type**: "Relationship" (added by the server)
+  - **value**: "station_xx" (string)
   - **metadata**: (Object)
 ***
 

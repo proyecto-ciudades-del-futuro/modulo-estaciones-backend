@@ -3,51 +3,21 @@ import express from "express";
 
 
 const userCreateSchema = Joi.object({
-    name: Joi.object({
-        value: Joi.string().required(),
-        metadata: Joi.object().default({}).optional(),
-    }).required(),
-    lastName: Joi.object({
-        value: Joi.string().required(),
-        metadata: Joi.object().default({}).optional()
-    }).required(),
-    password: Joi.object({
-        value: Joi.string().required(),
-        metadata: Joi.object().default({}).optional(),
-    }).required(),
-    username: Joi.object({
-        value: Joi.string().required(),
-        metadata: Joi.object().default({}).optional(),
-    }).required(),
-    email: Joi.object({
-        value: Joi.string().email().required(),
-        metadata: Joi.object().default({}).optional(),
-    }).required(),
+    name: Joi.string().required(),
+    lastName: Joi.string().required(),
+    password: Joi.string().required(),
+    email: Joi.string().email().required(),
+    metadata: Joi.object().default({}).optional(),
 })
 
 
 
 const userUpdateSchema = Joi.object({
-    name: Joi.object({
-        value: Joi.string().required(),
-        metadata: Joi.object().default({}).optional(),
-    }).optional(),
-    lastName: Joi.object({
-        value: Joi.string().required(),
-        metadata: Joi.object().default({}).optional()
-    }).optional(),
-    password: Joi.object({
-        value: Joi.string().required(),
-        metadata: Joi.object().default({}).optional(),
-    }).optional(),
-    username: Joi.object({
-        value: Joi.string().required(),
-        metadata: Joi.object().default({}).optional(),
-    }).optional(),
-    email: Joi.object({
-        value: Joi.string().email().required(),
-        metadata: Joi.object().default({}).optional(),
-    }).optional(),
+    name: Joi.string().optional(),
+    lastName: Joi.string().optional(),
+    password: Joi.string().optional(),
+    email: Joi.string().email().optional(),
+    metadata: Joi.object().default({}).optional(),
 });
 
 export function validateCreateUser(req: express.Request, res: express.Response, next: express.NextFunction) {

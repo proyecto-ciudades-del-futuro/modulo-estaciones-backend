@@ -72,7 +72,6 @@ export class StationController {
         }
     }
 
-
     async read(req: Request, res: Response): Promise<void> {
         try {
             if (req.params.id) {
