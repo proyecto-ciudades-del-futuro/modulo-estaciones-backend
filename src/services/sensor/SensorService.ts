@@ -94,8 +94,13 @@ export const updateSensor = async (sensorId: string, sensorUpdatePayload: NewSen
                     await addSensorToStation(sensorUpdatePayload.station_id, sensor);
                 }
             }
-            // TODO: Transform payload to match Orion Sensor
-            await axios.patch(`${ENTITIES_ORION_API_URL}/${sensorId}/attrs`, sensorUpdatePayload);
+            const transformedSensorUpdatePayload = {
+                "station_id": {
+                    "type": "String",
+                    "value": sensorUpdatePayload.station_id
+                }
+            }
+            await axios.patch(`${ENTITIES_ORION_API_URL}/${sensorId}/attrs`, transformedSensorUpdatePayload);
         }
     } catch (e: any) {
         if (e instanceof NotFoundError) {
