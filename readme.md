@@ -574,18 +574,15 @@ To update a Sensor entity, the verb to be used is `PATCH`, any attributes except
 
 ### EXAMPLE REQUEST:
 
+Updating the sensor's station reference
+
 ```
 PATCH /sensors/sensor_1 HTTP/1.1
 Host: example.com
 Content-Type: application/json
 
 {
-    "sensors": {
-      "value": [{
-          "station_id": "station_1",
-          "id": "sensor_1",
-      }]
-    }
+    "station_id": "station_2"
 }
 ```
 
