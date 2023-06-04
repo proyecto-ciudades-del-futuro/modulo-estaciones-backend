@@ -4,11 +4,10 @@
 - [Installation](#installation)
 - [Counters initialization](#counters-initialization)
 - [Troubleshooting](#troubleshooting)
-- [Usage](#usage)
 - [API Documentation](#api-documentation)
 - [Contributing](#contributing)
 - [License](#license)
-- [New Section](#new-section)
+<!-- - [New Section](#new-section) -->
 
 ## Introduction
 ***
