@@ -31,6 +31,11 @@ stations across Argentina's territory.
 2) Step on the root directory and run the following command to ensure that the counters-initialization.sh script can be run by node:
 ```chmod +x ./scripts/counters_initialization.sh```
 
+3) Also, on the same dir run ```chmod +x ./scripts/populate_orion.sh```
+
+4) Populate the Orion Mongo DB instance to have data to play with by running 
+```npm run devInit```
+
 ##### B) Start the Express runtime
 
 

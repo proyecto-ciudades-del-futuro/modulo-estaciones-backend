@@ -6,7 +6,8 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
-    "dev": "./scripts/counters_initialization.sh & nodemon src/index.ts",
+    "devInit": "./scripts/counters_initialization.sh &",
+    "dev": "nodemon src/index.ts",
     "test": "jest"
   },
   "author": "",
