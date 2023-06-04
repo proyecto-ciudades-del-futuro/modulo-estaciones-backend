@@ -67,12 +67,12 @@ If you have issues with your docker instances, try to reinitilize them via the f
 
 ## Usage
 
-API Documentation
+General
 ===========
 
 ***
 
-# API Data Structures
+# Orion Context Broker Data Structures
 
 ### General rule for entities definition:
 
@@ -234,7 +234,9 @@ JSON objects with their corresponding keys.
     - **metadata**: (Object)
 
 ***
-
+API DOCUMENTATION
+===========
+***
 # Stations / Estaciones
 
 ## Query Every Station
