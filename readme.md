@@ -47,8 +47,8 @@ Due to the abscence of an "order-by" capabilty from Orion Context Broker, the Id
 ```scripts/``` directory.
 
 
-### TROUBLESHOOTING
-===========
+ TROUBLESHOOTING
+ ================
 
 If you have issues with your docker instances, try to reinitilize them via the following commands:
 
