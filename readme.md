@@ -3,6 +3,7 @@
 - [Introduction](#introduction)
 - [Installation](#installation)
 - [Counters initialization](#counters-initialization)
+- [Troubleshooting](#troubleshooting)
 - [Usage](#usage)
 - [API Documentation](#api-documentation)
 - [Contributing](#contributing)
@@ -10,12 +11,12 @@
 - [New Section](#new-section)
 
 ## Introduction
-
+***
 Modulo Estaciones will integrate with the Ciudades del Futuro project to set up an IoT network of air quality monitoring
 stations across Argentina's territory.
 
 ## Installation
-
+***
 ### INSTALLATION AND RUNNING
 
  **Note: You must have Docker Compose and/or Docker Desktop installed in your machine**
@@ -45,14 +46,15 @@ Now you will have the ExpressJS server, the Orion Context Broker and the MongoDB
 https://fiware-orion.readthedocs.io/en/2.4.0/user/walkthrough_apiv2/index.html
 
 ## Counters initialization
-
+***
 Due to the abscence of an "order-by" capabilty from Orion Context Broker, the Id's generation is handled via a counter that's initialized for the Station, Sensor and User entities. The counters initialization is handled by the
 ```counters_initialization.sh``` script located on the
 ```scripts/``` directory.
 
 
- TROUBLESHOOTING
- ================
+## Troubleshooting
+
+***
 
 If you have issues with your docker instances, try to reinitilize them via the following commands:
 
@@ -65,11 +67,9 @@ If you have issues with your docker instances, try to reinitilize them via the f
 5. Verify that the containers have been removed with: `docker ps -a`
 6. Run again your docker instances
 
-## Usage
 
 General
 ===========
-
 ***
 
 # Orion Context Broker Data Structures
