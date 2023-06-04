@@ -21,7 +21,7 @@ stations across Argentina's territory.
  **Note: You must have Docker Compose and/or Docker Desktop installed in your machine**
 
 
-##### A) Using Docker Compose
+##### A) Mount and run Orion Context Broker
 
 
 1) Step on your local folder where the docker-compose.yml file is, open a new terminal and run:
@@ -31,10 +31,14 @@ stations across Argentina's territory.
 2) Step on the root directory and run the following command to ensure that the counters-initialization.sh script can be run by node:
 ```chmod +x ./scripts/counters_initialization.sh```
 
+##### B) Start the Express runtime
 
-3) Open another terminal on the same root directory and run ````npm run dev````
+
+1) Open another terminal on the same root directory and run ````npm run dev````
 
 Now you will have the ExpressJS server, the Orion Context Broker and the MongoDB ready to start with locally
+
+
 
 @@ Important guidelines to interact with ORION CONTEXT BROKER API:
 
