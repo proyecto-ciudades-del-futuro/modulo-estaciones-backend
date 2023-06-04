@@ -18,52 +18,23 @@ stations across Argentina's territory.
 
 ### INSTALLATION AND RUNNING
 
-TWO MAIN METHODS
+ **Note: You must have Docker Compose and/or Docker Desktop installed in your machine**
 
-##### A) Automatic and Recommended (Using Docker Compose)
 
-(Note: you need Docker Compose and/or Docker Desktop installed in your machine)
+##### A) Using Docker Compose
 
-1) Step on your local folder where the docker-compose.yml file is and run:
 
-```sudo docker-compose up```
+1) Step on your local folder where the docker-compose.yml file is, open a new terminal and run:
+```docker-compose up``` or ```sudo docker-compose up``` if your machine requires superuser privileges
 
-2) Check that everything works by running this command on your terminal:
-   ```curl localhost:1026/version```
 
-##### B) Manually Installing and running images
+2) Step on the root directory and run the following command to ensure that the counters-initialization.sh script can be run by node:
+```chmod +x ./scripts/counters_initialization.sh```
 
-***
 
-1) Install Docker Desktop
-2) Run the following commands to download the required docker images:
+3) Open another terminal on the same root directory and run ````npm run dev````
 
-```
-docker pull mongo:4.4
-docker pull fiware/orion
-```
-
-3) Create a network for the containers to connect
-
-```
-docker network create fiware_default
-```
-
-4) Run the MongoDB Docker Container with:
-
-```
-docker run -d --name=mongo-db --network=fiware_default \
-  --expose=27017 mongo:4.4 --bind_ip_all
-```
-
-5) Start Orion Context Broker
-
-```
-docker run -d --name fiware-orion -h orion --network=fiware_default \
-  -p 1026:1026  fiware/orion -dbhost mongo-db
-```
-
-Now you will have both the Orion Context Broker and the MongoDB ready to start with locally
+Now you will have the ExpressJS server, the Orion Context Broker and the MongoDB ready to start with locally
 
 @@ Important guidelines to interact with ORION CONTEXT BROKER API:
 
@@ -71,48 +42,10 @@ https://fiware-orion.readthedocs.io/en/2.4.0/user/walkthrough_apiv2/index.html
 
 ## Counters initialization
 
-Due to the abscence of an "order-by" capabilty from Orion Context Broker, the Id's generation is handled via a counter
-that's initialized for the Station and Sensor entities. To be able to run the server, you have to initialize the
-Counters, best approach is via a `curl` command like the following:
+Due to the abscence of an "order-by" capabilty from Orion Context Broker, the Id's generation is handled via a counter that's initialized for the Station, Sensor and User entities. The counters initialization is handled by the
+```counters_initialization.sh``` script located on the
+```scripts/``` directory.
 
-### Stations Counter
-
-```
-curl -X POST 'http://localhost:1026/v2/entities' -H 'Content-Type: application/json' -d '{
-  "id": "stationCount",
-  "type": "Counter",
-  "count": {
-    "value": 0,
-    "type": "Integer"
-  }
-}'
-```
-
-### Sensors Counter
-
-```
-curl -X POST 'http://localhost:1026/v2/entities' -H 'Content-Type: application/json' -d '{
-  "id": "sensorCount",
-  "type": "Counter",
-  "count": {
-    "value": 0,
-    "type": "Integer"
-  }
-}'
-```
-
-### Users Counter
-
-```
-curl -X POST 'http://localhost:1026/v2/entities' -H 'Content-Type: application/json' -d '{
-  "id": "userCount",
-  "type": "Counter",
-  "count": {
-    "value": 0,
-    "type": "Integer"
-  }
-}'
-```
 
 ### TROUBLESHOOTING
 
