@@ -33,8 +33,11 @@ stations across Argentina's territory.
 
 3) Also, on the same dir run ```chmod +x ./scripts/populate_orion.sh```
 
-4) Populate the Orion Mongo DB instance to have data to play with by running 
+4) Initialize the counters with
 ```npm run devInit```
+
+5) Populate the Orion Context to have data to play with
+   ```npm run devPopulate```
 
 ##### B) Start the Express runtime
 
