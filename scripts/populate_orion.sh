@@ -96,7 +96,7 @@ curl -X POST -H "Content-Type: application/json" -d '{
         "metadata": {
             "particlesType": {
               "value": "PM2.5"
-            }
+            },
             "unit": {
                 "value": "p/m2"
             },
@@ -125,7 +125,7 @@ curl -X POST -H "Content-Type: application/json" -d '{
         "metadata": {
             "particlesType": {
               "value": "PM10"
-            }
+            },
             "unit": {
                 "value": "p/m2"
             },
@@ -138,10 +138,8 @@ curl -X POST -H "Content-Type: application/json" -d '{
                   "Very Unhealthy": "354-424",
                   "Hazardous": "424+"
                 }
-            },
-            "minTemperature": {
-                "value": 15
             }
         }
     }
 }' 'http://localhost:3000/sensors'
+

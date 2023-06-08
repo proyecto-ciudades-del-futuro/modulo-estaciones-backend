@@ -6,6 +6,7 @@ import {Station, StationState} from "../../types/Station";
 import {InternalError, NotFoundError} from "../../types/errors";
 import {generateNewId} from "../globalServices";
 import {SensorCounterSingleton} from "../counters/Counter";
+import {adaptUserToOrionMetadata} from "../../utils";
 
 
 export const createSensor = async (sensor: NewSensor): Promise<string> => {
@@ -15,6 +16,9 @@ export const createSensor = async (sensor: NewSensor): Promise<string> => {
             return Promise.reject({code: 404, message: `Station with id ${sensor.station_id} not found`});
         }
         const newId = await generateNewId(SensorCounterSingleton.getInstance(), 'sensor')
+
+        const sensorMetadata = Object.values(sensor.description?.metadata).length > 0 ? adaptUserToOrionMetadata(sensor.description?.metadata) : {};
+        console.log(sensorMetadata);
         const sensorPayLoad = {
             id: newId,
             station_id: {
@@ -25,7 +29,7 @@ export const createSensor = async (sensor: NewSensor): Promise<string> => {
             description: {
                 type: "String",
                 value: sensor.description?.value,
-                metadata: sensor.description?.metadata ?? {}
+                metadata: sensorMetadata
             }
         }
 

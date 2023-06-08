@@ -10,7 +10,7 @@ export type OrionMetadata = {
   }
 }
 
-export function adaptUserToOrionMetadata(inputMetadata: object): OrionMetadata {
+export function adaptUserToOrionMetadata(inputMetadata: { [key: string]: any }): OrionMetadata {
   let orionData: OrionMetadata = {};
   for (const key in inputMetadata) {
     orionData[key] = {
@@ -23,8 +23,8 @@ export function adaptUserToOrionMetadata(inputMetadata: object): OrionMetadata {
 function reverseAdapter(orionData: OrionMetadata): object {
   let userData: any = {};
   for (const key in orionData) {
-      userData[key] = orionData[key].value;
+    userData[key] = orionData[key].value;
 
   }
-    return userData;
-  }
+  return userData;
+}

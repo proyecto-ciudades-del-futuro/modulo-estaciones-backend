@@ -38,8 +38,16 @@ stations across Argentina's territory.
 
 ##### B) Start the Express runtime
 
+1) If you don't have Typescript install it globally or locally:
+```npm install -g ts-node``` or 
+```npm install -g ts-node```
 
-1) Open another terminal on the same root directory and run ````npm run dev````
+2) run
+````npm install```` to add every dependency
+
+3) run ````npm run dev````
+
+READY!
 
 Now you will have the ExpressJS server, the Orion Context Broker and the MongoDB ready to start with locally
 

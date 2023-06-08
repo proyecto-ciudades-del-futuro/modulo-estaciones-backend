@@ -6,7 +6,8 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
-    "devInit": "./scripts/counters_initialization.sh &",
+    "devInit": "./scripts/counters_initialization.sh",
+    "devPopulate": "./scripts/populate_orion.sh",
     "dev": "nodemon src/index.ts",
     "test": "jest"
   },
