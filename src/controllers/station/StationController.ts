@@ -3,7 +3,7 @@ import axios from 'axios';
 import {Station} from '../../types/Station';
 import {DATES_OPTIONS_QUERY_PARAMS, ENTITIES_ORION_API_URL} from "../../globals/constants";
 import {
-    adaptResponseForClient, adaptResponseForClientList,
+    adaptResponseForClient, adaptResponseForClientList, checkAndCompleteLocation,
     getAvailableStates, getSensorsByStation,
     getStationsIdsList, tryTransition,
 } from "../../services/station/stationService";
@@ -106,7 +106,7 @@ export class StationController {
     async update(req: Request, res: Response): Promise<void> {
         const stationId = req.params.id;
         const {stationState} = req.body;
-
+        const {location} = req.body;
         try {
             if (stationState) {
                 if (!await tryTransition(stationId, stationState.value)) {
@@ -114,6 +114,11 @@ export class StationController {
                     return;
                 }
             }
+
+            if(location){
+                req.body.location = checkAndCompleteLocation(req.body).location;
+            }
+
             // Send PATCH request to Orion Context Broker API to update entity by ID
             let response = await axios.patch(
                 `${ENTITIES_ORION_API_URL}/${stationId}/attrs`,
@@ -124,6 +129,7 @@ export class StationController {
                     },
                 }
             );
+
             // Send response with success status
             res.status(204).send();
         } catch (error: any) {

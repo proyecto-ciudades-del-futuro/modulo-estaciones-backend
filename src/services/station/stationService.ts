@@ -143,3 +143,21 @@ export const adaptResponseForClientList = (response: AxiosResponse): StationResp
         }
     })
 }
+
+
+export function checkAndCompleteLocation(data: StationUpdate) {
+    if ("location" in data) {
+        // Ensuring the necessary sub-properties are defined
+        console.log("entering if")
+        data.location = {
+            type: "geo:json",
+            value: {
+                type: "Point",
+                coordinates: data?.location?.value?.coordinates || [0, 0]
+            },
+            metadata: data?.location?.metadata || {}
+        };
+    }
+    console.log(data)
+    return data;
+}
