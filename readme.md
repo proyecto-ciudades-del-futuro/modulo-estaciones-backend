@@ -36,9 +36,6 @@ stations across Argentina's territory.
 4) Initialize the counters with
 ```npm run devInit```
 
-5) Populate the Orion Context to have data to play with
-   ```npm run devPopulate```
-
 ##### B) Start the Express runtime
 
 1) If you don't have Typescript install it globally or locally:
@@ -49,6 +46,10 @@ stations across Argentina's territory.
 ````npm install```` to add every dependency
 
 3) run ````npm run dev````
+
+4) Populate the Orion Context to have data to play with
+   ```npm run devPopulate```
+
 
 READY!
 
@@ -71,7 +72,7 @@ Due to the abscence of an "order-by" capabilty from Orion Context Broker, the Id
 
 ***
 
-If you have issues with your docker instances, try to reinitilize them via the following commands:
+If you have issues with your docker instances, try to reinitialize them via the following commands:
 
 1. List the running containers running
    `docker ps` in the terminal. That command will list every running container along with their container IDs and other

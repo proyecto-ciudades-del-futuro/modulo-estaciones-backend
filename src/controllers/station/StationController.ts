@@ -1,6 +1,6 @@
 import {Request, Response} from 'express';
 import axios from 'axios';
-import {Station} from '../../types/Station';
+import {Station, StationUpdate} from '../../types/Station';
 import {DATES_OPTIONS_QUERY_PARAMS, ENTITIES_ORION_API_URL} from "../../globals/constants";
 import {
     adaptResponseForClient, adaptResponseForClientList, checkAndCompleteLocation,
@@ -107,6 +107,7 @@ export class StationController {
         const stationId = req.params.id;
         const {stationState} = req.body;
         const {location} = req.body;
+        let updatePayload: StationUpdate = {...req.body};
         try {
             if (stationState) {
                 if (!await tryTransition(stationId, stationState.value)) {
@@ -116,13 +117,13 @@ export class StationController {
             }
 
             if(location){
-                req.body.location = checkAndCompleteLocation(req.body).location;
+                updatePayload.location = checkAndCompleteLocation(req.body.location);
             }
 
             // Send PATCH request to Orion Context Broker API to update entity by ID
             let response = await axios.patch(
                 `${ENTITIES_ORION_API_URL}/${stationId}/attrs`,
-                req.body,
+                updatePayload,
                 {
                     headers: {
                         'Content-Type': 'application/json',

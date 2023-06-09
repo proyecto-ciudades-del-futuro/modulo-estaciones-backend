@@ -1,5 +1,5 @@
 import {STATION_STATE} from "./enums";
-import {GeoJson, SensorArray, Description} from "./globals";
+import {GeoJson, SensorArray, Description, LocationContract} from "./globals";
 
 export type ValidStringTypes = 'Text' | 'Number' | 'Integer' | 'Boolean' | 'Date' | 'URL' | 'GeoJSON' | 'StructuredValue';
 

@@ -1,9 +1,12 @@
+import {Role} from "./globals";
+
 export interface NewUser {
     name: string;
     lastName: string;
     password: string;
     email: string;
     metadata?: object;
+    role: Role
 }
 
 
