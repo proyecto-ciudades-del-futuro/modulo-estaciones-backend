@@ -41,7 +41,7 @@ const stationUpdateSchema = Joi.object({
     description: Joi.object({
         metadata: Joi.object().default({}),
         value: Joi.string().required().messages({
-            'any.reqired': `if you want to update {{#label}} is missing, the 'value' property is required`
+            'any.required': `if you want to update {{#label}} is missing, the 'value' property is required`
         })
     }).optional(),
     sensors: Joi.object({

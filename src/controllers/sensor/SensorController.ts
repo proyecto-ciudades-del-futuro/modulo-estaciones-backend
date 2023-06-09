@@ -24,6 +24,7 @@ export class SensorController {
         try {
             if (req.params.id) {
                 const sensor = await getSensor(req.params.id);
+                console.log(sensor)
                 res.status(200).json(sensor);
             } else {
                 const sensors = await getEverySensor();

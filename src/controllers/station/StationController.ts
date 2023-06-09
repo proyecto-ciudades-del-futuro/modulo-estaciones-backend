@@ -11,14 +11,14 @@ import {STATION_STATE} from "../../types/enums";
 import {handleHttpErrors} from "../../utils/errorHandling";
 import {generateNewId} from "../../services/globalServices";
 import {StationCounterSingleton} from "../../services/counters/Counter";
-import {parseToIntArray} from "../../utils";
+import {parseToFloatsArray} from "../../utils";
 
 export class StationController {
   async create(req: Request, res: Response): Promise<void> {
     const {description, location, user} = req.body;
     // Build payload for POST request to Orion Context Broker API
     try {
-      const coords = parseToIntArray(location.coordinates);
+      const coords = parseToFloatsArray(location.coordinates);
       const newId = await generateNewId(StationCounterSingleton.getInstance(), 'station');
       const stationPayload: Station = {
         id: newId,

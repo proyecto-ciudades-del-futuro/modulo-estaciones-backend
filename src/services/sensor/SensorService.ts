@@ -68,6 +68,7 @@ export const createSensor = async (sensor: NewSensor): Promise<string> => {
 
 export const getSensor = async (sensorId: string): Promise<Sensor> => {
     // Retrieve the sensor entity from Orion Context Broker
+    console.log("getting sensor")
     try {
         const response = await axios.get(`${ENTITIES_ORION_API_URL}/${sensorId}?${DATES_OPTIONS_QUERY_PARAMS}`);
         return response.data;

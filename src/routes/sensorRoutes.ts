@@ -8,7 +8,7 @@ const sensorController = new SensorController();
 
 // Define routes for CRUD operations
 sensorsRouter.post('/', validateCreateSensor ,sensorController.create);
-sensorsRouter.get('/:marian', sensorController.read);
+sensorsRouter.get('/:id', sensorController.read);
 sensorsRouter.get('/', sensorController.read);
 sensorsRouter.patch('/:id', validateUpdateStation, sensorController.update);
 //sensorsRouter.delete('/:id', sensorController.delete);
