@@ -42,12 +42,15 @@ export const createSensor = async (sensor: NewSensor): Promise<string> => {
 
         // Retrieve existing sensors
         const existingSensors = stationData.sensors?.value ?? [];
-
+        const sensorToUpdate = {
+          ...sensor,
+          id: newId
+        }
         // Add new sensor to the list of existing sensors using spread operator
-        const updatedSensors = [...existingSensors, sensor];
+        const updatedSensors = [...existingSensors, sensorToUpdate];
 
         await axios.patch(
-            `${ENTITIES_ORION_API_URL}/${sensor.station_id}/attrs`,
+            `${ENTITIES_ORION_API_URL}/${sensorToUpdate.station_id}/attrs`,
             {sensors: {value: updatedSensors}}
         );
         return sensorResponse.statusText

@@ -69,6 +69,8 @@ curl -X POST -H "Content-Type: application/json" -d '{
 
 ## Populate Orion with Sensors
 
+
+
 curl -X POST -H "Content-Type: application/json" -d '{
 "station_id": "station_1",
 "description": {
@@ -100,6 +102,74 @@ curl -X POST -H "Content-Type: application/json" -d '{
    }
  }
 }' 'http://localhost:3000/sensors'
+
+curl -X POST -H "Content-Type: application/json" -d '{
+"station_id": "station_1",
+"description": {
+  "value": "Sensor de Presión del Aire",
+  "metadata": {
+    "air_quality_index": {
+      "value": "100"
+    },
+    "temperature": {
+      "value": "20.2"
+    },
+    "humidity": {
+      "value": "65.2"
+    },
+    "pressure": {
+      "value": "59393"
+    },
+    "pollutants": {
+      "value": {
+        "co2": "4",
+        "co": "2",
+        "no2": "2",
+        "o3": "4",
+        "so2": "3",
+        "pm2.5": "2",
+        "pm10": "1"
+      }
+    }
+   }
+ }
+}' 'http://localhost:3000/sensors'
+
+
+
+
+curl -X POST -H "Content-Type: application/json" -d '{
+"station_id": "station_2",
+"description": {
+  "value": "Sensor de Presión del Aire",
+  "metadata": {
+    "air_quality_index": {
+      "value": "100"
+    },
+    "temperature": {
+      "value": "20.2"
+    },
+    "humidity": {
+      "value": "65.2"
+    },
+    "pressure": {
+      "value": "59393"
+    },
+    "pollutants": {
+      "value": {
+        "co2": "4",
+        "co": "2",
+        "no2": "2",
+        "o3": "4",
+        "so2": "3",
+        "pm2.5": "2",
+        "pm10": "1"
+      }
+    }
+   }
+ }
+}' 'http://localhost:3000/sensors'
+
 
 
 curl -X POST -H "Content-Type: application/json" -d '{
@@ -161,6 +231,39 @@ curl -X POST -H "Content-Type: application/json" -d '{
         "so2": "5",
         "pm2.5": "15",
         "pm10": "30"
+      }
+    }
+   }
+ }
+}' 'http://localhost:3000/sensors'
+
+
+curl -X POST -H "Content-Type: application/json" -d '{
+"station_id": "station_3",
+"description": {
+  "value": "Sensor de Presión del Aire",
+  "metadata": {
+    "air_quality_index": {
+      "value": "100"
+    },
+    "temperature": {
+      "value": "20.2"
+    },
+    "humidity": {
+      "value": "65.2"
+    },
+    "pressure": {
+      "value": "59393"
+    },
+    "pollutants": {
+      "value": {
+        "co2": "4",
+        "co": "2",
+        "no2": "2",
+        "o3": "4",
+        "so2": "3",
+        "pm2.5": "2",
+        "pm10": "1"
       }
     }
    }
