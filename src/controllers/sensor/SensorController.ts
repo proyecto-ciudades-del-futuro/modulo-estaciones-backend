@@ -1,6 +1,8 @@
 import {Request, Response} from "express";
 import {createSensor, getEverySensor, getSensor, updateSensor} from '../../services/sensor/SensorService'
 import {handleHttpErrors} from "../../utils/errorHandling";
+import { ENTITIES_ORION_API_URL } from "../../globals/constants";
+import axios from "axios";
 
 export class SensorController {
 
@@ -53,6 +55,22 @@ export class SensorController {
         }
     }
 
+    async delete(req: Request, res: Response): Promise<void> {
+        const sensorId = req.params.id;
+        console.log(sensorId)
+        try {
+            await axios.delete(`${
+              ENTITIES_ORION_API_URL}/${sensorId}`);
+            // Send response with success status
+            res.status(204).send();
+          }
+    
+        catch (error: any) {
+          // Handle errors
+          handleHttpErrors(res, error);
+        }
+    }
+        
     /*
     async delete(req: Request, res: Response): Promise<void> {
         const sensorId = req.params.id;
