@@ -33,8 +33,15 @@ stations across Argentina's territory.
 
 3) Also, on the same dir run ```chmod +x ./scripts/populate_orion.sh```
 
-4) Initialize the counters with
-```npm run devInit```
+4) Initialize the counters with:
+ 
+    ```
+    MAC/LINUX
+    npm run devInit
+
+    WINDOWS: in a GIT BASH or LINUX BASH
+    ./scripts/counters_initialization.sh
+   ```
 
 ##### B) Start the Express runtime
 
@@ -48,7 +55,12 @@ stations across Argentina's territory.
 3) run ````npm run dev````
 
 4) Populate the Orion Context to have data to play with
-   ```npm run devPopulate```
+   ```
+   MAC/LINUX
+   npm run devPopulate
+
+   WINDOWS: in a GIT BASH or LINUX BASH
+   ./scripts/populate_orion.sh
 
 
 READY!
