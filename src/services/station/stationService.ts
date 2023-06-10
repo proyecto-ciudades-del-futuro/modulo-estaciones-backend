@@ -47,8 +47,12 @@ export const tryTransition = async (
   const currentStationState = await getCurrentStationStateData(stationId);
   const interpreter = createStationStateMachineInterpreter(currentStationState.value);
   const action = transitionActions[intendedState];
+  console.log("action -> " + action)
+  console.dir(action)
+  console.log("can  "+ interpreter.initialState.can(action))
   return interpreter.initialState.can(action);
 };
+
 
 
 export const getCurrentStationStateData = async (stationId: string): Promise<{ type: string; value: InitialStates; metadata: object }> => {

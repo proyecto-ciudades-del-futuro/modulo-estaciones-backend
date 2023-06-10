@@ -2,7 +2,7 @@ import axios, {AxiosError} from "axios";
 import {NewSensor, Sensor} from "../../types/Sensor";
 import {DATES_OPTIONS_QUERY_PARAMS, ENTITIES_ORION_API_URL} from '../../globals/constants';
 import {getStationDataById, stationExists, updateStationById} from "../station/stationService";
-import {Station, StationState} from "../../types/Station";
+import {Station} from "../../types/Station";
 import {InternalError, NotFoundError} from "../../types/errors";
 import {generateNewId} from "../globalServices";
 import {SensorCounterSingleton} from "../counters/Counter";
@@ -42,6 +42,7 @@ export const createSensor = async (sensor: NewSensor): Promise<string> => {
 
         // Retrieve existing sensors
         const existingSensors = stationData.sensors?.value ?? [];
+
         const sensorToUpdate = {
           ...sensor,
           id: newId

@@ -53,8 +53,8 @@ export const createStationStateMachineInterpreter = (
             },
             DISABLED: {
                 on: {
-                    're-enable': {
-                        target: 'IN_APPROVAL',
+                    'enable': {
+                        target: 'ENABLED',
                     },
                     adminOverride: {
                         target: ['IN_APPROVAL', 'ENABLED', 'DISABLED'],
