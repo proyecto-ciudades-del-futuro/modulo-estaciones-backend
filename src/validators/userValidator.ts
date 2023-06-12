@@ -7,6 +7,7 @@ const userCreateSchema = Joi.object({
     lastName: Joi.string().required(),
     password: Joi.string().required(),
     email: Joi.string().email().required(),
+    role: Joi.string().valid('ADMIN', 'COLLABORATOR').required(),
     metadata: Joi.object().default({}).optional(),
 })
 
@@ -17,6 +18,7 @@ const userUpdateSchema = Joi.object({
     lastName: Joi.string().optional(),
     password: Joi.string().optional(),
     email: Joi.string().email().optional(),
+    role: Joi.string().valid('ADMIN', 'COLLABORATOR').optional(),
     metadata: Joi.object().default({}).optional(),
 });
 

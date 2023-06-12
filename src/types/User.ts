@@ -33,6 +33,11 @@ export interface User {
         type: 'Text';
         value: string;
         metadata?: object
+    },
+    role: {
+        type: 'Text';
+        value: Role;
+        metadata?: object;
     }
     dateCreated?: object;
     dateModified?: object;

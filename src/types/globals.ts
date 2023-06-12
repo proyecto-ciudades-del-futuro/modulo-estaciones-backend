@@ -2,7 +2,7 @@ import {Sensor} from "./Sensor";
 
 export enum Role {
   ADMIN = 'ADMIN',
-  COLABORATOR = 'COLABORATOR'
+  COLLABORATOR = 'COLLABORATOR'
 }
 
 
