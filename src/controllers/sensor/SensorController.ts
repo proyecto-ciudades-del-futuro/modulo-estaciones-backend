@@ -3,6 +3,7 @@ import { createSensor, deleteSensorFromStation, getEverySensor, getSensor, updat
 import { handleHttpErrors } from "../../utils/errorHandling";
 import { ENTITIES_ORION_API_URL } from "../../globals/constants";
 import axios from "axios";
+import {Sensor} from "../../types/Sensor";
 
 export class SensorController {
 
@@ -72,4 +73,19 @@ export class SensorController {
             handleHttpErrors(res, error);
         }
     }
+        
+    /*
+    async delete(req: Request, res: Response): Promise<void> {
+        const sensorId = req.params.id;
+
+        try {
+            await deleteSensor(sensorId);
+            res.status(204).send();
+        } catch (error) {
+            // Handle errors accordingly
+            res.status(500).json({ error: "Internal server error" });
+        }
+    }
+
+     */
 }
