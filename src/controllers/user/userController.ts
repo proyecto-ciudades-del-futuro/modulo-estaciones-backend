@@ -1,6 +1,6 @@
 import {Request, Response} from "express";
 import {handleHttpErrors} from "../../utils/errorHandling";
-import {createUser} from "../../services/user/userService";
+import {createUser, loginUser, logoutUser} from "../../services/user/userService";
 
 export class UserController {
 
@@ -67,4 +67,26 @@ export class UserController {
     }
 
      */
+
+
+    async login(req: Request, res: Response): Promise<void> {
+        try {
+            const token = await loginUser(req.body);
+            console.log(token);
+            res.status(200).json({token});
+        } catch (error: any) {
+            // Handle errors accordingly
+            res.status(401).json({error: "Unauthorized"});
+        }
+    }
+
+    async logout(req: Request, res: Response): Promise<void> {
+        try {
+            await logoutUser(req.body.token);
+            res.status(200).json({message: 'Successfully logged out'});
+        } catch (error: any) {
+            // Handle errors accordingly
+            res.status(500).json({error: "Internal server error"});
+        }
+    }
 }
