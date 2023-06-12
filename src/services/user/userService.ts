@@ -6,6 +6,12 @@ import bcrypt from 'bcrypt';
 import {UserCounterSingleton} from "../counters/Counter";
 import {generateNewId} from "../globalServices";
 import {addToBlacklist, isTokenBlacklisted} from "../../utils/blacklists";
+import jwt, {Secret} from "jsonwebtoken";
+import {NextFunction} from "express";
+require('dotenv').config();
+import { Request, Response } from "express";
+
+
 
 
 export const createUser = async (user: NewUser): Promise<string> => {
@@ -103,8 +109,14 @@ export const loginUser = async (userCredentials: {email: string, password: strin
             throw new Error("Invalid credentials");
         }
 
+        if (!process.env.ACCESS_TOKEN_SECRET) {
+            throw new Error('ACCESS_TOKEN_SECRET environment variable not set');
+        }
+
+        const secret = process.env.ACCESS_TOKEN_SECRET;
+
         // Create token
-        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+        const token = jwt.sign({ id: user.id }, secret as Secret, {
             expiresIn: "1h"  // token will expire in 1 hour
         });
 
@@ -146,18 +158,25 @@ export const logoutUser = async (token: string): Promise<void> => {
     }
 }
 
-export const validateToken = (req, res, next) => {
+export const validateToken = (req: Request, res: Response, next: NextFunction) => {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
 
-    if (!token) return res.sendStatus(401);
+    if (!token) return res.status(401);
 
     if (isTokenBlacklisted(token)) {
         return res.sendStatus(403);
     }
 
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+    if (!process.env.ACCESS_TOKEN_SECRET) {
+        throw new Error('ACCESS_TOKEN_SECRET environment variable not set');
+    }
+
+    const secret = process.env.ACCESS_TOKEN_SECRET;
+
+    jwt.verify(token, secret as Secret, (err, user) => {
         if (err) return res.sendStatus(403);
+        //@ts-ignore
         req.user = user;
         next();
     });
