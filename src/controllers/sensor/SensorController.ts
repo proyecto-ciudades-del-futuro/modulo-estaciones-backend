@@ -1,5 +1,12 @@
 import { Request, Response } from "express";
-import { createSensor, deleteSensorFromStation, getEverySensor, getSensor, updateSensor } from '../../services/sensor/SensorService'
+import {
+    createSensor,
+    deleteSensorFromStation,
+    flattenSensorPayload,
+    getEverySensor,
+    getSensor,
+    updateSensor
+} from '../../services/sensor/SensorService'
 import { handleHttpErrors } from "../../utils/errorHandling";
 import { ENTITIES_ORION_API_URL } from "../../globals/constants";
 import axios from "axios";
@@ -28,7 +35,7 @@ export class SensorController {
             if (req.params.id) {
                 const sensor = await getSensor(req.params.id);
                 console.log(sensor)
-                res.status(200).json(sensor);
+                res.status(200).json(flattenSensorPayload(sensor));
             } else {
                 const sensors = await getEverySensor();
                 res.status(200).json(sensors);

@@ -1,5 +1,5 @@
 import axios, {AxiosError} from "axios";
-import {NewSensor, Sensor} from "../../types/Sensor";
+import {FlattenedSensorPayload, NewSensor, OrionSensorPayload, Sensor} from "../../types/Sensor";
 import {DATES_OPTIONS_QUERY_PARAMS, ENTITIES_ORION_API_URL} from '../../globals/constants';
 import {getStationDataById, stationExists, updateStationById} from "../station/stationService";
 import {Station} from "../../types/Station";
@@ -195,3 +195,24 @@ export const getSensorsArrayFromStation = (station: Station): Sensor[] => {
 }
 
 
+export const flattenSensorPayload = (payload: OrionSensorPayload | Sensor) : FlattenedSensorPayload  => {
+  let flatPayload: FlattenedSensorPayload = {
+    id: payload.id,
+    description: {
+      value: payload.description.value,
+      metadata: {}
+    },
+    station_id: payload.station_id.value,
+    dateCreated: payload.dateCreated.value,
+    dateModified: payload.dateModified.value
+  }
+
+  Object.keys(payload.description.metadata).forEach(key => {
+    if (key === 'pollutants') {
+      flatPayload.description.metadata[key] = payload.description.metadata[key].value.value;
+    } else {
+      flatPayload.description.metadata[key] = payload.description.metadata[key].value.value;
+    }
+  });
+  return flatPayload;
+}
