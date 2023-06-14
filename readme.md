@@ -260,6 +260,20 @@ JSON objects with their corresponding keys.
     - **type**: "String" (added by the server)
     - **value**: (String, the description you want to add for that particular sensor, for example "Temperature")
     - **metadata**: (Object)
+      "air_quality_index": number as string,
+      "humidity": number as string,
+      "pollutants": {
+      "co2": number as string,
+      "co": number as string,
+      "no2": number as string,
+      "o3": number as string,
+      "so2": number as string,
+      "pm2.5": number as string,
+      "pm10": number as string
+      },
+      "pressure": number as string,
+      "temperature": number as string
+      }
 - **station_id**: (Object)
     - **type**: (String) (added by the server)
     - **value**: (station id) there is a bidirectional association between Station and Sensor
@@ -420,52 +434,52 @@ Content-Type: application/json
 [
     {
         "id": "sensor_1",
-        "type": "Sensor",
         "description": {
-            "type": "String",
-            "value": "Temperature",
-            "metadata": {}
+            "value": "Sensor de Calidad del Aire",
+            "metadata": {
+                "air_quality_index": "75",
+                "humidity": "65.2",
+                "pollutants": {
+                    "co2": "400",
+                    "co": "2",
+                    "no2": "20",
+                    "o3": "40",
+                    "so2": "5",
+                    "pm2.5": "15",
+                    "pm10": "30"
+                },
+                "pressure": "1013.25",
+                "temperature": "25.2"
+            }
         },
-        "station_id": {
-            "type": "String",
-            "value": "station_1",
-            "metadata": {}
-        },
-        "dateCreated": {
-            "type": "DateTime",
-            "value": "2023-05-25T21:37:17.209Z",
-            "metadata": {}
-        },
-        "dateModified": {
-            "type": "DateTime",
-            "value": "2023-05-25T21:37:17.209Z",
-            "metadata": {}
-        }
+        "station_id": "station_1",
+        "dateCreated": "2023-06-14T00:06:32.393Z",
+        "dateModified": "2023-06-14T00:06:32.393Z"
     },
     {
         "id": "sensor_2",
-        "type": "Sensor",
         "description": {
-            "type": "String",
-            "value": "Temperature",
-            "metadata": {}
+            "value": "Sensor de Presión del Aire",
+            "metadata": {
+                "air_quality_index": "100",
+                "humidity": "65.2",
+                "pollutants": {
+                    "co2": "4",
+                    "co": "2",
+                    "no2": "2",
+                    "o3": "4",
+                    "so2": "3",
+                    "pm2.5": "2",
+                    "pm10": "1"
+                },
+                "pressure": "59393",
+                "temperature": "20.2"
+            }
         },
-        "station_id": {
-            "type": "String",
-            "value": "station_1",
-            "metadata": {}
-        },
-        "dateCreated": {
-            "type": "DateTime",
-            "value": "2023-05-25T23:11:44.006Z",
-            "metadata": {}
-        },
-        "dateModified": {
-            "type": "DateTime",
-            "value": "2023-05-25T23:11:44.006Z",
-            "metadata": {}
-        }
-    }
+        "station_id": "station_1",
+        "dateCreated": "2023-06-14T00:06:32.510Z",
+        "dateModified": "2023-06-14T00:06:32.510Z"
+    },
 ]
 ```
 
