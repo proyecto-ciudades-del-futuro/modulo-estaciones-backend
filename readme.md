@@ -83,6 +83,8 @@ Due to the abscence of an "order-by" capabilty from Orion Context Broker, the Id
 ## Troubleshooting
 
 ***
+DOCKER
+---
 
 If you have issues with your docker instances, try to reinitialize them via the following commands:
 
@@ -94,6 +96,8 @@ If you have issues with your docker instances, try to reinitialize them via the 
 4. Now remove the stopped containers with `docker rm <container_id>`
 5. Verify that the containers have been removed with: `docker ps -a`
 6. Run again your docker instances
+
+
 
 
 General

@@ -23,7 +23,6 @@ app.get('/', async (req, res) => {
 
 
 
-
 app.use('/stations', stationRouter)
 app.use('/sensors', sensorsRouter);
 app.use('/users', userRouter);

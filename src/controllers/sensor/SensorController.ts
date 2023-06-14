@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import {
     createSensor,
-    deleteSensorFromStation,
+    deleteSensorFromStation, flattenSensorArrayPayload,
     flattenSensorPayload,
     getEverySensor,
     getSensor,
@@ -38,7 +38,7 @@ export class SensorController {
                 res.status(200).json(flattenSensorPayload(sensor));
             } else {
                 const sensors = await getEverySensor();
-                res.status(200).json(sensors);
+                res.status(200).json(flattenSensorArrayPayload(sensors));
             }
         } catch (error: any) {
             // Handle errors accordingly

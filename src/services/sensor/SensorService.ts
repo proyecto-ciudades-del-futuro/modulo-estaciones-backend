@@ -216,3 +216,8 @@ export const flattenSensorPayload = (payload: OrionSensorPayload | Sensor) : Fla
   });
   return flatPayload;
 }
+
+
+export const flattenSensorArrayPayload = (payloads: Array<OrionSensorPayload | Sensor>): Array<FlattenedSensorPayload> => {
+  return payloads.map(payload => flattenSensorPayload(payload));
+}
