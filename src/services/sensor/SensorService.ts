@@ -93,24 +93,23 @@ export const getEverySensor = async (): Promise<Sensor[]> => {
 export const updateSensor = async (sensorId: string, sensorUpdatePayload: NewSensor): Promise<void> => {
   try {
     console.log(sensorUpdatePayload);
+    const sensor = await getSensor(sensorId);
 
-    if (sensorUpdatePayload?.station_id) {
-      const sensor = await getSensor(sensorId);
-      console.log(sensor);
-
-      if (sensor.station_id.value !== sensorUpdatePayload.station_id) {
-        const doesStationExists: boolean = await stationExists(sensorUpdatePayload.station_id);
-        if (doesStationExists) {
-          await deleteSensorFromStation(sensor.station_id.value, sensorId);
-          await addSensorToStation(sensorUpdatePayload.station_id, sensor);
-        }
+    if (sensor.station_id.value !== sensorUpdatePayload.station_id) {
+      const doesStationExists: boolean = await stationExists(sensorUpdatePayload.station_id);
+      if (doesStationExists) {
+        await deleteSensorFromStation(sensor.station_id.value, sensorId);
+        await addSensorToStation(sensorUpdatePayload.station_id, sensor);
+      } else {
+        throw new NotFoundError('Station not found or doesn\'t exist');
       }
     }
-
-    const payloadForUpdate = transformSensorPayload(sensorUpdatePayload)
+    console.log("transforming");
+    const payloadForUpdate = transformSensorPayload(sensorUpdatePayload, sensor)
 
     await axios.patch(`${ENTITIES_ORION_API_URL}/${sensorId}/attrs`, payloadForUpdate);
   } catch (e: any) {
+    console.log(e)
     if (e instanceof NotFoundError) {
       throw new NotFoundError(e.message);
     } else {
@@ -212,16 +211,14 @@ export const flattenSensorArrayPayload = (payloads: Array<OrionSensorPayload | S
 }
 
 
- const transformSensorPayload = (payload: any): any => {
-  const {description, station_id} = payload;
-  const {value, metadata} = description;
+const transformSensorPayload = (payload: any, currentSensorData: Sensor): any => {
 
   const orionPayload = {
     description: {
       type: 'String',
-      value,
-      metadata: {
-        ...Object.entries(metadata).reduce((result: Record<string, any>, [key, value]) => {
+      value: payload.description?.value ?? currentSensorData.description?.value,
+      metadata: payload.description && payload.description.metadata ? {
+        ...Object.entries(payload.description.metadata).reduce((result: Record<string, any>, [key, value]) => {
           if (key !== 'pollutants') {
             result[key] = {
               type: 'StructuredValue',
@@ -235,11 +232,11 @@ export const flattenSensorArrayPayload = (payloads: Array<OrionSensorPayload | S
           }
           return result;
         }, {}),
-      },
+      }: currentSensorData.description?.metadata,
     },
     station_id: {
       type: 'String',
-      value: station_id,
+      value: payload.station_id ?? currentSensorData.station_id.value,
       metadata: {}
     },
   };

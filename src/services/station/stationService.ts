@@ -101,7 +101,9 @@ export async function getSensorsByStation(stationId: string): Promise<Sensor[] |
 
 export const stationExists = async (stationId: string): Promise<boolean> => {
   try {
-    await axios.get(`${ENTITIES_ORION_API_URL}/${stationId}`)
+    const response = await axios.get(`${ENTITIES_ORION_API_URL}/${stationId}`)
+    console.log("RESPONSE STATIONS EXISTS");
+    console.log(response);
     return true;
   } catch (e: any) {
     if (e.response && e.response.status === 404) {

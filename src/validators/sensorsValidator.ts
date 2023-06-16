@@ -1,6 +1,6 @@
 import Joi from 'joi';
 import express from "express";
-import {metadataPattern, sensorUpdateMetadataPattern} from "./globalVariables";
+import { sensorUpdateMetadataPattern} from "./globalVariables";
 
 export const SensorSchema = Joi.object({
     station_id: Joi.string()
@@ -8,7 +8,7 @@ export const SensorSchema = Joi.object({
         .required(),
     description: Joi.object({
         value: Joi.string().required(),
-        metadata: metadataPattern
+        metadata: sensorUpdateMetadataPattern
     })
 })
 
@@ -18,7 +18,7 @@ const SensorUpdateSchema = Joi.object({
         .pattern(/^station_([1-9]\d*)$/, 'no-leading-zero policy. Sensors should not be like this: station_01 instead, station_1 is the correct')
         .optional(),
     description: Joi.object({
-        value: Joi.string().required(),
+        value: Joi.string().optional(),
         metadata: sensorUpdateMetadataPattern
     }).optional()
 });
