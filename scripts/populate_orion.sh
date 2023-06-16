@@ -69,8 +69,6 @@ curl -X POST -H "Content-Type: application/json" -d '{
 
 ## Populate Orion with Sensors
 
-
-
 curl -X POST -H "Content-Type: application/json" -d '{
 "station_id": "station_1",
 "description": {
@@ -87,6 +85,12 @@ curl -X POST -H "Content-Type: application/json" -d '{
     },
     "pressure": {
       "value": "1013.25"
+    },
+    "maxMeasurement": {
+      "value": "777"
+    },
+    "minMeasurement": {
+      "value": "777"
     },
     "pollutants": {
       "value": {
@@ -120,6 +124,12 @@ curl -X POST -H "Content-Type: application/json" -d '{
     "pressure": {
       "value": "59393"
     },
+    "maxMeasurement": {
+      "value": "777"
+    },
+    "minMeasurement": {
+      "value": "777"
+    },
     "pollutants": {
       "value": {
         "co2": "4",
@@ -134,9 +144,6 @@ curl -X POST -H "Content-Type: application/json" -d '{
    }
  }
 }' 'http://localhost:3000/sensors'
-
-
-
 
 curl -X POST -H "Content-Type: application/json" -d '{
 "station_id": "station_2",
@@ -155,6 +162,12 @@ curl -X POST -H "Content-Type: application/json" -d '{
     "pressure": {
       "value": "59393"
     },
+    "maxMeasurement": {
+      "value": "777"
+    },
+    "minMeasurement": {
+      "value": "777"
+    },
     "pollutants": {
       "value": {
         "co2": "4",
@@ -169,8 +182,6 @@ curl -X POST -H "Content-Type: application/json" -d '{
    }
  }
 }' 'http://localhost:3000/sensors'
-
-
 
 curl -X POST -H "Content-Type: application/json" -d '{
 "station_id": "station_2",
@@ -189,6 +200,12 @@ curl -X POST -H "Content-Type: application/json" -d '{
     "pressure": {
       "value": "1013.25"
     },
+    "maxMeasurement": {
+      "value": "777"
+    },
+    "minMeasurement": {
+      "value": "777"
+    },
     "pollutants": {
       "value": {
         "co2": "400",
@@ -203,7 +220,6 @@ curl -X POST -H "Content-Type: application/json" -d '{
    }
  }
 }' 'http://localhost:3000/sensors'
-
 
 curl -X POST -H "Content-Type: application/json" -d '{
 "station_id": "station_3",
@@ -222,6 +238,12 @@ curl -X POST -H "Content-Type: application/json" -d '{
     "pressure": {
       "value": "1013.25"
     },
+    "maxMeasurement": {
+      "value": "777"
+    },
+    "minMeasurement": {
+      "value": "777"
+    },
     "pollutants": {
       "value": {
         "co2": "400",
@@ -236,7 +258,6 @@ curl -X POST -H "Content-Type: application/json" -d '{
    }
  }
 }' 'http://localhost:3000/sensors'
-
 
 curl -X POST -H "Content-Type: application/json" -d '{
 "station_id": "station_3",
@@ -254,6 +275,12 @@ curl -X POST -H "Content-Type: application/json" -d '{
     },
     "pressure": {
       "value": "59393"
+    },
+    "maxMeasurement": {
+      "value": "777"
+    },
+    "minMeasurement": {
+      "value": "777"
     },
     "pollutants": {
       "value": {

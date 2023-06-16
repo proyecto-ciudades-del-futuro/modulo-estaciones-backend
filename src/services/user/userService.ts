@@ -44,7 +44,6 @@ export const createUser = async (user: NewUser): Promise<string> => {
                     metadata: {}
                 },
                 role: {
-
                   type: 'Text',
                     value: user.role,
                     metadata: {}
