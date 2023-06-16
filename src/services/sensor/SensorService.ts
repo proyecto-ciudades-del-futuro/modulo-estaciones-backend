@@ -94,8 +94,6 @@ export const updateSensor = async (sensorId: string, sensorUpdatePayload: NewSen
   try {
     console.log(sensorUpdatePayload);
 
-    let transformedSensorUpdatePayload;
-
     if (sensorUpdatePayload?.station_id) {
       const sensor = await getSensor(sensorId);
       console.log(sensor);
@@ -107,20 +105,11 @@ export const updateSensor = async (sensorId: string, sensorUpdatePayload: NewSen
           await addSensorToStation(sensorUpdatePayload.station_id, sensor);
         }
       }
-
-      transformedSensorUpdatePayload = {
-        "station_id": {
-          "type": "String",
-          "value": sensorUpdatePayload.station_id
-        }
-      };
     }
 
-    const mergedObject = transformedSensorUpdatePayload
-      ? { ...transformedSensorUpdatePayload, ...sensorUpdatePayload }
-      : { ...sensorUpdatePayload };
+    const payloadForUpdate = transformSensorPayload(sensorUpdatePayload)
 
-    await axios.patch(`${ENTITIES_ORION_API_URL}/${sensorId}/attrs`, mergedObject);
+    await axios.patch(`${ENTITIES_ORION_API_URL}/${sensorId}/attrs`, payloadForUpdate);
   } catch (e: any) {
     if (e instanceof NotFoundError) {
       throw new NotFoundError(e.message);
@@ -195,7 +184,7 @@ export const getSensorsArrayFromStation = (station: Station): Sensor[] => {
 }
 
 
-export const flattenSensorPayload = (payload: OrionSensorPayload | Sensor) : FlattenedSensorPayload  => {
+export const flattenSensorPayload = (payload: OrionSensorPayload | Sensor): FlattenedSensorPayload => {
   let flatPayload: FlattenedSensorPayload = {
     id: payload.id,
     description: {
@@ -220,4 +209,39 @@ export const flattenSensorPayload = (payload: OrionSensorPayload | Sensor) : Fla
 
 export const flattenSensorArrayPayload = (payloads: Array<OrionSensorPayload | Sensor>): Array<FlattenedSensorPayload> => {
   return payloads.map(payload => flattenSensorPayload(payload));
+}
+
+
+ const transformSensorPayload = (payload: any): any => {
+  const {description, station_id} = payload;
+  const {value, metadata} = description;
+
+  const orionPayload = {
+    description: {
+      type: 'String',
+      value,
+      metadata: {
+        ...Object.entries(metadata).reduce((result: Record<string, any>, [key, value]) => {
+          if (key !== 'pollutants') {
+            result[key] = {
+              type: 'StructuredValue',
+              value: {value},
+            };
+          } else {
+            result[key] = {
+              type: 'StructuredValue',
+              value: {value},
+            };
+          }
+          return result;
+        }, {}),
+      },
+    },
+    station_id: {
+      type: 'String',
+      value: station_id,
+      metadata: {}
+    },
+  };
+  return orionPayload;
 }

@@ -1,6 +1,6 @@
 import Joi from 'joi';
 import express from "express";
-import {metadataPattern} from "./globalVariables";
+import {metadataPattern, sensorUpdateMetadataPattern} from "./globalVariables";
 
 export const SensorSchema = Joi.object({
     station_id: Joi.string()
@@ -19,7 +19,7 @@ const SensorUpdateSchema = Joi.object({
         .optional(),
     description: Joi.object({
         value: Joi.string().required(),
-        metadata: metadataPattern
+        metadata: sensorUpdateMetadataPattern
     }).optional()
 });
 
