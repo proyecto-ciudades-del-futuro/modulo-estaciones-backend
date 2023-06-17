@@ -5,10 +5,10 @@ import {ENTITIES_ORION_API_URL} from "../../globals/constants";
 import bcrypt from 'bcrypt';
 import {UserCounterSingleton} from "../counters/Counter";
 import {generateNewId} from "../globalServices";
-import {addToBlacklist, isTokenBlacklisted} from "../../utils/blacklists";
+import {addToBlacklist} from "../../utils/blacklists";
 import jwt, {Secret} from "jsonwebtoken";
-import {NextFunction} from "express";
-import { Request, Response } from "express";
+import {hashPassword} from "./UserDataServices";
+
 require('dotenv').config();
 
 
@@ -85,15 +85,6 @@ export const doesUserExists = async (userId: string): Promise<boolean> => {
     }
 }
 
-export const hashPassword = async (password: string): Promise<string> => {
-    try {
-        const salt = await bcrypt.genSaltSync(12);
-        return await bcrypt.hashSync(password, salt);
-    } catch (e: any) {
-        throw new InternalError('Unspecified error while hashing password')
-    }
-}
-
 export const loginUser = async (userCredentials: {email: string, password: string}): Promise<string> => {
     try {
         // Check if user exists
@@ -157,26 +148,3 @@ export const logoutUser = async (token: string): Promise<void> => {
     }
 }
 
-export const validateToken = (req: Request, res: Response, next: NextFunction) => {
-    const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1];
-
-    if (!token) return res.status(401);
-
-    if (isTokenBlacklisted(token)) {
-        return res.sendStatus(403);
-    }
-
-    if (!process.env.ACCESS_TOKEN_SECRET) {
-        throw new Error('ACCESS_TOKEN_SECRET environment variable not set');
-    }
-
-    const secret = process.env.ACCESS_TOKEN_SECRET;
-
-    jwt.verify(token, secret as Secret, (err, user) => {
-        if (err) return res.sendStatus(403);
-        //@ts-ignore
-        req.user = user;
-        next();
-    });
-}

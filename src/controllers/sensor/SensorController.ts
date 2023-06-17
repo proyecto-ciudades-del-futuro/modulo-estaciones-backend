@@ -1,9 +1,7 @@
 import { Request, Response } from "express";
 import {
     createSensor,
-    deleteSensorFromStation, flattenSensorArrayPayload,
-    flattenSensorPayload,
-    getEverySensor,
+    deleteSensorFromStation, getEverySensor,
     getSensor,
     updateSensor
 } from '../../services/sensor/SensorService'
@@ -11,6 +9,7 @@ import { handleHttpErrors } from "../../utils/errorHandling";
 import { ENTITIES_ORION_API_URL } from "../../globals/constants";
 import axios from "axios";
 import {Sensor} from "../../types/Sensor";
+import {flattenSensorArrayPayload, flattenSensorPayload} from "../../services/sensor/SensorDataTransformationServices";
 
 export class SensorController {
 

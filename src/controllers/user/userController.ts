@@ -1,6 +1,6 @@
 import {Request, Response} from "express";
 import {handleHttpErrors} from "../../utils/errorHandling";
-import {createUser, loginUser, logoutUser} from "../../services/user/userService";
+import {createUser, loginUser, logoutUser} from "../../services/user/UserService";
 
 export class UserController {
 
