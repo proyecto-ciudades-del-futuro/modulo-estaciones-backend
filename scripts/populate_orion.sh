@@ -69,78 +69,71 @@ curl -X POST -H "Content-Type: application/json" -d '{
 
 ## Populate Orion with Sensors
 
+
 curl -X POST -H "Content-Type: application/json" -d '{
-"station_id": "station_1",
-"description": {
-  "value": "Sensor de Calidad del Aire",
-  "metadata": {
-    "air_quality_index": {
-      "value": "75"
-    },
-    "temperature": {
-      "value": "25.2"
-    },
-    "humidity": {
-      "value": "65.2"
-    },
-    "pressure": {
-      "value": "1013.25"
-    },
-    "maxMeasurement": {
-      "value": "777"
-    },
-    "minMeasurement": {
-      "value": "777"
-    },
-    "pollutants": {
-      "value": {
-        "co2": "400",
-        "co": "2",
-        "no2": "20",
-        "o3": "40",
-        "so2": "5",
-        "pm2.5": "15",
-        "pm10": "30"
-      }
+  "station_id": "station_1",
+  "description": {
+    "value": "Sensor de Delmers",
+    "metadata": {
+      "air_quality_index": "0",
+      "humidity": "0",
+      "pollutants": {
+        "co2": "0",
+        "co": "0",
+        "no2": "0",
+        "o3": "0",
+        "so2": "0",
+        "pm2.5": "0",
+        "pm10": "0"
+      },
+      "pressure": "00",
+      "temperature": "0"
     }
-   }
- }
-}' 'http://localhost:3000/sensors'
+  }
+}
+' 'http://localhost:3000/sensors'
 
 curl -X POST -H "Content-Type: application/json" -d '{
 "station_id": "station_1",
 "description": {
-  "value": "Sensor de Presión del Aire",
+  "value": "Sensor de Deboras",
   "metadata": {
-    "air_quality_index": {
-      "value": "100"
-    },
-    "temperature": {
-      "value": "20.2"
-    },
-    "humidity": {
-      "value": "65.2"
-    },
-    "pressure": {
-      "value": "59393"
-    },
-    "maxMeasurement": {
-      "value": "777"
-    },
-    "minMeasurement": {
-      "value": "777"
-    },
+    "air_quality_index": "0",
+    "humidity": "0",
     "pollutants": {
-      "value": {
-        "co2": "4",
-        "co": "2",
-        "no2": "2",
-        "o3": "4",
-        "so2": "3",
-        "pm2.5": "2",
-        "pm10": "1"
-      }
-    }
+      "co2": "0",
+      "co": "0",
+      "no2": "0",
+      "o3": "0",
+      "so2": "0",
+      "pm2.5": "0",
+      "pm10": "0"
+    },
+    "pressure": "00",
+    "temperature": "0"
+  }
+}
+}
+' 'http://localhost:3000/sensors'
+
+curl -X POST -H "Content-Type: application/json" -d '{
+ "station_id": "station_2",
+ "description": {
+   "value": "Sensor de Eugenios",
+   "metadata": {
+     "air_quality_index": "20",
+     "humidity": "10",
+     "pollutants": {
+       "co2": "30",
+       "co": "40",
+       "no2": "50",
+       "o3": "90",
+       "so2": "10",
+       "pm2.5": "20",
+       "pm10": "30"
+     },
+     "pressure": "10",
+     "temperature": "30"
    }
  }
 }' 'http://localhost:3000/sensors'
@@ -148,151 +141,44 @@ curl -X POST -H "Content-Type: application/json" -d '{
 curl -X POST -H "Content-Type: application/json" -d '{
 "station_id": "station_2",
 "description": {
-  "value": "Sensor de Presión del Aire",
+  "value": "Sensor de Jorges",
   "metadata": {
-    "air_quality_index": {
-      "value": "100"
-    },
-    "temperature": {
-      "value": "20.2"
-    },
-    "humidity": {
-      "value": "65.2"
-    },
-    "pressure": {
-      "value": "59393"
-    },
-    "maxMeasurement": {
-      "value": "777"
-    },
-    "minMeasurement": {
-      "value": "777"
-    },
+    "air_quality_index": "20",
+    "humidity": "10",
     "pollutants": {
-      "value": {
-        "co2": "4",
-        "co": "2",
-        "no2": "2",
-        "o3": "4",
-        "so2": "3",
-        "pm2.5": "2",
-        "pm10": "1"
-      }
-    }
-   }
- }
+      "co2": "30",
+      "co": "40",
+      "no2": "50",
+      "o3": "90",
+      "so2": "10",
+      "pm2.5": "20",
+      "pm10": "30"
+    },
+    "pressure": "10",
+    "temperature": "30"
+  }
+}
 }' 'http://localhost:3000/sensors'
 
 curl -X POST -H "Content-Type: application/json" -d '{
 "station_id": "station_2",
 "description": {
-  "value": "Sensor de Calidad del Aire",
+  "value": "Sensor de Brenos",
   "metadata": {
-    "air_quality_index": {
-      "value": "75"
-    },
-    "temperature": {
-      "value": "25.2"
-    },
-    "humidity": {
-      "value": "65.2"
-    },
-    "pressure": {
-      "value": "1013.25"
-    },
-    "maxMeasurement": {
-      "value": "777"
-    },
-    "minMeasurement": {
-      "value": "777"
-    },
+    "prueba_random": "20",
+    "air_quality_index": "20",
+    "humidity": "10",
     "pollutants": {
-      "value": {
-        "co2": "400",
-        "co": "2",
-        "no2": "20",
-        "o3": "40",
-        "so2": "5",
-        "pm2.5": "15",
-        "pm10": "30"
-      }
-    }
-   }
- }
-}' 'http://localhost:3000/sensors'
-
-curl -X POST -H "Content-Type: application/json" -d '{
-"station_id": "station_3",
-"description": {
-  "value": "Sensor de Calidad del Aire",
-  "metadata": {
-    "air_quality_index": {
-      "value": "75"
+      "co2": "30",
+      "co": "40",
+      "no2": "50",
+      "o3": "90",
+      "so2": "10",
+      "pm2.5": "20",
+      "pm10": "30"
     },
-    "temperature": {
-      "value": "25.2"
-    },
-    "humidity": {
-      "value": "65.2"
-    },
-    "pressure": {
-      "value": "1013.25"
-    },
-    "maxMeasurement": {
-      "value": "777"
-    },
-    "minMeasurement": {
-      "value": "777"
-    },
-    "pollutants": {
-      "value": {
-        "co2": "400",
-        "co": "2",
-        "no2": "20",
-        "o3": "40",
-        "so2": "5",
-        "pm2.5": "15",
-        "pm10": "30"
-      }
-    }
-   }
- }
-}' 'http://localhost:3000/sensors'
-
-curl -X POST -H "Content-Type: application/json" -d '{
-"station_id": "station_3",
-"description": {
-  "value": "Sensor de Presión del Aire",
-  "metadata": {
-    "air_quality_index": {
-      "value": "100"
-    },
-    "temperature": {
-      "value": "20.2"
-    },
-    "humidity": {
-      "value": "65.2"
-    },
-    "pressure": {
-      "value": "59393"
-    },
-    "maxMeasurement": {
-      "value": "777"
-    },
-    "minMeasurement": {
-      "value": "777"
-    },
-    "pollutants": {
-      "value": {
-        "co2": "4",
-        "co": "2",
-        "no2": "2",
-        "o3": "4",
-        "so2": "3",
-        "pm2.5": "2",
-        "pm10": "1"
-      }
-    }
-   }
- }
+    "pressure": "10",
+    "temperature": "30"
+  }
+}
 }' 'http://localhost:3000/sensors'

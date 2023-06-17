@@ -1,5 +1,10 @@
 import axios, {AxiosError} from "axios";
-import {FlattenedSensorPayload, NewSensor, OrionSensorPayload, Sensor} from "../../types/Sensor";
+import {
+  FlattenedSensorPayload,
+  NewSensor,
+  OrionSensorPayload, Pollutants,
+  Sensor, SensorMetadataInput, SensorMetadataOutput
+} from "../../types/Sensor";
 import {DATES_OPTIONS_QUERY_PARAMS, ENTITIES_ORION_API_URL} from '../../globals/constants';
 import {getStationDataById, stationExists, updateStationById} from "../station/stationService";
 import {Station} from "../../types/Station";
@@ -9,7 +14,7 @@ import {SensorCounterSingleton} from "../counters/Counter";
 import {adaptUserToOrionMetadata} from "../../utils";
 
 
-export const createSensor = async (sensor: NewSensor): Promise<string> => {
+export const createSensor = async (sensor: NewSensor): Promise<{message: string, sensor_id: string}> => {
   try {
     const stationData: Station | string = await getStationDataById(sensor.station_id);
     if (typeof stationData === "string") {
@@ -17,8 +22,7 @@ export const createSensor = async (sensor: NewSensor): Promise<string> => {
     }
     const newId = await generateNewId(SensorCounterSingleton.getInstance(), 'sensor')
 
-    const sensorMetadata = Object.values(sensor.description?.metadata).length > 0 ? adaptUserToOrionMetadata(sensor.description?.metadata) : {};
-    console.log(sensorMetadata);
+    const sensorMetadata: SensorMetadataOutput = transformInputMetadata(sensor.description.metadata as SensorMetadataInput)
     const sensorPayLoad = {
       id: newId,
       station_id: {
@@ -54,7 +58,7 @@ export const createSensor = async (sensor: NewSensor): Promise<string> => {
       `${ENTITIES_ORION_API_URL}/${sensorToUpdate.station_id}/attrs`,
       {sensors: {value: updatedSensors}}
     );
-    return sensorResponse.statusText
+    return {message: sensorResponse.statusText, sensor_id: newId}
   } catch (e: any) {
     if (e.response && e.response.status === 404) {
       return Promise.reject({code: 404, message: e.response.data})
@@ -72,7 +76,6 @@ export const createSensor = async (sensor: NewSensor): Promise<string> => {
 
 export const getSensor = async (sensorId: string): Promise<Sensor> => {
   // Retrieve the sensor entity from Orion Context Broker
-  console.log("getting sensor")
   try {
     const response = await axios.get(`${ENTITIES_ORION_API_URL}/${sensorId}?${DATES_OPTIONS_QUERY_PARAMS}`);
     return response.data;
@@ -92,7 +95,6 @@ export const getEverySensor = async (): Promise<Sensor[]> => {
 
 export const updateSensor = async (sensorId: string, sensorUpdatePayload: NewSensor): Promise<void> => {
   try {
-    console.log(sensorUpdatePayload);
     const sensor = await getSensor(sensorId);
 
     if (sensor.station_id.value !== sensorUpdatePayload.station_id) {
@@ -104,12 +106,10 @@ export const updateSensor = async (sensorId: string, sensorUpdatePayload: NewSen
         throw new NotFoundError('Station not found or doesn\'t exist');
       }
     }
-    console.log("transforming");
     const payloadForUpdate = transformSensorPayload(sensorUpdatePayload, sensor)
 
     await axios.patch(`${ENTITIES_ORION_API_URL}/${sensorId}/attrs`, payloadForUpdate);
   } catch (e: any) {
-    console.log(e)
     if (e instanceof NotFoundError) {
       throw new NotFoundError(e.message);
     } else {
@@ -232,7 +232,7 @@ const transformSensorPayload = (payload: any, currentSensorData: Sensor): any =>
           }
           return result;
         }, {}),
-      }: currentSensorData.description?.metadata,
+      } : currentSensorData.description?.metadata,
     },
     station_id: {
       type: 'String',
@@ -242,3 +242,31 @@ const transformSensorPayload = (payload: any, currentSensorData: Sensor): any =>
   };
   return orionPayload;
 }
+
+
+const transformInputMetadata = (input: SensorMetadataInput): SensorMetadataOutput => {
+  const output: SensorMetadataOutput = {};
+
+  for (const key in input) {
+    if (key === "pollutants" && typeof input[key] === "object") {
+      const pollutantObj = input[key] as Pollutants;
+      let transformedPollutants: { [key: string]: string } = {};
+
+      for (const pollutant in pollutantObj) {
+        transformedPollutants[pollutant] = (pollutantObj as any)[pollutant];
+      }
+
+      output[key] = {
+        type: "StructuredValue",
+        value: {value: transformedPollutants},
+      };
+    } else {
+      output[key] = {
+        type: "StructuredValue",
+        value: {value: input[key] as string},
+      };
+    }
+  }
+
+  return output;
+};

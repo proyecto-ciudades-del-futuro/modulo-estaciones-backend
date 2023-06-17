@@ -44,3 +44,20 @@ export type FlattenedSensorPayload = {
   dateCreated: string;
   dateModified: string;
 }
+
+export type Pollutants = {
+  co2: string;
+  co: string;
+  no2: string;
+  o3: string;
+  so2: string;
+  pm2_5: string;
+  pm10: string;
+};
+
+export type SensorMetadataInput = Record<string, string | Pollutants>;
+
+export type SensorMetadataOutput = Record<
+  string,
+  { type: string; value: { value: string | { [key: string]: string } } }
+  >;

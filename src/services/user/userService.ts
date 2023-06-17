@@ -8,8 +8,8 @@ import {generateNewId} from "../globalServices";
 import {addToBlacklist, isTokenBlacklisted} from "../../utils/blacklists";
 import jwt, {Secret} from "jsonwebtoken";
 import {NextFunction} from "express";
-require('dotenv').config();
 import { Request, Response } from "express";
+require('dotenv').config();
 
 
 
