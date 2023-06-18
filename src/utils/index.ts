@@ -1,5 +1,4 @@
 export function parseToFloatsArray(stringArray: string[]): number[] {
-  console.log(stringArray)
   return stringArray.map(str => parseFloat(str));
 }
 

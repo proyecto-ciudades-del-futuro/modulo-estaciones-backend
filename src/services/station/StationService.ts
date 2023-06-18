@@ -1,10 +1,11 @@
-import {ENTITIES_ORION_API_URL} from "../../globals/constants";
+import {DATES_OPTIONS_QUERY_PARAMS, ENTITIES_ORION_API_URL} from "../../globals/constants";
 import axios, {AxiosError, AxiosResponse} from "axios";
 import {createStationStateMachineInterpreter} from "../../utils/stationStateMachine";
-import {Station, StationResponse, StationUpdate} from "../../types/Station";
+import {Station, StationUpdate} from "../../types/Station";
 import {Sensor} from "../../types/Sensor";
 import {InternalError, NotFoundError} from "../../types/errors";
 import {GeoJson, LocationUpdateContract} from "../../types/globals";
+import  {Request} from 'express'
 
 
 export type InitialStates = 'IN_APPROVAL' | 'ENABLED' | 'DISABLED';
@@ -116,45 +117,7 @@ export const stationExists = async (stationId: string): Promise<boolean> => {
 }
 
 
-export const adaptResponseForClient = (response: AxiosResponse): StationResponse => {
-  return {
-    id: response.data.id,
-    user: response.data.user.value,
-    description: {
-      value: response.data.description.value,
-      metadata: response.data.description.metadata
-    },
-    location: response.data.location.value.coordinates,
-    sensors: response.data.sensors.value,
-    stationState: response.data.stationState.value,
-    dateCreated: response.data.dateCreated.value,
-    dateModified: response.data.dateModified.value
-  }
-}
-
-export const adaptResponseForClientList = (response: AxiosResponse): StationResponse[] => {
-  return response.data.map((station: Station) => {
-    console.log(station)
-    return {
-      id: station.id,
-      user: station.user.value,
-      description: {
-        value: station.description.value,
-        metadata: station.description.metadata
-      },
-      location: station.location.value.coordinates,
-      sensors: station.sensors.value,
-      stationState: station.stationState.value,
-      dateCreated: station.dateCreated?.value,
-      dateModified: station.dateModified?.value
-    }
-  })
-}
-
-
 export function checkAndCompleteLocation(data: LocationUpdateContract): GeoJson {
-  console.log("DATA")
-  console.log(data)
   const location: GeoJson = {
     type: "geo:json",
     value: {
@@ -167,3 +130,4 @@ export function checkAndCompleteLocation(data: LocationUpdateContract): GeoJson 
   console.log(location)
   return location;
 }
+

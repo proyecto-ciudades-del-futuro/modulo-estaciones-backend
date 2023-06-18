@@ -1,6 +1,6 @@
 import axios from 'axios';
 import MockAdapter from "axios-mock-adapter";
-import {generateNewId, getAvailableStates, getCurrentStationStateData} from "./stationService";
+import {generateNewId, getAvailableStates, getCurrentStationStateData} from "./StationService";
 import {ENTITIES_ORION_API_URL} from "../../globals/constants";
 import {createStationStateMachineInterpreter} from "../../utils/stationStateMachine";
 

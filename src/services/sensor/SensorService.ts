@@ -1,7 +1,7 @@
 import axios from "axios";
 import {NewSensor, Sensor, SensorMetadataInput, SensorMetadataOutput} from "../../types/Sensor";
 import {DATES_OPTIONS_QUERY_PARAMS, ENTITIES_ORION_API_URL} from '../../globals/constants';
-import {getStationDataById, stationExists, updateStationById} from "../station/stationService";
+import {getStationDataById, stationExists, updateStationById} from "../station/StationService";
 import {Station} from "../../types/Station";
 import {InternalError, NotFoundError} from "../../types/errors";
 import {generateNewId} from "../globalServices";

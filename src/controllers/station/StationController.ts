@@ -1,17 +1,22 @@
 import {Request, Response} from 'express';
 import axios from 'axios';
-import {Station, StationUpdate} from '../../types/Station';
+import {StationUpdate} from '../../types/Station';
 import {DATES_OPTIONS_QUERY_PARAMS, ENTITIES_ORION_API_URL} from "../../globals/constants";
 import {
-  adaptResponseForClient, adaptResponseForClientList, checkAndCompleteLocation,
+  checkAndCompleteLocation,
   getAvailableStates, getSensorsByStation,
   getStationsIdsList, tryTransition,
-} from "../../services/station/stationService";
-import {STATION_STATE} from "../../types/enums";
+} from "../../services/station/StationService";
 import {handleHttpErrors} from "../../utils/errorHandling";
 import {generateNewId} from "../../services/globalServices";
 import {StationCounterSingleton} from "../../services/counters/Counter";
 import {parseToFloatsArray} from "../../utils";
+import {
+  adaptResponseForClient,
+  adaptResponseForClientList,
+  createStationPayload
+} from "../../services/station/StationDataTransformationServices";
+import {stationFetcher} from "../../services/orionFetcher";
 
 export class StationController {
   async create(req: Request, res: Response): Promise<void> {
@@ -20,56 +25,23 @@ export class StationController {
     try {
       const coords = parseToFloatsArray(location.coordinates);
       const newId = await generateNewId(StationCounterSingleton.getInstance(), 'station');
-      const stationPayload: Station = {
-        id: newId,
-        type: 'Station',
-        description: {
-          type: "String",
-          value: description.value,
-          metadata: description.metadata ?? {}
-        },
-        location: {
-          type: "geo:json",
-          value: {
-            type: "Point",
-            coordinates: coords,
-          },
-          metadata: location.metadata ?? {}
-        },
-        user: {
-          type: "Relationship",
-          value: user.value,
-          metadata: user.metadata ?? {}
-        },
-        stationState: {
-          type: "String",
-          metadata: {},
-          value: STATION_STATE.IN_APPROVAL
-        },
-        sensors: {
-          type: "Array",
-          value: [],
-          metadata: {}
-        }
-      };
-      const stationPayloadJSON = JSON.stringify(stationPayload);
+      const stationPayload = JSON.stringify(createStationPayload(newId, description, coords, location, user));
       // Send POST request to Orion Context Broker API to create new entity
-      const response = await axios.post(ENTITIES_ORION_API_URL, stationPayloadJSON, {
+      const response = await axios.post(ENTITIES_ORION_API_URL, stationPayload, {
         headers: {
           'Content-Type': 'application/json',
         },
       });
-      res.status(201).json({id: stationPayload.id});
+      res.status(201).json({id: newId});
     } catch (error: any) {
       if (error === 'id already exists') {
         res.status(409).json({error});
       } else if (error === 'An unexpected error occurred') {
-        // Handle the unexpected error as needed, e.g., log the error and return a custom status and message
+
         console.error('Unexpected error:', error);
         res.status(500).json({error: 'Internal server error'});
       } else {
         console.log("Handling other axios errors");
-        // Handle other Axios errors
         res.status(error.response.status).json({error: `${error.code} | ${error.response.data.description}`});
       }
     }
@@ -84,16 +56,13 @@ export class StationController {
           `${ENTITIES_ORION_API_URL}/${stationId}/?${DATES_OPTIONS_QUERY_PARAMS}`
         );
         // Send response with entity data
-        console.log(response.data);
         res.json(adaptResponseForClient(response));
       } else if (req.query.fields === 'id') {
         const response = await getStationsIdsList();
         res.json(response);
       } else {
         // Send GET request to Orion Context Broker API to retrieve all entities of type "Station"
-        const response = await axios.get(
-          `${ENTITIES_ORION_API_URL}?type=Station&${DATES_OPTIONS_QUERY_PARAMS}`
-        );
+        const response = await stationFetcher.fetchEntities(req)
         // Send response with list of entities
         res.json(adaptResponseForClientList(response));
       }

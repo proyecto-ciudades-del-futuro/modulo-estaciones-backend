@@ -8,8 +8,9 @@ import {
 import { handleHttpErrors } from "../../utils/errorHandling";
 import { ENTITIES_ORION_API_URL } from "../../globals/constants";
 import axios from "axios";
-import {Sensor} from "../../types/Sensor";
+import {OrionSensorPayload, Sensor} from "../../types/Sensor";
 import {flattenSensorArrayPayload, flattenSensorPayload} from "../../services/sensor/SensorDataTransformationServices";
+import {sensorFetcher} from "../../services/orionFetcher";
 
 export class SensorController {
 
@@ -41,6 +42,7 @@ export class SensorController {
             }
         } catch (error: any) {
             // Handle errors accordingly
+            console.log(error)
             if (error?.response?.status === 404) {
                 res.status(404).json({ error: "Sensor Not found" });
                 return;

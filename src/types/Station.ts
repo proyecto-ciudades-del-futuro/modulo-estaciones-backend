@@ -1,5 +1,5 @@
 import {STATION_STATE} from "./enums";
-import {GeoJson, SensorArray, Description, LocationContract} from "./globals";
+import {GeoJson, SensorArray, Description} from "./globals";
 
 export type ValidStringTypes = 'Text' | 'Number' | 'Integer' | 'Boolean' | 'Date' | 'URL' | 'GeoJSON' | 'StructuredValue';
 
@@ -50,4 +50,15 @@ export interface StationResponse {
     user: string;
     dateCreated: string;
     dateModified: string;
+}
+
+
+export interface StationDescription {
+    value: string;
+    metadata?: object;
+}
+
+export interface User {
+    value: string;
+    metadata?: object;
 }
