@@ -5,6 +5,8 @@ import sensorsRouter from "./routes/sensorRoutes";
 import {StationCounterSingleton} from "./services/counters/Counter";
 import cors from 'cors';
 import userRouter from "./routes/userRoutes";
+import configurationRouter from "./routes/configurationRoutes";
+import ConfigurationService from "./services/configuration/ConfigurationService";
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -26,6 +28,12 @@ app.get('/', async (req, res) => {
 app.use('/stations', stationRouter)
 app.use('/sensors', sensorsRouter);
 app.use('/users', userRouter);
+app.use('/configuration', configurationRouter)
+
+
+const configurationService = new ConfigurationService();
+configurationService.createConfigurationIfNotExists();
+
 
 app.listen(port, () => {
     console.log(`Server listening at http://localhost:${port}`);

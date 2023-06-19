@@ -1,11 +1,10 @@
-import {DATES_OPTIONS_QUERY_PARAMS, ENTITIES_ORION_API_URL} from "../../globals/constants";
+import { ENTITIES_ORION_API_URL} from "../../globals/constants";
 import axios, {AxiosError, AxiosResponse} from "axios";
 import {createStationStateMachineInterpreter} from "../../utils/stationStateMachine";
 import {Station, StationUpdate} from "../../types/Station";
 import {Sensor} from "../../types/Sensor";
 import {InternalError, NotFoundError} from "../../types/errors";
 import {GeoJson, LocationUpdateContract} from "../../types/globals";
-import  {Request} from 'express'
 import {convertStringsToNumbers} from "../../utils";
 
 
@@ -127,8 +126,6 @@ export function checkAndCompleteLocation(data: LocationUpdateContract): GeoJson 
     },
     metadata: data?.metadata || {}
   };
-  console.log("RESPONSE DATA")
-  console.log(location)
   return location;
 }
 
