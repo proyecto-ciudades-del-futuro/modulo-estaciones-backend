@@ -6,6 +6,7 @@ import {Sensor} from "../../types/Sensor";
 import {InternalError, NotFoundError} from "../../types/errors";
 import {GeoJson, LocationUpdateContract} from "../../types/globals";
 import  {Request} from 'express'
+import {convertStringsToNumbers} from "../../utils";
 
 
 export type InitialStates = 'IN_APPROVAL' | 'ENABLED' | 'DISABLED';
@@ -122,7 +123,7 @@ export function checkAndCompleteLocation(data: LocationUpdateContract): GeoJson 
     type: "geo:json",
     value: {
       type: "Point",
-      coordinates: data?.coordinates || [0, 0]
+      coordinates: convertStringsToNumbers(data.coordinates) || [0, 0]
     },
     metadata: data?.metadata || {}
   };

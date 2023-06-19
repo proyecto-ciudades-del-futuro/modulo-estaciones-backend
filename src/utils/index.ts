@@ -27,3 +27,17 @@ function reverseAdapter(orionData: OrionMetadata): object {
   }
   return userData;
 }
+
+
+export function convertStringsToNumbers(arr: (number | string)[]): number[] {
+  return arr.map(item => {
+    if (typeof item === 'string') {
+      let num = parseFloat(item);
+      if (isNaN(num)) {
+        throw new Error(`Invalid number string: ${item}`);
+      }
+      return num;
+    }
+    return item;
+  });
+}

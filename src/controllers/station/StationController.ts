@@ -84,8 +84,6 @@ export class StationController {
           return;
         }
       }
-
-
       if (location) {
         updatePayload.location = checkAndCompleteLocation(req.body.location);
       }
@@ -104,6 +102,7 @@ export class StationController {
       // Send response with success status
       res.status(204).send();
     } catch (error: any) {
+      console.log(error);
       handleHttpErrors(res, error);
     }
   }
