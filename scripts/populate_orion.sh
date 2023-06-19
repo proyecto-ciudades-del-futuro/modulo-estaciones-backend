@@ -24,14 +24,28 @@ station_names=(
     "Viedma"
 )
 
-# Array of words for sensor descriptions
-sensor_descriptions=(
-    "Clima"
-    "Particulas de Aire"
-    "Calidad del Agua"
-    "Ruido Ambiental"
-    "Contaminación Lumínica"
-    "Radiación Solar"
+# Array of corresponding coordinates for station names
+coordinates=(
+    "-34.6037,-58.3816"
+    "-31.4167,-64.1833"
+    "-32.9468,-60.6393"
+    "-32.8908,-68.8272"
+    "-34.9314,-57.9489"
+    "-26.8241,-65.2226"
+    "-38.0023,-57.5575"
+    "-24.7859,-65.4117"
+    "-31.6333,-60.7"
+    "-31.5375,-68.5364"
+    "-27.4519,-58.9869"
+    "-38.9516,-68.0591"
+    "-26.1775,-58.1781"
+    "-24.1858,-65.2995"
+    "-31.7413,-60.5116"
+    "-27.3621,-55.9007"
+    "-27.784,-64.2672"
+    "-28.5214,-58.8208"
+    "-37.1603,-57.883"
+    "-40.8135,-62.9967"
 )
 
 # Generate and populate stations
@@ -40,6 +54,11 @@ for ((i = 1; i <= 20; i++)); do
     station_name="${station_names[$rand_index]} Station"
 
     station_sponsor="Sponsor $i"
+
+    # Get coordinates based on the station name
+    coordinates_data="${coordinates[$rand_index]}"
+    lat=$(echo "$coordinates_data" | awk -F',' '{print $1}')
+    lng=$(echo "$coordinates_data" | awk -F',' '{print $2}')
 
     station_data='{
         "description": {
@@ -55,8 +74,8 @@ for ((i = 1; i <= 20; i++)); do
         },
         "location": {
             "coordinates": [
-                -36.88154,
-                -60.37399
+                '$lat',
+                '$lng'
             ]
         },
         "user": {
@@ -66,6 +85,16 @@ for ((i = 1; i <= 20; i++)); do
 
     curl -X POST -H "Content-Type: application/json" -d "$station_data" 'http://localhost:3000/stations'
 done
+
+# Array of sensor descriptions
+sensor_descriptions=(
+    "Clima"
+    "Particulas de Aire"
+    "Calidad del Agua"
+    "Ruido Ambiental"
+    "Contaminación Lumínica"
+    "Radiación Solar"
+)
 
 # Generate and populate sensors
 for ((i = 1; i <= 50; i++)); do
