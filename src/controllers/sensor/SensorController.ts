@@ -8,9 +8,7 @@ import {
 import { handleHttpErrors } from "../../utils/errorHandling";
 import { ENTITIES_ORION_API_URL } from "../../globals/constants";
 import axios from "axios";
-import {OrionSensorPayload, Sensor} from "../../types/Sensor";
 import {flattenSensorArrayPayload, flattenSensorPayload} from "../../services/sensor/SensorDataTransformationServices";
-import {sensorFetcher} from "../../services/orionFetcher";
 
 export class SensorController {
 
@@ -37,7 +35,7 @@ export class SensorController {
                 console.log(sensor)
                 res.status(200).json(flattenSensorPayload(sensor));
             } else {
-                const sensors = await getEverySensor();
+                const sensors = await getEverySensor(req);
                 res.status(200).json(flattenSensorArrayPayload(sensors));
             }
         } catch (error: any) {

@@ -1,6 +1,7 @@
 import {Request, Response} from "express";
 import {handleHttpErrors} from "../../utils/errorHandling";
 import {createUser, loginUser, logoutUser} from "../../services/user/UserService";
+import {userFetcher} from "../../services/orionFetcher";
 
 export class UserController {
 
@@ -20,26 +21,25 @@ export class UserController {
             }
         }
     }
-    /*
     async read(req: Request, res: Response): Promise<void> {
         try {
             if (req.params.id) {
-                const sensor = await getSensor(req.params.id);
-                res.status(200).json(sensor);
+                //const sensor = await getSensor(req.params.id);
+                //res.status(200).json(sensor);
             } else {
-                const sensors = await getEverySensor();
-                res.status(200).json(sensors);
+                const users = await userFetcher.fetchEntities(req);
+                res.status(200).json(users);
             }
         } catch (error: any) {
             // Handle errors accordingly
             if (error?.response?.status === 404) {
-                res.status(404).json({error: "Sensor Not found"});
+                res.status(404).json({error: "User Not found"});
                 return;
             }
             res.status(500).json({error: "Internal server error"});
         }
     }
-
+/*
     async update(req: Request, res: Response): Promise<void> {
         const sensorId = req.params.id;
         const updatedSensor = req.body;

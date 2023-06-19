@@ -7,6 +7,8 @@ import {InternalError, NotFoundError} from "../../types/errors";
 import {generateNewId} from "../globalServices";
 import {SensorCounterSingleton} from "../counters/Counter";
 import {transformInputMetadata, transformSensorPayload} from "./SensorDataTransformationServices";
+import {sensorFetcher} from "../orionFetcher";
+import {Request} from 'express';
 
 
 export const createSensor = async (sensor: NewSensor): Promise<{message: string, sensor_id: string}> => {
@@ -83,8 +85,8 @@ export const getSensor = async (sensorId: string): Promise<Sensor> => {
   }
 }
 
-export const getEverySensor = async (): Promise<Sensor[]> => {
-  const sensors = await axios.get(`${ENTITIES_ORION_API_URL}?type=Sensor&${DATES_OPTIONS_QUERY_PARAMS}`);
+export const getEverySensor = async (req: Request): Promise<Sensor[]> => {
+  const sensors = await sensorFetcher.fetchEntities(req)
   return sensors.data;
 }
 
