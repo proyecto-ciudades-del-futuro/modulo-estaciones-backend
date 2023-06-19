@@ -8,10 +8,10 @@ import {
 export function restructureForGetRequest(input: ConfigurationInput) : ConfigurationOutputForGet{
   return {
     id: input.id,
-    Bad: input.Bad.value,
-    Regular: input.Regular.value,
-    Good: input.Good.value,
-    NoData: input.NoData.value,
+    bad: input.bad.value,
+    regular: input.regular.value,
+    good: input.good.value,
+    noData: input.noData.value,
   };
 }
 
@@ -19,30 +19,30 @@ export function restructureForGetRequest(input: ConfigurationInput) : Configurat
 export function restructureForPatchRequest(input: ConfigurationUpdate): ConfigurationForUpdate {
   let output: ConfigurationForUpdate = {};
 
-  if (input.Bad !== undefined) {
-    output.Bad = {
-      value: input.Bad,
+  if (input.bad !== undefined) {
+    output.bad = {
+      value: input.bad,
       metadata: {}
     };
   }
 
-  if (input.Regular !== undefined) {
-    output.Regular = {
-      value: input.Regular,
+  if (input.regular !== undefined) {
+    output.regular = {
+      value: input.regular,
       metadata: {}
     };
   }
 
-  if (input.Good !== undefined) {
-    output.Good = {
-      value: input.Good,
+  if (input.good !== undefined) {
+    output.good = {
+      value: input.good,
       metadata: {}
     };
   }
 
-  if (input.NoData !== undefined) {
-    output.NoData = {
-      value: input.NoData,
+  if (input.noData !== undefined) {
+    output.noData = {
+      value: input.noData,
       metadata: {}
     };
   }

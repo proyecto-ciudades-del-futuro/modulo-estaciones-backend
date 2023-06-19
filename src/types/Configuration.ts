@@ -1,22 +1,22 @@
 export interface ConfigurationInput {
   id: string;
   type: string;
-  Bad: {
+  bad: {
     type: string;
     value: number;
     metadata: Record<string, unknown>;
   };
-  Good: {
+  good: {
     type: string;
     value: number;
     metadata: Record<string, unknown>;
   };
-  NoData: {
+  noData: {
     type: string;
     value: number;
     metadata: Record<string, unknown>;
   };
-  Regular: {
+  regular: {
     type: string;
     value: number;
     metadata: Record<string, unknown>;
@@ -26,10 +26,10 @@ export interface ConfigurationInput {
 
 export interface ConfigurationOutputForGet {
   id: string;
-  Bad: number;
-  Regular: number;
-  Good: number;
-  NoData: number;
+  bad: number;
+  regular: number;
+  good: number;
+  noData: number;
 }
 
 
@@ -43,8 +43,8 @@ interface PartialConfigurationValue {
 
 export interface ConfigurationForUpdate {
   id?: string;
-  Bad?: PartialConfigurationValue;
-  Good?: PartialConfigurationValue;
-  NoData?: PartialConfigurationValue;
-  Regular?: PartialConfigurationValue;
+  bad?: PartialConfigurationValue;
+  good?: PartialConfigurationValue;
+  noData?: PartialConfigurationValue;
+  regular?: PartialConfigurationValue;
 }

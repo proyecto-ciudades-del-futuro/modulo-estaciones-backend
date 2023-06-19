@@ -12,19 +12,19 @@ class ConfigurationService {
         const config = {
           id: "Configuration",
           type: "Configuration",
-          NoData: {
+          noData: {
             type: "Integer",
             value: 0
           },
-          Regular: {
+          regular: {
             type: "Integer",
             value: 0
           },
-          Bad: {
+          bad: {
             type: "Integer",
             value: 0
           },
-          Good: {
+          good: {
             type: "Integer",
             value: 0
           }
