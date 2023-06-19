@@ -36,7 +36,7 @@ const stationUpdateSchema = Joi.object({
     }).optional(),
     stationState: Joi.object({
         metadata: Joi.object().default({}),
-        value: Joi.string().valid('ENABLED', 'DISABLED', 'IN_APPROVAL').required()
+        value: Joi.string().valid('ENABLED', 'DISABLED', 'IN_APPROVAL', 'REJECTED').required()
     }).optional(),
     description: Joi.object({
         metadata: Joi.object().default({}),

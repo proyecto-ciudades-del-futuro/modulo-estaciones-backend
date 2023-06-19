@@ -11,6 +11,7 @@ type StationStateSchema = {
         IN_APPROVAL: {};
         ENABLED: {};
         DISABLED: {};
+        REJECTED: {}
     };
 };
 
@@ -18,26 +19,40 @@ type StationEvent =
     | { type: 'enable' }
     | { type: 'disable' }
     | { type: 're-enable' }
-    | { type: 'adminOverride'; target: 'IN_APPROVAL' | 'ENABLED' | 'DISABLED' };
+    | { type: 'reject' }
+    | { type: 'adminOverride'; target: 'IN_APPROVAL' | 'ENABLED' | 'DISABLED' | 'REJECTED' };
 
 export const createStationStateMachineInterpreter = (
-    initialState: 'IN_APPROVAL' | 'ENABLED' | 'DISABLED'
+  initialState: 'IN_APPROVAL' | 'ENABLED' | 'DISABLED' | 'REJECTED'
 ) => {
     const machineConfig: MachineConfig<
-        StationContext,
-        StationStateSchema,
-        StationEvent
-        > = {
+      StationContext,
+      StationStateSchema,
+      StationEvent
+      > = {
         id: 'stations_state_machine',
         initial: initialState,
         states: {
             IN_APPROVAL: {
                 on: {
+                    reject: {
+                        target: 'REJECTED',
+                    },
                     enable: {
                         target: 'ENABLED',
                     },
                     adminOverride: {
-                        target: ['IN_APPROVAL', 'ENABLED', 'DISABLED'],
+                        target: ['IN_APPROVAL', 'ENABLED', 'DISABLED', 'REJECTED'],
+                    },
+                },
+            },
+            REJECTED: {
+                on: {
+                    enable: {
+                        target: 'ENABLED',
+                    },
+                    adminOverride: {
+                        target: ['IN_APPROVAL', 'ENABLED', 'DISABLED', 'REJECTED'],
                     },
                 },
             },
@@ -47,7 +62,7 @@ export const createStationStateMachineInterpreter = (
                         target: 'DISABLED',
                     },
                     adminOverride: {
-                        target: ['IN_APPROVAL', 'ENABLED', 'DISABLED'],
+                        target: ['IN_APPROVAL', 'ENABLED', 'DISABLED', 'REJECTED'],
                     },
                 },
             },
@@ -57,7 +72,7 @@ export const createStationStateMachineInterpreter = (
                         target: 'ENABLED',
                     },
                     adminOverride: {
-                        target: ['IN_APPROVAL', 'ENABLED', 'DISABLED'],
+                        target: ['IN_APPROVAL', 'ENABLED', 'DISABLED', 'REJECTED'],
                     },
                 },
             },
@@ -75,11 +90,3 @@ export const createStationStateMachineInterpreter = (
 };
 
 
-
-/*
-// Usage
-const initialState = 'ENABLED'; // Example initial state
-const stationStateMachine = createStationStateMachineInterpreter(initialState);
-
-
- */
