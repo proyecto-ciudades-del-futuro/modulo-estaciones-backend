@@ -2,7 +2,6 @@ import express from 'express';
 import stationRouter from "./routes/stationsRoutes";
 import bodyParser from "body-parser";
 import sensorsRouter from "./routes/sensorRoutes";
-import {StationCounterSingleton} from "./services/counters/Counter";
 import cors from 'cors';
 import userRouter from "./routes/userRoutes";
 import configurationRouter from "./routes/configurationRoutes";
