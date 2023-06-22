@@ -53,7 +53,7 @@ for ((i = 1; i <= 20; i++)); do
     rand_index=$(( RANDOM % ${#station_names[@]} ))
     station_name="${station_names[$rand_index]} Station"
 
-    station_sponsor="Sponsor $i"
+    station_sponsor="Lorawan|Wifi"
 
     # Get coordinates based on the station name
     coordinates_data="${coordinates[$rand_index]}"
@@ -66,7 +66,7 @@ for ((i = 1; i <= 20; i++)); do
                 "name": {
                     "value": "'"$station_name"'"
                 },
-                "sponsoredBy": {
+                "connection": {
                     "value": "'"$station_sponsor"'"
                 }
             },

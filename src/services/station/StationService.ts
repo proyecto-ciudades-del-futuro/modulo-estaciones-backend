@@ -8,15 +8,16 @@ import {GeoJson, LocationUpdateContract} from "../../types/globals";
 import {convertStringsToNumbers} from "../../utils";
 
 
-export type InitialStates = 'IN_APPROVAL' | 'ENABLED' | 'DISABLED';
+export type InitialStates = 'IN_APPROVAL' | 'ENABLED' | 'DISABLED' | 'REJECTED';
 
 
-export type TransitionAction = { type: 'enable' } | { type: 'disable' } | { type: 're-enable' };
+export type TransitionAction = { type: 'enable' } | { type: 'disable' } | { type: 're-enable' } | {type: 'reject'};
 
-export const transitionActions: { [key in 'ENABLED' | 'IN_APPROVAL' | 'DISABLED']: TransitionAction } = {
+export const transitionActions: { [key in 'ENABLED' | 'IN_APPROVAL' | 'DISABLED' | 'REJECTED']: TransitionAction } = {
   ENABLED: {type: 'enable'},
   IN_APPROVAL: {type: 're-enable'},
   DISABLED: {type: 'disable'},
+  REJECTED: {type: 'reject'}
 };
 
 

@@ -15,12 +15,12 @@ export class OrionFetcher {
     const baseParams = `type=${this.entityType}&${DATES_OPTIONS_QUERY_PARAMS}`;
     const offset = req.query.offset ? `&offset=${req.query.offset}` : '';
     const limit = req.query.limit ? `&limit=${req.query.limit}` : '';
-
     const url = `${this.baseURL}?${baseParams}${offset}${limit}`;
-
+    console.log(url)
     return await axios.get(url);
   }
 }
+
 
 export const stationFetcher = new OrionFetcher(ENTITIES_ORION_API_URL, 'Station');
 export const sensorFetcher = new OrionFetcher(ENTITIES_ORION_API_URL, 'Sensor');
