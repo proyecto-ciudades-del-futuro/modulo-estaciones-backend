@@ -16,7 +16,6 @@ export class OrionFetcher {
     const offset = req.query.offset ? `&offset=${req.query.offset}` : '';
     const limit = req.query.limit ? `&limit=${req.query.limit}` : '';
     const url = `${this.baseURL}?${baseParams}${offset}${limit}`;
-    console.log(url)
     return await axios.get(url);
   }
 }
